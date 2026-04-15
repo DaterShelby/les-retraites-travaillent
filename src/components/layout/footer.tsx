@@ -37,9 +37,9 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#2F3D42] text-gray-300 mt-16">
+    <footer className="bg-[#3B2F2F] text-gray-300 mt-16">
       {/* Newsletter Banner */}
-      <div className="bg-[#4A6670]">
+      <div className="bg-[#2C3E50]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
@@ -68,7 +68,7 @@ export function Footer() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="px-5 py-3 rounded-2xl bg-[#F0917B] text-white font-semibold hover:bg-[#D96850] transition-all flex items-center gap-2 text-sm disabled:opacity-50"
+                className="px-5 py-3 rounded-2xl bg-[#CC8800] text-white font-semibold hover:bg-[#A66E00] transition-all flex items-center gap-2 text-sm disabled:opacity-50"
               >
                 {status === "success" ? (
                   <Check className="w-4 h-4" />
@@ -157,19 +157,19 @@ export function Footer() {
             <h4 className="text-white font-semibold text-base mb-4">Contact</h4>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2">
-                <Mail className="w-5 h-5 text-[#8FBFAD] flex-shrink-0 mt-0.5" />
+                <Mail className="w-5 h-5 text-[#38761D] flex-shrink-0 mt-0.5" />
                 <a href="mailto:contact@lesretraiteestravaillent.fr" className="text-gray-400 hover:text-white transition-colors">
                   contact@lesretraiteestravaillent.fr
                 </a>
               </div>
               <div className="flex items-start gap-2">
-                <Phone className="w-5 h-5 text-[#8FBFAD] flex-shrink-0 mt-0.5" />
+                <Phone className="w-5 h-5 text-[#38761D] flex-shrink-0 mt-0.5" />
                 <a href="tel:+33123456789" className="text-gray-400 hover:text-white transition-colors">
                   +33 (0)1 23 45 67 89
                 </a>
               </div>
               <div className="flex items-start gap-2">
-                <MapPin className="w-5 h-5 text-[#8FBFAD] flex-shrink-0 mt-0.5" />
+                <MapPin className="w-5 h-5 text-[#38761D] flex-shrink-0 mt-0.5" />
                 <span className="text-gray-400">Paris, France</span>
               </div>
             </div>

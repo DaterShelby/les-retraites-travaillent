@@ -15,7 +15,7 @@ const ServiceMap = dynamic(
     ssr: false,
     loading: () => (
       <div className="w-full h-full min-h-[400px] rounded-2xl bg-gray-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4A6670]" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2C3E50]" />
       </div>
     ),
   }
@@ -184,7 +184,7 @@ export default function ServicesPage() {
                   onClick={() => setViewMode("grid")}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                     viewMode === "grid"
-                      ? "bg-white text-[#4A6670] shadow-sm"
+                      ? "bg-white text-[#2C3E50] shadow-sm"
                       : "text-gray-500 hover:text-gray-700"
                   }`}
                   aria-label="Vue grille"
@@ -196,7 +196,7 @@ export default function ServicesPage() {
                   onClick={() => setViewMode("map")}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                     viewMode === "map"
-                      ? "bg-white text-[#4A6670] shadow-sm"
+                      ? "bg-white text-[#2C3E50] shadow-sm"
                       : "text-gray-500 hover:text-gray-700"
                   }`}
                   aria-label="Vue carte"
@@ -206,7 +206,7 @@ export default function ServicesPage() {
                 </button>
               </div>
 
-              <div className="flex items-center gap-2 bg-[#8FBFAD]/10 text-[#8FBFAD] rounded-2xl px-4 py-2 text-sm font-medium">
+              <div className="flex items-center gap-2 bg-[#38761D]/10 text-[#38761D] rounded-2xl px-4 py-2 text-sm font-medium">
                 <Sparkles className="w-4 h-4" />
                 <span className="hidden lg:inline">Suggestions</span>
               </div>
@@ -222,7 +222,7 @@ export default function ServicesPage() {
                 placeholder="Rechercher un service, un métier..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#4A6670]/20 focus:border-[#4A6670]/30 text-base transition-all"
+                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2C3E50]/20 focus:border-[#2C3E50]/30 text-base transition-all"
               />
             </div>
             <div className="relative sm:w-56">
@@ -230,10 +230,10 @@ export default function ServicesPage() {
               <input
                 type="text"
                 placeholder="Ville ou code postal"
-                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#4A6670]/20 focus:border-[#4A6670]/30 text-base transition-all"
+                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#2C3E50]/20 focus:border-[#2C3E50]/30 text-base transition-all"
               />
             </div>
-            <button className="h-14 px-6 rounded-2xl bg-[#4A6670] text-white font-semibold hover:bg-[#3E5760] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md">
+            <button className="h-14 px-6 rounded-2xl bg-[#2C3E50] text-white font-semibold hover:bg-[#253544] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md">
               <Search className="w-4 h-4" />
               <span className="sm:hidden lg:inline">Rechercher</span>
             </button>
@@ -252,7 +252,7 @@ export default function ServicesPage() {
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                     selectedCategory === cat
-                      ? "bg-[#4A6670] text-white shadow-sm"
+                      ? "bg-[#2C3E50] text-white shadow-sm"
                       : "bg-gray-100/80 text-gray-600 hover:bg-gray-200/80 hover:text-gray-900"
                   }`}
                 >
@@ -268,7 +268,7 @@ export default function ServicesPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A6670] mb-4" />
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2C3E50] mb-4" />
             <p className="text-gray-500">Chargement des services...</p>
           </div>
         ) : error ? (
@@ -282,7 +282,7 @@ export default function ServicesPage() {
             <p className="text-gray-500 mb-6 text-center max-w-sm">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 rounded-2xl bg-[#4A6670] text-white font-semibold hover:bg-[#3E5760] transition-all shadow-sm"
+              className="px-6 py-3 rounded-2xl bg-[#2C3E50] text-white font-semibold hover:bg-[#253544] transition-all shadow-sm"
             >
               Réessayer
             </button>
@@ -334,7 +334,7 @@ export default function ServicesPage() {
                 setSelectedCategory("Tous");
                 setSearchQuery("");
               }}
-              className="px-6 py-3 rounded-2xl bg-[#4A6670] text-white font-semibold hover:bg-[#3E5760] transition-all shadow-sm"
+              className="px-6 py-3 rounded-2xl bg-[#2C3E50] text-white font-semibold hover:bg-[#253544] transition-all shadow-sm"
             >
               Réinitialiser les filtres
             </button>

@@ -232,7 +232,7 @@ export function BookingModal({
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-[#F0917B] to-[#D96850] text-white rounded-2xl font-semibold hover:shadow-md transition-all disabled:opacity-50"
+                className="flex-1 px-4 py-3 bg-gradient-to-r from-[#CC8800] to-[#A66E00] text-white rounded-2xl font-semibold hover:shadow-md transition-all disabled:opacity-50"
               >
                 {loading ? "Création..." : "Confirmer la réservation"}
               </button>

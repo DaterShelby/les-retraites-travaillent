@@ -26,10 +26,10 @@ export default function Step1Page() {
   return (
     <div className="space-y-8">
       <div className="space-y-4">
-        <h2 className="font-serif text-3xl font-bold text-[#4A6670]">
+        <h2 className="font-serif text-3xl font-bold text-[#2C3E50]">
           Quel est votre profil ?
         </h2>
-        <p className="text-lg text-[#2F3D42]/80">
+        <p className="text-lg text-[#3B2F2F]/80">
           Choisissez le profil qui vous correspond le mieux pour commencer.
         </p>
       </div>
@@ -41,7 +41,7 @@ export default function Step1Page() {
           onClick={handleContinue}
           size="lg"
           disabled={!selected}
-          className="gap-2 bg-[#4A6670] hover:bg-[#4A6670]/90 text-white"
+          className="gap-2 bg-[#2C3E50] hover:bg-[#2C3E50]/90 text-white"
         >
           Continuer
           <ChevronRight className="h-5 w-5" />

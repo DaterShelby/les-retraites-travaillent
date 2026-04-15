@@ -29,8 +29,8 @@ export function MessageBubble({
       <div
         className={`max-w-xs lg:max-w-md px-4 py-2 rounded-3xl transition-all duration-200 ${
           isOwn
-            ? "bg-[#F0917B] text-white rounded-br-none shadow-sm"
-            : "bg-gray-100 text-[#4A6670] rounded-bl-none shadow-sm"
+            ? "bg-[#CC8800] text-white rounded-br-none shadow-sm"
+            : "bg-gray-100 text-[#2C3E50] rounded-bl-none shadow-sm"
         }`}
       >
         {!isOwn && senderName && (

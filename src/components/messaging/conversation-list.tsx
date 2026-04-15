@@ -50,7 +50,7 @@ export function ConversationList({
     <div className="flex flex-col h-full bg-white overflow-hidden">
       {/* Header */}
       <div className="px-6 py-5 border-b border-gray-100/50">
-        <h2 className="font-serif font-bold text-xl text-[#4A6670]">
+        <h2 className="font-serif font-bold text-xl text-[#2C3E50]">
           Messages
         </h2>
         <p className="text-xs text-gray-500 mt-1">Conversations directes</p>
@@ -79,14 +79,14 @@ export function ConversationList({
                 <div
                   className={`px-4 py-3 hover:bg-gray-50/80 transition-all duration-200 cursor-pointer group ${
                     activeConversationId === conversation.id
-                      ? "bg-gradient-to-r from-gray-50 to-transparent border-l-3 border-l-[#F0917B]"
+                      ? "bg-gradient-to-r from-gray-50 to-transparent border-l-3 border-l-[#CC8800]"
                       : ""
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     {/* Avatar with status indicator */}
                     <div className="relative flex-shrink-0">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#8FBFAD] to-[#F0917B] flex items-center justify-center overflow-hidden ring-2 ring-white shadow-sm">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#38761D] to-[#CC8800] flex items-center justify-center overflow-hidden ring-2 ring-white shadow-sm">
                         {conversation.participantAvatar ? (
                           <img
                             src={conversation.participantAvatar}
@@ -108,7 +108,7 @@ export function ConversationList({
                       <div className="flex items-center justify-between mb-1">
                         <h3 className={`text-sm truncate ${
                           conversation.unreadCount > 0
-                            ? "font-semibold text-[#4A6670]"
+                            ? "font-semibold text-[#2C3E50]"
                             : "font-medium text-gray-700"
                         }`}>
                           {conversation.participantName || "Utilisateur"}
@@ -118,7 +118,7 @@ export function ConversationList({
                             {formatTime(conversation.lastMessageAt)}
                           </span>
                           {conversation.unreadCount > 0 && (
-                            <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-[#F0917B] text-white text-xs font-semibold">
+                            <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-[#CC8800] text-white text-xs font-semibold">
                               {conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}
                             </span>
                           )}

@@ -57,17 +57,17 @@ function wrapInTemplate(title: string, content: string): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
   <style>
-    body { margin: 0; padding: 0; background: #FAF7F5; font-family: 'Source Sans Pro', -apple-system, sans-serif; color: #2F3D42; }
+    body { margin: 0; padding: 0; background: #F5F2EE; font-family: 'Source Sans Pro', -apple-system, sans-serif; color: #3B2F2F; }
     .container { max-width: 580px; margin: 0 auto; padding: 40px 20px; }
     .card { background: #FFFFFF; border-radius: 20px; padding: 40px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
     .logo { text-align: center; margin-bottom: 32px; }
-    .logo-text { font-family: 'Libre Baskerville', Georgia, serif; font-size: 22px; color: #4A6670; font-weight: 700; }
-    h1 { font-family: 'Libre Baskerville', Georgia, serif; color: #4A6670; font-size: 24px; margin: 0 0 16px; }
-    p { font-size: 16px; line-height: 1.6; color: #2F3D42; margin: 0 0 16px; }
-    .btn { display: inline-block; padding: 14px 28px; background: #F0917B; color: #FFFFFF; text-decoration: none; border-radius: 16px; font-weight: 600; font-size: 16px; }
-    .btn:hover { background: #D96850; }
+    .logo-text { font-family: 'Libre Baskerville', Georgia, serif; font-size: 22px; color: #2C3E50; font-weight: 700; }
+    h1 { font-family: 'Libre Baskerville', Georgia, serif; color: #2C3E50; font-size: 24px; margin: 0 0 16px; }
+    p { font-size: 16px; line-height: 1.6; color: #3B2F2F; margin: 0 0 16px; }
+    .btn { display: inline-block; padding: 14px 28px; background: #CC8800; color: #FFFFFF; text-decoration: none; border-radius: 16px; font-weight: 600; font-size: 16px; }
+    .btn:hover { background: #A66E00; }
     .footer { text-align: center; margin-top: 32px; font-size: 13px; color: #9CA3AF; }
-    .footer a { color: #4A6670; }
+    .footer a { color: #2C3E50; }
     .divider { height: 1px; background: #F3F4F6; margin: 24px 0; }
   </style>
 </head>

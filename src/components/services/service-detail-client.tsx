@@ -47,7 +47,7 @@ export function ServiceDetailClient({
       <div className="border-t border-gray-100 pt-6 space-y-3">
         <button
           onClick={() => setIsBookingModalOpen(true)}
-          className="w-full px-4 py-3 bg-gradient-to-r from-[#F0917B] to-[#D96850] text-white rounded-2xl font-semibold hover:shadow-md transition-all"
+          className="w-full px-4 py-3 bg-gradient-to-r from-[#CC8800] to-[#A66E00] text-white rounded-2xl font-semibold hover:shadow-md transition-all"
         >
           Réserver ce service
         </button>
@@ -55,7 +55,7 @@ export function ServiceDetailClient({
           onClick={handleAddFavorite}
           className={`w-full px-4 py-3 rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 ${
             isFavorite
-              ? "bg-gradient-to-r from-[#F0917B] to-[#D96850] text-white"
+              ? "bg-gradient-to-r from-[#CC8800] to-[#A66E00] text-white"
               : "border border-gray-300 text-gray-700 hover:bg-gray-50"
           }`}
         >

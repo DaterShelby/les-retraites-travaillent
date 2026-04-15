@@ -36,12 +36,12 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 const categoryImages: Record<string, string> = {
-  'bricolage': 'https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=600&q=80',
-  'jardinage': 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80',
-  'cuisine': 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&q=80',
-  'garde-enfants': 'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=600&q=80',
-  'informatique': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80',
-  'conseil': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80',
+  'bricolage': '/images/mixboard/craftsmanship-community-1.jpg',
+  'jardinage': '/images/mixboard/hero-garden.jpg',
+  'cuisine': '/images/mixboard/social-connection-1.jpg',
+  'garde-enfants': '/images/mixboard/social-connection-2.jpg',
+  'informatique': '/images/mixboard/remote-collaboration-1.jpg',
+  'conseil': '/images/mixboard/workshop-mentoring-1.jpg',
 };
 
 export default function HomePage() {
@@ -84,13 +84,13 @@ export default function HomePage() {
 
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center pt-16 overflow-hidden">
-        {/* Warm gradient background instead of stock photo */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-800 via-primary to-primary-900" />
-        {/* Subtle pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "32px 32px" }} />
-        {/* Warm glow */}
-        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-secondary/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-accent/15 rounded-full blur-3xl" />
+        {/* Hero background image */}
+        <img src="/images/mixboard/hero-garden.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
+        {/* Dark overlay for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#2C3E50]/90 via-[#2C3E50]/70 to-[#2C3E50]/40" />
+        {/* Warm glow accents */}
+        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-accent/10 rounded-full blur-3xl" />
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -150,7 +150,7 @@ export default function HomePage() {
               <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-72 transform -rotate-3 hover:rotate-0 transition-all duration-500 hover:shadow-xl border border-white/50">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Michel" className="w-full h-full object-cover" />
+                    <img src="/images/mixboard/workshop-mentoring-2.jpg" alt="Michel" className="w-full h-full object-cover" />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900 text-sm">Michel R.</p>
@@ -169,7 +169,7 @@ export default function HomePage() {
               <div className="absolute top-40 left-0 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-72 transform rotate-3 hover:rotate-0 transition-all duration-500 hover:shadow-xl border border-white/50">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face" alt="Catherine" className="w-full h-full object-cover" />
+                    <img src="/images/mixboard/finance-home-office-2.jpg" alt="Catherine" className="w-full h-full object-cover" />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900 text-sm">Catherine B.</p>
@@ -188,7 +188,7 @@ export default function HomePage() {
               <div className="absolute bottom-4 right-12 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-72 transform -rotate-1 hover:rotate-0 transition-all duration-500 hover:shadow-xl border border-white/50">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="Pierre" className="w-full h-full object-cover" />
+                    <img src="/images/mixboard/executive-skyline.jpg" alt="Pierre" className="w-full h-full object-cover" />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900 text-sm">Pierre D.</p>
@@ -302,10 +302,10 @@ export default function HomePage() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {[
-              { title: 'Rénovation cuisine', expert: 'Michel R.', price: '75€/h', rating: 4.9, reviews: 47, image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&q=80' },
-              { title: 'Conseil en jardinage', expert: 'Pierre D.', price: '50€/h', rating: 4.8, reviews: 63, image: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=500&q=80' },
-              { title: "Cours d'informatique", expert: 'Catherine B.', price: '45€/h', rating: 5.0, reviews: 92, image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&q=80' },
-              { title: "Garde d'enfants", expert: 'Anne M.', price: '55€/h', rating: 4.9, reviews: 28, image: 'https://images.unsplash.com/photo-1587616211892-f743fcca64f9?w=500&q=80' },
+              { title: 'Rénovation cuisine', expert: 'Michel R.', price: '75€/h', rating: 4.9, reviews: 47, image: '/images/mixboard/craftsmanship-community-1.jpg' },
+              { title: 'Conseil en jardinage', expert: 'Pierre D.', price: '50€/h', rating: 4.8, reviews: 63, image: '/images/mixboard/hero-garden.jpg' },
+              { title: "Cours d'informatique", expert: 'Catherine B.', price: '45€/h', rating: 5.0, reviews: 92, image: '/images/mixboard/remote-collaboration-2.jpg' },
+              { title: "Garde d'enfants", expert: 'Anne M.', price: '55€/h', rating: 4.9, reviews: 28, image: '/images/mixboard/social-connection-2.jpg' },
             ].map((service, idx) => (
               <div key={idx} className="group rounded-3xl overflow-hidden bg-white border border-gray-100/80 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <div className="relative h-44 sm:h-48 overflow-hidden">
@@ -416,9 +416,9 @@ export default function HomePage() {
 
           <div className="grid sm:grid-cols-3 gap-5">
             {[
-              { quote: "J'ai retrouvé de la confiance en moi. Les missions me permettent de rester actif et utile.", name: 'Jacques M.', role: 'Retraité - Bricolage', image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&h=100&fit=crop&crop=face' },
-              { quote: "Les experts sont professionnels et fiables. Parfait pour mes projets de rénovation.", name: 'Sophie L.', role: 'Particulière', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face' },
-              { quote: "Une belle opportunité de compléter ma retraite tout en aidant la communauté.", name: 'Marie R.', role: 'Retraitée - Conseil', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face' },
+              { quote: "J'ai retrouvé de la confiance en moi. Les missions me permettent de rester actif et utile.", name: 'Jacques M.', role: 'Retraité - Bricolage', image: '/images/mixboard/workshop-mentoring-2.jpg' },
+              { quote: "Les experts sont professionnels et fiables. Parfait pour mes projets de rénovation.", name: 'Sophie L.', role: 'Particulière', image: '/images/mixboard/workshop-mentoring-1.jpg' },
+              { quote: "Une belle opportunité de compléter ma retraite tout en aidant la communauté.", name: 'Marie R.', role: 'Retraitée - Conseil', image: '/images/mixboard/wellness-yoga.jpg' },
             ].map((t, idx) => (
               <div key={idx} className="rounded-3xl bg-neutral-cream p-7 sm:p-8 border border-gray-100/50 hover:shadow-md transition-all duration-300">
                 <div className="flex items-center gap-3 mb-5">
@@ -446,8 +446,8 @@ export default function HomePage() {
 
       {/* ENTERPRISE CTA */}
       <section className="relative py-16 sm:py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-800 via-primary to-primary-900" />
-        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-secondary/15 rounded-full blur-3xl" />
+        <img src="/images/mixboard/learning-library.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
+        <div className="absolute inset-0 bg-[#2C3E50]/85" />
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-2 mb-8 border border-white/10">

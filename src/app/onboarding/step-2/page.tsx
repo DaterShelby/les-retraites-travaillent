@@ -148,10 +148,10 @@ export default function Step2Page() {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h2 className="font-serif text-3xl font-bold text-[#4A6670]">
+        <h2 className="font-serif text-3xl font-bold text-[#2C3E50]">
           {isCompany ? 'Informations de votre entreprise' : 'Vos informations personnelles'}
         </h2>
-        <p className="text-lg text-[#2F3D42]/80">
+        <p className="text-lg text-[#3B2F2F]/80">
           {isCompany
             ? 'Entrez les détails de votre entreprise'
             : 'Nous aurions besoin de quelques informations pour mieux vous connaître'}
@@ -176,7 +176,7 @@ export default function Step2Page() {
           <>
             {/* Personal Info Fields */}
             <div className="space-y-2">
-              <label htmlFor="firstName" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="firstName" className="block text-sm font-medium text-[#2C3E50]">
                 Prénom *
               </label>
               <Input
@@ -185,7 +185,7 @@ export default function Step2Page() {
                 value={formData.firstName}
                 onChange={handleInputChange}
                 placeholder="Jean"
-                className="h-12 border-[#F0917B]/30"
+                className="h-12 border-[#CC8800]/30"
               />
               {errors.firstName && (
                 <p className="text-sm text-red-600">{errors.firstName}</p>
@@ -193,7 +193,7 @@ export default function Step2Page() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="lastName" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="lastName" className="block text-sm font-medium text-[#2C3E50]">
                 Nom (optionnel)
               </label>
               <Input
@@ -202,7 +202,7 @@ export default function Step2Page() {
                 value={formData.lastName}
                 onChange={handleInputChange}
                 placeholder="Dupont"
-                className="h-12 border-[#F0917B]/30"
+                className="h-12 border-[#CC8800]/30"
               />
               {errors.lastName && (
                 <p className="text-sm text-red-600">{errors.lastName}</p>
@@ -210,7 +210,7 @@ export default function Step2Page() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="city" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="city" className="block text-sm font-medium text-[#2C3E50]">
                 Ville *
               </label>
               <Input
@@ -219,7 +219,7 @@ export default function Step2Page() {
                 value={formData.city}
                 onChange={handleInputChange}
                 placeholder="Paris"
-                className="h-12 border-[#F0917B]/30"
+                className="h-12 border-[#CC8800]/30"
               />
               {errors.city && (
                 <p className="text-sm text-red-600">{errors.city}</p>
@@ -227,7 +227,7 @@ export default function Step2Page() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="phone" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="phone" className="block text-sm font-medium text-[#2C3E50]">
                 Téléphone (optionnel)
               </label>
               <Input
@@ -237,12 +237,12 @@ export default function Step2Page() {
                 value={formData.phone}
                 onChange={handleInputChange}
                 placeholder="+33 6 12 34 56 78"
-                className="h-12 border-[#F0917B]/30"
+                className="h-12 border-[#CC8800]/30"
               />
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="bio" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="bio" className="block text-sm font-medium text-[#2C3E50]">
                 À propos (optionnel)
               </label>
               <textarea
@@ -251,10 +251,10 @@ export default function Step2Page() {
                 value={formData.bio}
                 onChange={handleInputChange}
                 placeholder="Parlez-nous un peu de vous..."
-                className="h-24 w-full rounded-lg border border-[#F0917B]/30 bg-white p-3 text-[#2F3D42] placeholder:text-[#2F3D42]/50 focus:border-[#F0917B] focus:outline-none focus:ring-2 focus:ring-[#F0917B]/20"
+                className="h-24 w-full rounded-lg border border-[#CC8800]/30 bg-white p-3 text-[#3B2F2F] placeholder:text-[#3B2F2F]/50 focus:border-[#CC8800] focus:outline-none focus:ring-2 focus:ring-[#CC8800]/20"
                 maxLength={500}
               />
-              <p className="text-xs text-[#2F3D42]/60">
+              <p className="text-xs text-[#3B2F2F]/60">
                 {formData.bio.length}/500 caractères
               </p>
             </div>
@@ -263,7 +263,7 @@ export default function Step2Page() {
           <>
             {/* Company Info Fields */}
             <div className="space-y-2">
-              <label htmlFor="companyName" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="companyName" className="block text-sm font-medium text-[#2C3E50]">
                 Nom de l'entreprise *
               </label>
               <Input
@@ -272,7 +272,7 @@ export default function Step2Page() {
                 value={formData.companyName}
                 onChange={handleInputChange}
                 placeholder="Tech Solutions SARL"
-                className="h-12 border-[#F0917B]/30"
+                className="h-12 border-[#CC8800]/30"
               />
               {errors.companyName && (
                 <p className="text-sm text-red-600">{errors.companyName}</p>
@@ -280,7 +280,7 @@ export default function Step2Page() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="siret" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="siret" className="block text-sm font-medium text-[#2C3E50]">
                 SIRET *
               </label>
               <Input
@@ -290,7 +290,7 @@ export default function Step2Page() {
                 onChange={handleInputChange}
                 placeholder="12345678901234"
                 maxLength={14}
-                className="h-12 border-[#F0917B]/30 font-mono"
+                className="h-12 border-[#CC8800]/30 font-mono"
               />
               {errors.siret && (
                 <p className="text-sm text-red-600">{errors.siret}</p>
@@ -298,14 +298,14 @@ export default function Step2Page() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="sector" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="sector" className="block text-sm font-medium text-[#2C3E50]">
                 Secteur d'activité *
               </label>
               <Select
                 value={formData.sector}
                 onValueChange={(value) => handleSelectChange('sector', value)}
               >
-                <SelectTrigger className="h-12 border-[#F0917B]/30">
+                <SelectTrigger className="h-12 border-[#CC8800]/30">
                   <SelectValue placeholder="Sélectionnez un secteur" />
                 </SelectTrigger>
                 <SelectContent>
@@ -322,14 +322,14 @@ export default function Step2Page() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="companySize" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="companySize" className="block text-sm font-medium text-[#2C3E50]">
                 Taille de l'entreprise *
               </label>
               <Select
                 value={formData.companySize}
                 onValueChange={(value) => handleSelectChange('companySize', value)}
               >
-                <SelectTrigger className="h-12 border-[#F0917B]/30">
+                <SelectTrigger className="h-12 border-[#CC8800]/30">
                   <SelectValue placeholder="Sélectionnez la taille" />
                 </SelectTrigger>
                 <SelectContent>
@@ -353,7 +353,7 @@ export default function Step2Page() {
           onClick={handleContinue}
           disabled={isLoading || savedSuccessfully}
           size="lg"
-          className="gap-2 bg-[#4A6670] hover:bg-[#4A6670]/90 text-white disabled:opacity-50"
+          className="gap-2 bg-[#2C3E50] hover:bg-[#2C3E50]/90 text-white disabled:opacity-50"
         >
           {isLoading ? 'Sauvegarde en cours...' : (savedSuccessfully ? 'Continuer...' : 'Continuer')}
           {!isLoading && !savedSuccessfully && <ChevronRight className="h-5 w-5" />}

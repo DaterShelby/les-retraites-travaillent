@@ -93,10 +93,10 @@ export default function Step4Page() {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h2 className="font-serif text-3xl font-bold text-[#4A6670]">
+        <h2 className="font-serif text-3xl font-bold text-[#2C3E50]">
           {isCompany ? 'Dernières informations' : 'Vos préférences'}
         </h2>
-        <p className="text-lg text-[#2F3D42]/80">
+        <p className="text-lg text-[#3B2F2F]/80">
           {isCompany
             ? 'Presque fini ! Finalisez votre profil'
             : 'Parlez-nous de vos disponibilités et vos attentes'}
@@ -114,7 +114,7 @@ export default function Step4Page() {
           <>
             {/* Days of Week Selection */}
             <div className="space-y-3">
-              <label className="block text-sm font-medium text-[#4A6670]">
+              <label className="block text-sm font-medium text-[#2C3E50]">
                 Jours de disponibilité *
               </label>
               <div className="grid grid-cols-4 gap-2 sm:grid-cols-7">
@@ -124,8 +124,8 @@ export default function Step4Page() {
                     onClick={() => toggleDay(day.id)}
                     className={`h-12 rounded-lg border-2 font-medium transition-all text-xs sm:text-sm ${
                       availableDays.includes(day.id)
-                        ? 'border-[#F0917B] bg-[#F0917B]/10 text-[#F0917B]'
-                        : 'border-[#F0917B]/30 bg-white text-[#2F3D42] hover:border-[#F0917B]/60'
+                        ? 'border-[#CC8800] bg-[#CC8800]/10 text-[#CC8800]'
+                        : 'border-[#CC8800]/30 bg-white text-[#3B2F2F] hover:border-[#CC8800]/60'
                     }`}
                   >
                     <span className="hidden sm:inline">{day.label}</span>
@@ -137,7 +137,7 @@ export default function Step4Page() {
 
             {/* Hourly Rate */}
             <div className="space-y-2">
-              <label htmlFor="hourlyRate" className="block text-sm font-medium text-[#4A6670]">
+              <label htmlFor="hourlyRate" className="block text-sm font-medium text-[#2C3E50]">
                 Tarif horaire (€) *
               </label>
               <div className="relative">
@@ -149,13 +149,13 @@ export default function Step4Page() {
                   value={hourlyRate}
                   onChange={(e) => setHourlyRate(e.target.value)}
                   placeholder="25"
-                  className="h-12 border-[#F0917B]/30 pr-12"
+                  className="h-12 border-[#CC8800]/30 pr-12"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#2F3D42]/60">
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#3B2F2F]/60">
                   €/h
                 </span>
               </div>
-              <p className="text-xs text-[#2F3D42]/60">
+              <p className="text-xs text-[#3B2F2F]/60">
                 Minimum recommandé: 15€/h
               </p>
             </div>
@@ -165,7 +165,7 @@ export default function Step4Page() {
         {/* Travel Radius (pour retraité ET client) */}
         {(isRetired || store.role === 'client') && (
           <div className="space-y-3">
-            <label htmlFor="travelRadius" className="block text-sm font-medium text-[#4A6670]">
+            <label htmlFor="travelRadius" className="block text-sm font-medium text-[#2C3E50]">
               Rayon géographique: <strong>{travelRadius} km</strong>
             </label>
             <input
@@ -176,9 +176,9 @@ export default function Step4Page() {
               step="1"
               value={travelRadius}
               onChange={(e) => setTravelRadius(parseInt(e.target.value))}
-              className="h-2 w-full cursor-pointer rounded-lg bg-[#F0917B]/20 accent-[#F0917B]"
+              className="h-2 w-full cursor-pointer rounded-lg bg-[#CC8800]/20 accent-[#CC8800]"
             />
-            <div className="flex justify-between text-xs text-[#2F3D42]/60">
+            <div className="flex justify-between text-xs text-[#3B2F2F]/60">
               <span>1 km</span>
               <span>50 km</span>
               <span>100 km</span>
@@ -187,8 +187,8 @@ export default function Step4Page() {
         )}
 
         {isCompany && (
-          <div className="rounded-lg border border-[#8FBFAD]/30 bg-[#8FBFAD]/5 p-4">
-            <p className="text-sm text-[#2F3D42]">
+          <div className="rounded-lg border border-[#38761D]/30 bg-[#38761D]/5 p-4">
+            <p className="text-sm text-[#3B2F2F]">
               ✓ Votre profil professionnel est presque prêt ! Vous pourrez ajouter des offres d'emploi après validation.
             </p>
           </div>
@@ -200,7 +200,7 @@ export default function Step4Page() {
           onClick={handleFinish}
           disabled={isLoading}
           size="lg"
-          className="gap-2 bg-[#4A6670] hover:bg-[#4A6670]/90 text-white"
+          className="gap-2 bg-[#2C3E50] hover:bg-[#2C3E50]/90 text-white"
         >
           {isLoading ? (
             <>

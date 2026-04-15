@@ -4,8 +4,8 @@
   "description": "Plateforme de services entre retraités actifs et particuliers/entreprises",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAF7F5",
-  "theme_color": "#4A6670",
+  "background_color": "#F5F2EE",
+  "theme_color": "#2C3E50",
   "orientation": "portrait-primary",
   "lang": "fr",
   "icons": [

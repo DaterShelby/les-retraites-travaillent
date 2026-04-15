@@ -82,31 +82,31 @@ export default function EarningsPage() {
                   width="200"
                   height="130"
                   rx="20"
-                  fill="#F0917B"
+                  fill="#CC8800"
                   opacity="0.15"
                 />
                 <path
                   d="M70 100h160a10 10 0 0110 10v90a10 10 0 01-10 10H70a10 10 0 01-10-10v-90a10 10 0 0110-10z"
-                  stroke="#F0917B"
+                  stroke="#CC8800"
                   strokeWidth="2"
                   fill="none"
                 />
-                <rect x="180" y="110" width="40" height="30" rx="4" fill="#F0917B" />
-                <line x1="70" y1="135" x2="170" y2="135" stroke="#8FBFAD" strokeWidth="2" />
+                <rect x="180" y="110" width="40" height="30" rx="4" fill="#CC8800" />
+                <line x1="70" y1="135" x2="170" y2="135" stroke="#38761D" strokeWidth="2" />
 
                 {/* Coins/Money elements */}
-                <circle cx="60" cy="50" r="12" fill="#8FBFAD" opacity="0.3" />
-                <circle cx="100" cy="40" r="16" fill="#F0917B" opacity="0.2" />
-                <circle cx="200" cy="35" r="14" fill="#8FBFAD" opacity="0.25" />
+                <circle cx="60" cy="50" r="12" fill="#38761D" opacity="0.3" />
+                <circle cx="100" cy="40" r="16" fill="#CC8800" opacity="0.2" />
+                <circle cx="200" cy="35" r="14" fill="#38761D" opacity="0.25" />
 
                 {/* Sparkles */}
                 <g opacity="0.6">
-                  <circle cx="150" cy="30" r="2" fill="#F0917B" />
-                  <path d="M148 30h4M150 28v4" stroke="#F0917B" strokeWidth="1" />
+                  <circle cx="150" cy="30" r="2" fill="#CC8800" />
+                  <path d="M148 30h4M150 28v4" stroke="#CC8800" strokeWidth="1" />
                 </g>
                 <g opacity="0.5">
-                  <circle cx="230" cy="70" r="2" fill="#8FBFAD" />
-                  <path d="M228 70h4M230 68v4" stroke="#8FBFAD" strokeWidth="1" />
+                  <circle cx="230" cy="70" r="2" fill="#38761D" />
+                  <path d="M228 70h4M230 68v4" stroke="#38761D" strokeWidth="1" />
                 </g>
               </svg>
             </div>

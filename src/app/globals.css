@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 20 33% 97%;
-    --foreground: 197 17% 22%;
+    --background: 30 23% 95%;
+    --foreground: 0 11% 21%;
     --card: 0 0% 100%;
-    --card-foreground: 197 17% 22%;
+    --card-foreground: 0 11% 21%;
     --popover: 0 0% 100%;
-    --popover-foreground: 197 17% 22%;
-    --primary: 195 19% 36%;
+    --popover-foreground: 0 11% 21%;
+    --primary: 210 29% 24%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 11 79% 71%;
+    --secondary: 38 100% 40%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 20 15% 93%;
-    --muted-foreground: 195 12% 40%;
-    --accent: 157 27% 65%;
+    --muted: 30 12% 91%;
+    --muted-foreground: 210 15% 35%;
+    --accent: 105 62% 29%;
     --accent-foreground: 0 0% 100%;
     --destructive: 355 75% 56%;
     --destructive-foreground: 0 0% 100%;
-    --border: 20 12% 90%;
-    --input: 20 12% 90%;
-    --ring: 195 19% 36%;
+    --border: 30 10% 88%;
+    --input: 30 10% 88%;
+    --ring: 210 29% 24%;
     --radius: 16px;
   }
 
@@ -38,8 +38,8 @@
 
   body {
     font-family: var(--font-source-sans), system-ui, sans-serif;
-    color: #2F3D42;
-    background: #FAF7F5;
+    color: #3B2F2F;
+    background: #F5F2EE;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     @apply text-base;
@@ -50,12 +50,12 @@
   h3,
   h4 {
     @apply font-serif;
-    color: #4A6670;
+    color: #2C3E50;
   }
 
   /* Focus visible for all interactive elements */
   :focus-visible {
-    @apply outline-none ring-2 ring-primary/20 ring-offset-2 ring-offset-white;
+    @apply outline-none ring-2 ring-[#2C3E50]/20 ring-offset-2 ring-offset-white;
   }
 
   /* Minimum touch targets of 48px */
@@ -91,8 +91,8 @@
 
   /* Selection styling */
   ::selection {
-    background-color: rgba(224, 122, 95, 0.2);
-    color: #2F3D42;
+    background-color: rgba(204, 136, 0, 0.2);
+    color: #3B2F2F;
   }
 }
 

@@ -34,7 +34,7 @@ function createMarkerIcon(price: number | null | undefined): L.DivIcon {
   return L.divIcon({
     className: "custom-marker",
     html: `<div style="
-      background: #4A6670;
+      background: #2C3E50;
       color: white;
       padding: 6px 12px;
       border-radius: 20px;
@@ -56,7 +56,7 @@ function createActiveMarkerIcon(price: number | null | undefined): L.DivIcon {
   return L.divIcon({
     className: "custom-marker-active",
     html: `<div style="
-      background: #F0917B;
+      background: #CC8800;
       color: white;
       padding: 8px 14px;
       border-radius: 20px;
@@ -130,14 +130,14 @@ export function ServiceMap({ services, onServiceClick }: ServiceMapProps) {
 
       const popupContent = `
         <div style="min-width: 200px; font-family: 'Source Sans Pro', sans-serif;">
-          <div style="font-weight: 600; font-size: 15px; color: #2F3D42; margin-bottom: 4px;">
+          <div style="font-weight: 600; font-size: 15px; color: #3B2F2F; margin-bottom: 4px;">
             ${service.title}
           </div>
           <div style="color: #6B7280; font-size: 13px; margin-bottom: 6px;">
             ${service.provider?.first_name || "Prestataire"} · ${service.city || ""}
           </div>
           <div style="display: flex; align-items: center; justify-content: space-between;">
-            <span style="font-weight: 700; color: #F0917B; font-size: 15px;">
+            <span style="font-weight: 700; color: #CC8800; font-size: 15px;">
               ${formatPrice(service.price_amount)}${service.price_type === "hourly" ? "/h" : ""}
             </span>
             ${service.provider?.average_rating ? `<span style="color: #F59E0B; font-size: 13px;">★ ${service.provider.average_rating.toFixed(1)}</span>` : ""}

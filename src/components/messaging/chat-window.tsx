@@ -290,7 +290,7 @@ export function ChatWindow({
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
       <div className="border-b border-gray-100/50 px-6 py-4">
-        <h2 className="font-serif font-bold text-lg text-[#4A6670]">
+        <h2 className="font-serif font-bold text-lg text-[#2C3E50]">
           {participantName}
         </h2>
         <p className="text-xs text-gray-500 mt-0.5">Conversation en direct</p>
@@ -304,7 +304,7 @@ export function ChatWindow({
         {initialLoading ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <div className="w-8 h-8 border-3 border-gray-200 border-t-[#F0917B] rounded-full animate-spin mx-auto mb-2" />
+              <div className="w-8 h-8 border-3 border-gray-200 border-t-[#CC8800] rounded-full animate-spin mx-auto mb-2" />
               <p className="text-sm text-gray-600">Chargement des messages...</p>
             </div>
           </div>
@@ -342,9 +342,9 @@ export function ChatWindow({
                       className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors text-sm text-gray-700 max-w-xs"
                     >
                       {isFileImage(message.fileName) ? (
-                        <ImageIcon className="w-4 h-4 text-[#8FBFAD] flex-shrink-0" />
+                        <ImageIcon className="w-4 h-4 text-[#38761D] flex-shrink-0" />
                       ) : (
-                        <FileText className="w-4 h-4 text-[#4A6670] flex-shrink-0" />
+                        <FileText className="w-4 h-4 text-[#2C3E50] flex-shrink-0" />
                       )}
                       <span className="truncate">{message.fileName || "Fichier"}</span>
                     </a>
@@ -387,9 +387,9 @@ export function ChatWindow({
         <div className="mx-6 mb-2 p-3 rounded-2xl bg-gray-50 border border-gray-200">
           <div className="flex items-center gap-3">
             {isFileImage(pendingFile.name) ? (
-              <ImageIcon className="w-5 h-5 text-[#8FBFAD] flex-shrink-0" />
+              <ImageIcon className="w-5 h-5 text-[#38761D] flex-shrink-0" />
             ) : (
-              <FileText className="w-5 h-5 text-[#4A6670] flex-shrink-0" />
+              <FileText className="w-5 h-5 text-[#2C3E50] flex-shrink-0" />
             )}
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-700 truncate">{pendingFile.name}</p>
@@ -425,7 +425,7 @@ export function ChatWindow({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="flex-shrink-0 w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#4A6670] hover:border-[#4A6670]/30 transition-all"
+            className="flex-shrink-0 w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-[#2C3E50] hover:border-[#2C3E50]/30 transition-all"
             disabled={uploadingFile}
           >
             <Paperclip className="w-4 h-4" />
@@ -443,13 +443,13 @@ export function ChatWindow({
             value={newMessage}
             onChange={(e) => handleMessageChange(e.target.value)}
             placeholder="Écrivez votre message..."
-            className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#F0917B] focus:outline-none focus:ring-1 focus:ring-[#F0917B]/20 text-sm bg-white transition-all"
+            className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#CC8800] focus:outline-none focus:ring-1 focus:ring-[#CC8800]/20 text-sm bg-white transition-all"
             disabled={loading || uploadingFile}
           />
           <Button
             type="submit"
             disabled={loading || uploadingFile || (!newMessage.trim() && !pendingFile)}
-            className="rounded-2xl bg-[#F0917B] hover:bg-[#F0917B]/90 text-white shadow-sm"
+            className="rounded-2xl bg-[#CC8800] hover:bg-[#CC8800]/90 text-white shadow-sm"
             size="icon"
           >
             <Send className="w-5 h-5" />
