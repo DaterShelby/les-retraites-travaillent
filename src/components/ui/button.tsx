@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap font-sans font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 min-h-[48px]",
+  "inline-flex items-center justify-center whitespace-nowrap font-sans font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 min-h-[48px] hover:scale-[1.02] active:scale-[0.98]",
   {
     variants: {
       variant: {
@@ -14,13 +14,13 @@ const buttonVariants = cva(
         outline: "border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-white",
         ghost: "text-primary hover:bg-primary-50",
         destructive: "bg-error text-white hover:bg-red-700",
-        link: "text-primary underline-offset-4 hover:underline min-h-0",
+        link: "text-primary underline-offset-4 hover:underline min-h-0 hover:scale-100 active:scale-100",
       },
       size: {
-        default: "h-12 px-6 py-3 text-body rounded-sm",
-        sm: "h-10 px-4 py-2 text-body-sm rounded-sm",
-        lg: "h-14 px-8 py-4 text-body-lg rounded-sm",
-        icon: "h-12 w-12 rounded-sm",
+        default: "h-12 px-6 text-body rounded-full",
+        sm: "h-10 px-5 text-body-sm rounded-full",
+        lg: "h-14 px-8 text-body-lg rounded-full",
+        icon: "h-12 w-12 rounded-full",
       },
     },
     defaultVariants: {

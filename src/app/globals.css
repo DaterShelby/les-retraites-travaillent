@@ -23,7 +23,11 @@
     --border: 48 20% 82%;
     --input: 48 20% 82%;
     --ring: 202 57% 25%;
-    --radius: 4px;
+    --radius: 12px;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 }
 
@@ -33,9 +37,12 @@
   }
 
   body {
-    @apply bg-neutral-cream text-neutral-text font-sans text-body;
+    font-family: var(--font-source-sans), system-ui, sans-serif;
+    color: #3D405B;
+    background: #FAFAFA;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    @apply text-body;
   }
 
   h1,
@@ -45,12 +52,12 @@
     @apply font-serif text-primary;
   }
 
-  /* Focus visible pour TOUS les éléments interactifs */
+  /* Focus visible for all interactive elements */
   :focus-visible {
     @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-neutral-cream;
   }
 
-  /* Touch targets minimum 48px */
+  /* Minimum touch targets of 48px */
   button,
   a,
   [role="button"],
@@ -58,6 +65,17 @@
   select,
   textarea {
     min-height: 48px;
+  }
+
+  /* Smooth transitions on interactive elements */
+  button,
+  a,
+  [role="button"],
+  input,
+  select,
+  textarea,
+  [role="link"] {
+    @apply transition-all duration-200 ease-out;
   }
 
   /* Skip to content link */
@@ -69,10 +87,16 @@
   .skip-link:focus {
     @apply top-4;
   }
+
+  /* Selection styling */
+  ::selection {
+    background-color: rgba(27, 73, 101, 0.2);
+    color: #3D405B;
+  }
 }
 
 @layer utilities {
-  /* Font size adaptatif pour les seniors */
+  /* Adaptive font sizes */
   .font-size-normal {
     font-size: 1rem;
   }
@@ -83,5 +107,15 @@
 
   .font-size-xlarge {
     font-size: 1.25rem;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    @apply backdrop-blur-md bg-white bg-opacity-80 border border-white border-opacity-20;
+  }
+
+  /* Gradient text effect */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
 }

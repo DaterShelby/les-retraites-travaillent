@@ -1,114 +1,177 @@
 "use client";
 
 import Link from "next/link";
-import { Star, MapPin, BadgeCheck } from "lucide-react";
-import type { Database } from "@/types/database";
+import Image from "next/image";
+import { Star, MapPin, Shield, Award } from "lucide-react";
 
 interface ServiceCardProps {
-  service: Database["public"]["Tables"]["services"]["Row"] & {
+  service: {
+    id: string;
+    title: string;
+    description?: string;
+    category?: string;
+    price_type?: string;
+    price_amount?: number | null;
+    city?: string;
+    department?: string;
+    photos?: string[];
     provider?: {
       first_name: string;
-      average_rating: number;
-      is_verified: boolean;
-      is_super_pro: boolean;
-      avatar_url: string | null;
+      avatar_url?: string | null;
+      average_rating?: number;
+      total_reviews?: number;
+      is_verified?: boolean;
+      is_super_pro?: boolean;
     };
   };
 }
 
 export function ServiceCard({ service }: ServiceCardProps) {
-  const displayProvider = service.provider || {
+  const provider = service.provider || {
     first_name: "Prestataire",
     average_rating: 0,
+    total_reviews: 0,
     is_verified: false,
     is_super_pro: false,
     avatar_url: null,
   };
 
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const rating = provider.average_rating || 0;
+  const reviews = provider.total_reviews || 0;
+
   return (
     <Link href={`/services/${service.id}`}>
-      <div className="h-full flex flex-col rounded-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-200 bg-white">
-        {/* Image placeholder */}
-        <div className="relative w-full h-48 bg-gradient-to-br from-primary-100 to-accent-100 flex items-center justify-center overflow-hidden">
-          <span className="text-white text-sm font-medium">
-            {service.photos?.[0] || "Photo"}
-          </span>
-          {displayProvider.is_verified && (
-            <div className="absolute top-2 right-2 bg-white rounded-full p-1">
-              <BadgeCheck className="w-5 h-5 text-accent" />
+      <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all duration-300">
+        {/* Photo Area */}
+        <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden flex items-center justify-center">
+          {service.photos && service.photos.length > 0 ? (
+            <Image
+              src={service.photos[0]}
+              alt={service.title}
+              fill
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
+              <div className="text-center">
+                <div className="w-12 h-12 rounded-full bg-gray-300 mx-auto mb-2 flex items-center justify-center text-white font-semibold text-sm">
+                  {getInitials(service.title || "Service")}
+                </div>
+                <span className="text-xs text-gray-500">Service</span>
+              </div>
+            </div>
+          )}
+
+          {/* Verified Badge */}
+          {provider.is_verified && (
+            <div className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md flex items-center gap-1">
+              <Shield className="w-4 h-4 text-green-600" />
+              <span className="text-xs font-semibold text-green-600">
+                Vérifié
+              </span>
+            </div>
+          )}
+
+          {/* Super Pro Badge */}
+          {provider.is_super_pro && (
+            <div className="absolute top-3 right-3 bg-amber-400 text-white rounded-full p-2 shadow-md flex items-center gap-1">
+              <Award className="w-4 h-4" />
+              <span className="text-xs font-semibold">Super Pro</span>
             </div>
           )}
         </div>
 
-        {/* Content */}
-        <div className="flex-1 flex flex-col p-4">
-          {/* Provider info */}
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-gray-300 flex-shrink-0 flex items-center justify-center overflow-hidden">
-              {displayProvider.avatar_url ? (
-                <img
-                  src={displayProvider.avatar_url}
-                  alt={displayProvider.first_name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <span className="text-xs font-semibold text-gray-600">
-                  {displayProvider.first_name.charAt(0)}
-                </span>
-              )}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-neutral-text truncate">
-                {displayProvider.first_name}
-              </p>
-              <div className="flex items-center gap-1">
-                <Star className="w-3.5 h-3.5 fill-secondary text-secondary" />
-                <span className="text-xs font-medium text-neutral-text">
-                  {displayProvider.average_rating.toFixed(1)}
-                </span>
-              </div>
-            </div>
-            {displayProvider.is_super_pro && (
-              <span className="inline-block px-2 py-0.5 bg-secondary text-white text-xs font-semibold rounded-full whitespace-nowrap flex-shrink-0">
-                Super Pro
+        {/* Body Section */}
+        <div className="flex-1 flex flex-col p-5 justify-between">
+          {/* Category Tag */}
+          {service.category && (
+            <div className="mb-3">
+              <span className="inline-block rounded-full bg-blue-50 text-blue-700 px-3 py-1 text-xs font-medium">
+                {service.category}
               </span>
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* Service info */}
-          <h3 className="font-serif font-bold text-neutral-text mb-2 line-clamp-2 text-sm">
+          {/* Title */}
+          <h3 className="font-serif text-lg font-bold text-gray-900 line-clamp-2 mb-2">
             {service.title}
           </h3>
 
-          <div className="flex items-center gap-2 text-xs text-gray-600 mb-3">
-            <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-            <span>{service.city}</span>
-          </div>
+          {/* Location */}
+          {service.city && (
+            <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-4">
+              <MapPin className="w-4 h-4 flex-shrink-0" />
+              <span>{service.city}</span>
+            </div>
+          )}
 
-          {/* Category */}
-          <div className="mb-3">
-            <span className="inline-block px-2 py-1 bg-accent-50 text-accent text-xs font-medium rounded-sm">
-              {service.category}
-            </span>
-          </div>
-
-          {/* Price - spacer to bottom */}
-          <div className="mt-auto pt-3 border-t border-gray-100">
-            <div className="flex items-baseline justify-between">
-              <span className="text-xs text-gray-600">
-                {service.price_type === "hourly"
-                  ? "Tarif horaire"
-                  : service.price_type === "fixed"
-                    ? "Tarif fixe"
-                    : "À négocier"}
-              </span>
-              {service.price_amount && (
-                <span className="text-lg font-bold text-primary">
+          {/* Bottom Row - Price and Rating */}
+          <div className="flex items-center justify-between mb-4 pt-3 border-t border-gray-100">
+            {/* Price */}
+            {service.price_amount !== null && service.price_amount !== undefined ? (
+              <div>
+                <span className="text-lg font-bold text-gray-900">
                   {service.price_amount}€
                 </span>
-              )}
-            </div>
+                {service.price_type === "hourly" && (
+                  <span className="text-xs text-gray-500 ml-1">/h</span>
+                )}
+              </div>
+            ) : (
+              <span className="text-sm text-gray-500">À négocier</span>
+            )}
+
+            {/* Rating */}
+            {rating > 0 ? (
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                <span className="text-sm font-semibold text-gray-900">
+                  {rating.toFixed(1)}
+                </span>
+                {reviews > 0 && (
+                  <span className="text-xs text-gray-500">({reviews})</span>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 text-gray-300" />
+                <span className="text-sm text-gray-500">Nouveau</span>
+              </div>
+            )}
           </div>
+
+          {/* Provider Mini Row */}
+          {provider && (
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                {provider.avatar_url ? (
+                  <Image
+                    src={provider.avatar_url}
+                    alt={provider.first_name}
+                    width={32}
+                    height={32}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span className="text-xs font-semibold text-gray-600">
+                    {getInitials(provider.first_name)}
+                  </span>
+                )}
+              </div>
+              <span className="text-sm text-gray-700 truncate">
+                {provider.first_name}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </Link>
