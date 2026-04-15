@@ -53,13 +53,13 @@ const categoryImages: Record<string, string> = {
   'conseil': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80',
 };
 
-const categoryImageMap: Record<number, string> = {
-  1: categoryImages['bricolage'],
-  2: categoryImages['jardinage'],
-  3: categoryImages['cuisine'],
-  4: categoryImages['garde'],
-  5: categoryImages['informatique'],
-  6: categoryImages['conseil'],
+const categoryImageMap: Record<string, string> = {
+  'bricolage': categoryImages['bricolage'],
+  'jardinage': categoryImages['jardinage'],
+  'cuisine': categoryImages['cuisine'],
+  'garde-enfants': categoryImages['garde'],
+  'informatique': categoryImages['informatique'],
+  'conseil': categoryImages['conseil'],
 };
 
 export default function HomePage() {
