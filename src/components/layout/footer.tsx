@@ -1,16 +1,97 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone, ArrowRight, Check } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus("success");
+        setMessage(data.message || "Merci !");
+        setEmail("");
+      } else {
+        setStatus("error");
+        setMessage(data.error || "Erreur");
+      }
+    } catch {
+      setStatus("error");
+      setMessage("Erreur de connexion");
+    }
+  };
 
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-16">
+    <footer className="bg-[#2F3D42] text-gray-300 mt-16">
+      {/* Newsletter Banner */}
+      <div className="bg-[#4A6670]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h3 className="text-white font-serif text-xl font-bold mb-1">
+                Restez informé(e)
+              </h3>
+              <p className="text-white/70 text-sm">
+                Recevez nos conseils, nouveaux services et actualités chaque semaine.
+              </p>
+            </div>
+            <form onSubmit={handleNewsletterSubmit} className="flex gap-2 w-full md:w-auto">
+              <div className="relative flex-1 md:w-72">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (status !== "idle") setStatus("idle");
+                  }}
+                  placeholder="Votre adresse email"
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/30 text-sm"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="px-5 py-3 rounded-2xl bg-[#F0917B] text-white font-semibold hover:bg-[#D96850] transition-all flex items-center gap-2 text-sm disabled:opacity-50"
+              >
+                {status === "success" ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <ArrowRight className="w-4 h-4" />
+                )}
+                <span className="hidden sm:inline">
+                  {status === "loading" ? "..." : status === "success" ? "Inscrit !" : "S'inscrire"}
+                </span>
+              </button>
+            </form>
+          </div>
+          {message && (
+            <p className={`text-sm mt-3 ${status === "error" ? "text-red-300" : "text-white/80"}`}>
+              {message}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Main Footer */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {/* About */}
           <div>
             <h3 className="text-white font-serif text-lg font-bold mb-4">
               Les Retraités Travaillent
@@ -20,7 +101,6 @@ export function Footer() {
             </p>
           </div>
 
-          {/* Services */}
           <div>
             <h4 className="text-white font-semibold text-base mb-4">Services</h4>
             <ul className="space-y-2 text-sm">
@@ -30,7 +110,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/services/browse" className="text-gray-400 hover:text-white transition-colors">
+                <Link href="/services" className="text-gray-400 hover:text-white transition-colors">
                   Parcourir les offres
                 </Link>
               </li>
@@ -47,85 +127,71 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* About Company */}
           <div>
             <h4 className="text-white font-semibold text-base mb-4">À propos</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
-                  Notre histoire
+                <Link href="/comment-ca-marche" className="text-gray-400 hover:text-white transition-colors">
+                  Comment ça marche
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-gray-400 hover:text-white transition-colors">
-                  Blog
+                <Link href="/legal/mentions-legales" className="text-gray-400 hover:text-white transition-colors">
+                  Mentions légales
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-gray-400 hover:text-white transition-colors">
-                  FAQ
+                <Link href="/legal/cgu" className="text-gray-400 hover:text-white transition-colors">
+                  CGU
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
-                  Nous contacter
+                <Link href="/legal/confidentialite" className="text-gray-400 hover:text-white transition-colors">
+                  Confidentialité
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Contact */}
           <div>
             <h4 className="text-white font-semibold text-base mb-4">Contact</h4>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2">
-                <Mail className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                <Mail className="w-5 h-5 text-[#8FBFAD] flex-shrink-0 mt-0.5" />
                 <a href="mailto:contact@lesretraiteestravaillent.fr" className="text-gray-400 hover:text-white transition-colors">
                   contact@lesretraiteestravaillent.fr
                 </a>
               </div>
               <div className="flex items-start gap-2">
-                <Phone className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                <Phone className="w-5 h-5 text-[#8FBFAD] flex-shrink-0 mt-0.5" />
                 <a href="tel:+33123456789" className="text-gray-400 hover:text-white transition-colors">
                   +33 (0)1 23 45 67 89
                 </a>
               </div>
               <div className="flex items-start gap-2">
-                <MapPin className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                <span className="text-gray-400">
-                  Paris, France
-                </span>
+                <MapPin className="w-5 h-5 text-[#8FBFAD] flex-shrink-0 mt-0.5" />
+                <span className="text-gray-400">Paris, France</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-gray-800 pt-8">
-          {/* Legal Links */}
+        <div className="border-t border-gray-700/50 pt-8">
           <div className="flex flex-wrap justify-center gap-4 mb-4 text-sm">
-            <Link href="/legal/privacy" className="text-gray-400 hover:text-white transition-colors">
+            <Link href="/legal/confidentialite" className="text-gray-400 hover:text-white transition-colors">
               Politique de confidentialité
             </Link>
-            <span className="text-gray-600">•</span>
-            <Link href="/legal/terms" className="text-gray-400 hover:text-white transition-colors">
+            <span className="text-gray-600">·</span>
+            <Link href="/legal/cgu" className="text-gray-400 hover:text-white transition-colors">
               Conditions d&apos;utilisation
             </Link>
-            <span className="text-gray-600">•</span>
-            <Link href="/legal/cookies" className="text-gray-400 hover:text-white transition-colors">
-              Gestion des cookies
-            </Link>
-            <span className="text-gray-600">•</span>
-            <Link href="/legal/accessibility" className="text-gray-400 hover:text-white transition-colors">
-              Accessibilité
+            <span className="text-gray-600">·</span>
+            <Link href="/legal/mentions-legales" className="text-gray-400 hover:text-white transition-colors">
+              Mentions légales
             </Link>
           </div>
-
-          {/* Copyright */}
           <div className="text-center text-sm text-gray-500">
-            <p>
-              &copy; {currentYear} Les Retraités Travaillent. Tous droits réservés.
-            </p>
+            <p>&copy; {currentYear} Les Retraités Travaillent. Tous droits réservés.</p>
           </div>
         </div>
       </div>
