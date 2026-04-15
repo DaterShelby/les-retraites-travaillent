@@ -83,123 +83,116 @@ export default function HomePage() {
       </header>
 
       {/* HERO */}
-      <section className="relative min-h-[90vh] flex items-center pt-16 overflow-hidden">
-        {/* Hero background image */}
-        <img src="/images/mixboard/hero-garden.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" aria-hidden="true" />
-        {/* Dark overlay for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#2C3E50]/90 via-[#2C3E50]/70 to-[#2C3E50]/40" />
-        {/* Warm glow accents */}
-        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-secondary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-accent/10 rounded-full blur-3xl" />
+      <section className="relative min-h-[100vh] flex items-center pt-16 overflow-hidden">
+        {/* Hero background image — full bleed */}
+        <img src="/images/mixboard/hero-garden.jpg" alt="Jardinier retraité dans un potager communautaire" className="absolute inset-0 w-full h-full object-cover object-center" />
+        {/* Left-side overlay only — fades to transparent to reveal image center + right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#2C3E50]/95 via-[#2C3E50]/75 via-40% to-transparent" />
+        {/* Bottom vignette for stats readability */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#2C3E50]/60 to-transparent" />
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left: Content */}
-            <div className="space-y-8">
+        <div className="w-full px-6 sm:px-10 lg:px-16 py-20 relative z-10">
+          <div className="flex items-center justify-between">
+            {/* LEFT: Text content — compact, pinned left */}
+            <div className="max-w-lg space-y-6">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/10">
-                <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 border border-white/15">
+                <span className="w-2 h-2 bg-[#38761D] rounded-full animate-pulse" />
                 <span className="text-white/80 text-sm font-medium">2 400+ experts disponibles</span>
               </div>
 
-              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight">
+              <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.08] tracking-tight">
                 L&apos;expérience{' '}
-                <span className="text-gradient bg-gradient-to-r from-secondary to-secondary-300 bg-clip-text text-transparent">
+                <span className="text-[#CC8800]">
                   n&apos;a pas
                 </span>{' '}
                 de prix.
               </h1>
 
-              <p className="text-lg sm:text-xl text-white/70 leading-relaxed max-w-xl">
+              <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-md">
                 Trouvez des experts pour vos projets, ou proposez vos services et complétez vos revenus à votre rythme.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Link href="/services">
-                  <Button size="lg" className="rounded-2xl bg-secondary hover:bg-secondary-500 text-white gap-2 group shadow-lg hover:shadow-xl">
+                  <Button size="lg" className="rounded-full bg-[#CC8800] hover:bg-[#B37700] text-white gap-2 group shadow-lg hover:shadow-xl px-8">
                     Trouver un expert
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
                 <Link href="/register?role=retiree">
-                  <Button size="lg" variant="outline" className="rounded-2xl border-2 border-white/20 text-white hover:bg-white/10 backdrop-blur-sm">
+                  <Button size="lg" variant="outline" className="rounded-full border-2 border-white/25 text-white hover:bg-white/10 backdrop-blur-sm px-8">
                     Proposer mes services
                   </Button>
                 </Link>
               </div>
 
               {/* Stats row */}
-              <div className="flex flex-wrap gap-6 sm:gap-10 pt-8 border-t border-white/10">
+              <div className="flex gap-8 pt-6 border-t border-white/15">
                 {[
                   { value: "2 400+", label: "Experts actifs" },
-                  { value: "15 000+", label: "Missions réalisées" },
+                  { value: "15 000+", label: "Missions" },
                   { value: "4.8/5", label: "Satisfaction" },
                 ].map((stat) => (
                   <div key={stat.label}>
-                    <p className="text-2xl font-bold text-white">{stat.value}</p>
-                    <p className="text-sm text-white/50">{stat.label}</p>
+                    <p className="text-xl font-bold text-white">{stat.value}</p>
+                    <p className="text-xs text-white/50">{stat.label}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Right: Cards stack (Desktop) */}
-            <div className="hidden lg:flex items-center justify-center relative h-full min-h-[500px]">
+            {/* RIGHT: Profile cards — stacked vertically, pinned to far right */}
+            <div className="hidden lg:flex flex-col gap-4 items-end mr-4">
               {/* Card 1 */}
-              <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-72 transform -rotate-3 hover:rotate-0 transition-all duration-500 hover:shadow-xl border border-white/50">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0">
+              <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl p-4 w-64 transform -rotate-2 hover:rotate-0 transition-all duration-500 border border-white/50">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0">
                     <img src="/images/mixboard/workshop-mentoring-2.jpg" alt="Michel" className="w-full h-full object-cover" />
                   </div>
-                  <div>
+                  <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-900 text-sm">Michel R.</p>
                     <p className="text-xs text-gray-400">Bricolage & Menuiserie</p>
                   </div>
-                </div>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                  ))}
-                  <span className="text-xs text-gray-400 ml-2">(47 avis)</span>
+                  <div className="flex items-center gap-0.5">
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <span className="text-xs font-medium text-gray-600">4.9</span>
+                  </div>
                 </div>
               </div>
 
               {/* Card 2 */}
-              <div className="absolute top-40 left-0 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-72 transform rotate-3 hover:rotate-0 transition-all duration-500 hover:shadow-xl border border-white/50">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0">
+              <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl p-4 w-64 transform rotate-1 hover:rotate-0 transition-all duration-500 border border-white/50">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0">
                     <img src="/images/mixboard/finance-home-office-2.jpg" alt="Catherine" className="w-full h-full object-cover" />
                   </div>
-                  <div>
+                  <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-900 text-sm">Catherine B.</p>
                     <p className="text-xs text-gray-400">Cours d&apos;Informatique</p>
                   </div>
-                </div>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                  ))}
-                  <span className="text-xs text-gray-400 ml-2">(92 avis)</span>
+                  <div className="flex items-center gap-0.5">
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <span className="text-xs font-medium text-gray-600">5.0</span>
+                  </div>
                 </div>
               </div>
 
               {/* Card 3 */}
-              <div className="absolute bottom-4 right-12 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-72 transform -rotate-1 hover:rotate-0 transition-all duration-500 hover:shadow-xl border border-white/50">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0">
+              <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-xl p-4 w-64 transform -rotate-1 hover:rotate-0 transition-all duration-500 border border-white/50">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl overflow-hidden flex-shrink-0">
                     <img src="/images/mixboard/executive-skyline.jpg" alt="Pierre" className="w-full h-full object-cover" />
                   </div>
-                  <div>
+                  <div className="flex-1 min-w-0">
                     <p className="font-semibold text-gray-900 text-sm">Pierre D.</p>
                     <p className="text-xs text-gray-400">Jardinage & Paysagisme</p>
                   </div>
-                </div>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                  ))}
-                  <span className="text-xs text-gray-400 ml-2">(63 avis)</span>
+                  <div className="flex items-center gap-0.5">
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <span className="text-xs font-medium text-gray-600">4.8</span>
+                  </div>
                 </div>
               </div>
             </div>
