@@ -58,6 +58,8 @@ export interface ServiceRow {
   price_amount: number | null;
   city: string | null;
   department: string | null;
+  latitude: number | null;
+  longitude: number | null;
   availability_slots: Record<string, unknown>[];
   photos: string[];
   tags: string[];

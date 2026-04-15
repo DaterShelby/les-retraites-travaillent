@@ -1,11 +1,25 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ServiceCard } from "@/components/services/service-card";
 import { createClient } from "@/lib/supabase/client";
-import { Search, SlidersHorizontal, MapPin, ChevronDown, Sparkles } from "lucide-react";
+import { Search, MapPin, Sparkles, Grid3X3, Map as MapIcon } from "lucide-react";
 import type { ServiceRow, UserProfileRow } from "@/types/database";
+
+// Dynamic import to avoid SSR issues with Leaflet
+const ServiceMap = dynamic(
+  () => import("@/components/services/service-map").then((mod) => mod.ServiceMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full min-h-[400px] rounded-2xl bg-gray-100 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4A6670]" />
+      </div>
+    ),
+  }
+);
 
 interface ServiceWithProvider extends ServiceRow {
   provider?: {
@@ -18,7 +32,6 @@ interface ServiceWithProvider extends ServiceRow {
   };
 }
 
-// Common service categories
 const categories = [
   "Tous",
   "Informatique",
@@ -35,22 +48,23 @@ const categories = [
   "Autre",
 ];
 
+type ViewMode = "grid" | "map";
+
 export default function ServicesPage() {
   const [services, setServices] = useState<ServiceWithProvider[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("Tous");
   const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const supabase = createClient();
 
-  // Fetch services from Supabase
   useEffect(() => {
     const fetchServices = async () => {
       try {
         setLoading(true);
         setError(null);
 
-        // Fetch published services with provider info
         const { data: servicesData, error: servicesError } = await supabase
           .from("services")
           .select("*")
@@ -67,7 +81,6 @@ export default function ServicesPage() {
           return;
         }
 
-        // Fetch provider profiles for all services
         const providerIds = [...new Set((servicesData as ServiceRow[]).map((s) => s.provider_id))];
 
         const { data: profilesData, error: profilesError } = await supabase
@@ -79,15 +92,13 @@ export default function ServicesPage() {
           throw new Error(profilesError.message);
         }
 
-        // Create a map of provider profiles
         const profilesMap = new Map<string, UserProfileRow>();
         if (profilesData) {
-          profilesData.forEach((profile: any) => {
-            profilesMap.set(profile.id, profile);
+          profilesData.forEach((profile: Record<string, unknown>) => {
+            profilesMap.set(profile.id as string, profile as unknown as UserProfileRow);
           });
         }
 
-        // Merge services with provider data
         const enrichedServices: ServiceWithProvider[] = (servicesData as ServiceRow[]).map((service) => {
           const profile = profilesMap.get(service.provider_id);
           return {
@@ -116,7 +127,6 @@ export default function ServicesPage() {
       } catch (err) {
         const message = err instanceof Error ? err.message : "Erreur lors du chargement des services";
         setError(message);
-        console.error("Error fetching services:", err);
       } finally {
         setLoading(false);
       }
@@ -125,7 +135,6 @@ export default function ServicesPage() {
     fetchServices();
   }, [supabase]);
 
-  // Filter services based on search and category
   const filteredServices = services.filter((s) => {
     const matchesCategory =
       selectedCategory === "Tous" || s.category === selectedCategory;
@@ -138,12 +147,18 @@ export default function ServicesPage() {
     return matchesCategory && matchesSearch;
   });
 
+  const handleServiceClick = useCallback((serviceId: string) => {
+    const el = document.getElementById(`service-${serviceId}`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50/50">
-      {/* Clean minimal hero — no banner, just content */}
+      {/* Hero / Search */}
       <div className="bg-white border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-6 sm:pb-8">
-          {/* Breadcrumb */}
           <nav className="hidden sm:flex items-center gap-2 text-sm text-gray-400 mb-6">
             <Link href="/" className="hover:text-gray-600 transition-colors">
               Accueil
@@ -152,7 +167,6 @@ export default function ServicesPage() {
             <span className="text-gray-700 font-medium">Services</span>
           </nav>
 
-          {/* Title row */}
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6 sm:mb-8">
             <div>
               <h1 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-2">
@@ -163,14 +177,43 @@ export default function ServicesPage() {
               </p>
             </div>
 
-            {/* Subtle AI suggestion pill */}
-            <div className="flex items-center gap-2 bg-[#8FBFAD]/10 text-[#8FBFAD] rounded-2xl px-4 py-2 text-sm font-medium">
-              <Sparkles className="w-4 h-4" />
-              <span>Suggestions personnalisées</span>
+            <div className="flex items-center gap-3">
+              {/* View mode toggle */}
+              <div className="flex items-center bg-gray-100 rounded-2xl p-1">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                    viewMode === "grid"
+                      ? "bg-white text-[#4A6670] shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                  aria-label="Vue grille"
+                >
+                  <Grid3X3 className="w-4 h-4" />
+                  <span className="hidden sm:inline">Grille</span>
+                </button>
+                <button
+                  onClick={() => setViewMode("map")}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                    viewMode === "map"
+                      ? "bg-white text-[#4A6670] shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                  aria-label="Vue carte"
+                >
+                  <MapIcon className="w-4 h-4" />
+                  <span className="hidden sm:inline">Carte</span>
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2 bg-[#8FBFAD]/10 text-[#8FBFAD] rounded-2xl px-4 py-2 text-sm font-medium">
+                <Sparkles className="w-4 h-4" />
+                <span className="hidden lg:inline">Suggestions</span>
+              </div>
             </div>
           </div>
 
-          {/* Search bar — Apple-like with rounded corners */}
+          {/* Search bar */}
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -198,7 +241,7 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Category pills — horizontal scroll */}
+      {/* Category pills */}
       <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-xl border-b border-gray-100/50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
           <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
@@ -221,11 +264,11 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Services Grid */}
+      {/* Content */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A6670] mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A6670] mb-4" />
             <p className="text-gray-500">Chargement des services...</p>
           </div>
         ) : error ? (
@@ -236,9 +279,7 @@ export default function ServicesPage() {
             <h3 className="text-xl font-serif font-bold text-gray-900 mb-2">
               Erreur de chargement
             </h3>
-            <p className="text-gray-500 mb-6 text-center max-w-sm">
-              {error}
-            </p>
+            <p className="text-gray-500 mb-6 text-center max-w-sm">{error}</p>
             <button
               onClick={() => window.location.reload()}
               className="px-6 py-3 rounded-2xl bg-[#4A6670] text-white font-semibold hover:bg-[#3E5760] transition-all shadow-sm"
@@ -247,11 +288,34 @@ export default function ServicesPage() {
             </button>
           </div>
         ) : filteredServices.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
-            {filteredServices.map((service) => (
-              <ServiceCard key={service.id} service={service} />
-            ))}
-          </div>
+          viewMode === "map" ? (
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* Map */}
+              <div className="lg:w-1/2 xl:w-3/5 h-[500px] lg:h-[calc(100vh-280px)] lg:sticky lg:top-32">
+                <ServiceMap
+                  services={filteredServices}
+                  onServiceClick={handleServiceClick}
+                />
+              </div>
+              {/* Side list */}
+              <div className="lg:w-1/2 xl:w-2/5 space-y-4 overflow-y-auto lg:max-h-[calc(100vh-280px)]">
+                <p className="text-sm text-gray-500 font-medium px-1">
+                  {filteredServices.length} résultat{filteredServices.length > 1 ? "s" : ""}
+                </p>
+                {filteredServices.map((service) => (
+                  <div key={service.id} id={`service-${service.id}`}>
+                    <ServiceCard service={service} compact />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+              {filteredServices.map((service) => (
+                <ServiceCard key={service.id} service={service} />
+              ))}
+            </div>
+          )
         ) : (
           <div className="flex flex-col items-center justify-center py-24">
             <div className="w-20 h-20 rounded-3xl bg-gray-100 flex items-center justify-center mb-6">

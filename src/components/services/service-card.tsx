@@ -14,6 +14,7 @@ interface ServiceCardProps {
     city?: string | null;
     department?: string | null;
     photos?: string[] | null;
+    price?: number | null;
     provider?: {
       first_name: string;
       avatar_url?: string | null;
@@ -23,9 +24,10 @@ interface ServiceCardProps {
       is_super_pro?: boolean;
     };
   };
+  compact?: boolean;
 }
 
-export function ServiceCard({ service }: ServiceCardProps) {
+export function ServiceCard({ service, compact = false }: ServiceCardProps) {
   const provider = service.provider || {
     first_name: "Prestataire",
     average_rating: 0,
@@ -46,6 +48,59 @@ export function ServiceCard({ service }: ServiceCardProps) {
 
   const rating = provider.average_rating || 0;
   const reviews = provider.total_reviews || 0;
+
+  if (compact) {
+    return (
+      <Link href={`/services/${service.id}`}>
+        <div className="flex gap-4 p-4 rounded-2xl bg-white border border-gray-100/80 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group">
+          {/* Thumbnail */}
+          <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+            {service.photos && service.photos.length > 0 ? (
+              <img
+                src={service.photos[0]}
+                alt={service.title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+                <span className="text-primary font-bold text-xs">
+                  {getInitials(service.title || "S")}
+                </span>
+              </div>
+            )}
+          </div>
+          {/* Info */}
+          <div className="flex-1 min-w-0">
+            <h3 className="font-serif text-sm font-bold text-gray-900 line-clamp-1 group-hover:text-primary transition-colors">
+              {service.title}
+            </h3>
+            <p className="text-xs text-gray-500 mt-0.5">{provider.first_name}</p>
+            {service.city && (
+              <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
+                <MapPin className="w-3 h-3" />
+                <span>{service.city}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-2 mt-1.5">
+              {service.price_amount != null && (
+                <span className="text-sm font-bold text-gray-900">
+                  {service.price_amount}€
+                  {service.price_type === "hourly" ? "/h" : ""}
+                </span>
+              )}
+              {rating > 0 && (
+                <span className="text-xs text-gray-500 flex items-center gap-0.5">
+                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                  {rating.toFixed(1)}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </Link>
+    );
+  }
 
   return (
     <Link href={`/services/${service.id}`}>

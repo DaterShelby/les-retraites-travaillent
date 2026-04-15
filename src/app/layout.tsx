@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Libre_Baskerville, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/schema-org";
 
 const libreBaskerville = Libre_Baskerville({
   subsets: ["latin", "latin-ext"],
@@ -68,6 +69,23 @@ export default function RootLayout({
       className={`${libreBaskerville.variable} ${sourceSans.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateOrganizationSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateLocalBusinessSchema()),
+          }}
+        />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body>
         <a href="#main-content" className="skip-link">
           Aller au contenu principal
