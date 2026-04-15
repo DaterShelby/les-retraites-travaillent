@@ -16,8 +16,8 @@ export function Logo({ size = "md", showText = true, className = "", variant = "
 
   const s = sizes[size];
   const textColor = variant === "light" ? "text-white" : "text-primary";
-  const accentColor = variant === "light" ? "#FFFFFF" : "#1B4965";
-  const secondaryAccent = "#E07A5F";
+  const accentColor = variant === "light" ? "#FFFFFF" : "#4A6670";
+  const secondaryAccent = "#F0917B";
 
   return (
     <Link href="/" className={`flex items-center gap-2.5 group ${className}`}>
@@ -50,7 +50,7 @@ export function Logo({ size = "md", showText = true, className = "", variant = "
             opacity="0.95"
           />
           {/* Small accent dot */}
-          <circle cx="36" cy="14" r="3" fill="#81B29A" />
+          <circle cx="36" cy="14" r="3" fill="#8FBFAD" />
         </svg>
       </div>
 

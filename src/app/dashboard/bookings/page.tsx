@@ -221,7 +221,7 @@ export default function BookingsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={`px-4 py-2 rounded-2xl font-medium text-sm transition-all whitespace-nowrap ${
                 activeTab === tab.id
-                  ? "bg-gradient-to-r from-[#E07A5F] to-[#D96850] text-white shadow-md"
+                  ? "bg-gradient-to-r from-[#F0917B] to-[#D96850] text-white shadow-md"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
@@ -276,7 +276,7 @@ export default function BookingsPage() {
                           className="w-11 h-11 rounded-2xl object-cover"
                         />
                       ) : (
-                        <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#E07A5F] to-[#81B29A] flex items-center justify-center text-white font-semibold">
+                        <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#F0917B] to-[#8FBFAD] flex items-center justify-center text-white font-semibold">
                           {otherParty.first_name.charAt(0)}
                         </div>
                       )}
@@ -347,7 +347,7 @@ export default function BookingsPage() {
                             updateBookingStatus(booking.id, "confirmed")
                           }
                           disabled={actionLoading[booking.id]}
-                          className="flex-1 min-w-32 px-4 py-2.5 bg-gradient-to-r from-[#81B29A] to-[#6fa086] text-white rounded-2xl font-semibold hover:shadow-md transition-all disabled:opacity-50 text-sm"
+                          className="flex-1 min-w-32 px-4 py-2.5 bg-gradient-to-r from-[#8FBFAD] to-[#6fa086] text-white rounded-2xl font-semibold hover:shadow-md transition-all disabled:opacity-50 text-sm"
                         >
                           {actionLoading[booking.id]
                             ? "Chargement..."
@@ -389,7 +389,7 @@ export default function BookingsPage() {
                               updateBookingStatus(booking.id, "completed")
                             }
                             disabled={actionLoading[booking.id]}
-                            className="flex-1 min-w-32 px-4 py-2.5 bg-gradient-to-r from-[#81B29A] to-[#6fa086] text-white rounded-2xl font-semibold hover:shadow-md transition-all disabled:opacity-50 text-sm"
+                            className="flex-1 min-w-32 px-4 py-2.5 bg-gradient-to-r from-[#8FBFAD] to-[#6fa086] text-white rounded-2xl font-semibold hover:shadow-md transition-all disabled:opacity-50 text-sm"
                           >
                             {actionLoading[booking.id]
                               ? "Chargement..."
@@ -413,7 +413,7 @@ export default function BookingsPage() {
                     {booking.status === "completed" && (
                       <button
                         onClick={() => router.push(`/dashboard/reviews?booking=${booking.id}`)}
-                        className="flex-1 px-4 py-2.5 bg-gradient-to-r from-[#E07A5F] to-[#D96850] text-white rounded-2xl font-semibold hover:shadow-md transition-all text-sm flex items-center justify-center gap-2"
+                        className="flex-1 px-4 py-2.5 bg-gradient-to-r from-[#F0917B] to-[#D96850] text-white rounded-2xl font-semibold hover:shadow-md transition-all text-sm flex items-center justify-center gap-2"
                       >
                         <Star className="w-4 h-4" />
                         Laisser un avis
@@ -457,7 +457,7 @@ function EmptyState({ activeTab }: { activeTab: TabType }) {
   const message = emptyMessages[activeTab];
 
   return (
-    <div className="rounded-3xl bg-gradient-to-b from-[#FAF9F6] to-white border border-gray-100 p-12 md:p-16 text-center">
+    <div className="rounded-3xl bg-gradient-to-b from-[#FAF7F5] to-white border border-gray-100 p-12 md:p-16 text-center">
       <div className="text-5xl mb-4">{message.icon}</div>
       <h3 className="text-2xl font-serif font-bold text-gray-900 mb-2">
         {message.title}

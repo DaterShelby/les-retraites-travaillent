@@ -19,10 +19,10 @@ export function StepIndicator({ currentStep, totalSteps }: StepIndicatorProps) {
             <div
               className={`flex h-10 w-10 items-center justify-center rounded-full font-semibold text-sm transition-all duration-300 ${
                 step < currentStep
-                  ? 'bg-[#81B29A] text-white'
+                  ? 'bg-[#8FBFAD] text-white'
                   : step === currentStep
-                  ? 'bg-[#E07A5F] text-white ring-2 ring-[#E07A5F]/30'
-                  : 'bg-[#E07A5F]/10 text-[#3D405B]'
+                  ? 'bg-[#F0917B] text-white ring-2 ring-[#F0917B]/30'
+                  : 'bg-[#F0917B]/10 text-[#2F3D42]'
               }`}
             >
               {step < currentStep ? (
@@ -37,8 +37,8 @@ export function StepIndicator({ currentStep, totalSteps }: StepIndicatorProps) {
               <div
                 className={`flex-1 h-1 transition-colors duration-300 ${
                   step < currentStep
-                    ? 'bg-[#81B29A]'
-                    : 'bg-[#E07A5F]/20'
+                    ? 'bg-[#8FBFAD]'
+                    : 'bg-[#F0917B]/20'
                 }`}
               />
             )}
@@ -47,7 +47,7 @@ export function StepIndicator({ currentStep, totalSteps }: StepIndicatorProps) {
       </div>
 
       {/* Step Labels */}
-      <div className="flex items-center justify-between pt-2 text-xs text-[#3D405B]/60">
+      <div className="flex items-center justify-between pt-2 text-xs text-[#2F3D42]/60">
         <span>Étape {currentStep}/{totalSteps}</span>
         <span>
           {currentStep === 1 && 'Choisissez votre profil'}

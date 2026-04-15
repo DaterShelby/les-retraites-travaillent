@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 40 20% 98%;
-    --foreground: 240 14% 20%;
+    --background: 20 33% 97%;
+    --foreground: 197 17% 22%;
     --card: 0 0% 100%;
-    --card-foreground: 240 14% 20%;
+    --card-foreground: 197 17% 22%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 14% 20%;
-    --primary: 240 27% 14%;
+    --popover-foreground: 197 17% 22%;
+    --primary: 195 19% 36%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 14 65% 63%;
+    --secondary: 11 79% 71%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 40 10% 93%;
-    --muted-foreground: 240 10% 40%;
-    --accent: 153 25% 60%;
+    --muted: 20 15% 93%;
+    --muted-foreground: 195 12% 40%;
+    --accent: 157 27% 65%;
     --accent-foreground: 0 0% 100%;
     --destructive: 355 75% 56%;
     --destructive-foreground: 0 0% 100%;
-    --border: 40 10% 90%;
-    --input: 40 10% 90%;
-    --ring: 240 27% 14%;
+    --border: 20 12% 90%;
+    --input: 20 12% 90%;
+    --ring: 195 19% 36%;
     --radius: 16px;
   }
 
@@ -38,8 +38,8 @@
 
   body {
     font-family: var(--font-source-sans), system-ui, sans-serif;
-    color: #2D2D3F;
-    background: #FAF9F6;
+    color: #2F3D42;
+    background: #FAF7F5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     @apply text-base;
@@ -50,7 +50,7 @@
   h3,
   h4 {
     @apply font-serif;
-    color: #1a1a2e;
+    color: #4A6670;
   }
 
   /* Focus visible for all interactive elements */
@@ -92,7 +92,7 @@
   /* Selection styling */
   ::selection {
     background-color: rgba(224, 122, 95, 0.2);
-    color: #2D2D3F;
+    color: #2F3D42;
   }
 }
 

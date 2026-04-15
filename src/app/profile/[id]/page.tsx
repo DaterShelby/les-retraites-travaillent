@@ -119,7 +119,7 @@ async function ProfileContent({ profileId }: { profileId: string }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6]">
+    <div className="min-h-screen bg-[#FAF7F5]">
       {/* Profile Header */}
       <div className="bg-white border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">

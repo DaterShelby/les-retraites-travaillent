@@ -212,7 +212,7 @@ export function ChatWindow({
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
       <div className="border-b border-gray-100/50 px-6 py-4">
-        <h2 className="font-serif font-bold text-lg text-[#1a1a2e]">
+        <h2 className="font-serif font-bold text-lg text-[#4A6670]">
           {participantName}
         </h2>
         <p className="text-xs text-gray-500 mt-0.5">Conversation en direct</p>
@@ -226,7 +226,7 @@ export function ChatWindow({
         {initialLoading ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <div className="w-8 h-8 border-3 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin mx-auto mb-2"></div>
+              <div className="w-8 h-8 border-3 border-gray-200 border-t-[#F0917B] rounded-full animate-spin mx-auto mb-2"></div>
               <p className="text-sm text-gray-600">Chargement des messages...</p>
             </div>
           </div>
@@ -271,13 +271,13 @@ export function ChatWindow({
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Écrivez votre message..."
-            className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#E07A5F] focus:outline-none focus:ring-1 focus:ring-[#E07A5F]/20 text-sm bg-white transition-all"
+            className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#F0917B] focus:outline-none focus:ring-1 focus:ring-[#F0917B]/20 text-sm bg-white transition-all"
             disabled={loading}
           />
           <Button
             type="submit"
             disabled={loading || !newMessage.trim()}
-            className="rounded-2xl bg-[#E07A5F] hover:bg-[#E07A5F]/90 text-white shadow-sm"
+            className="rounded-2xl bg-[#F0917B] hover:bg-[#F0917B]/90 text-white shadow-sm"
             size="icon"
           >
             <Send className="w-5 h-5" />

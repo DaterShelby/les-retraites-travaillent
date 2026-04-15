@@ -151,7 +151,7 @@ export default function DashboardPage() {
           </p>
           <Link
             href="/login"
-            className="inline-block px-8 py-3 rounded-2xl bg-gradient-to-r from-[#E07A5F] to-[#D96850] text-white font-semibold hover:shadow-lg transition-shadow"
+            className="inline-block px-8 py-3 rounded-2xl bg-gradient-to-r from-[#F0917B] to-[#D96850] text-white font-semibold hover:shadow-lg transition-shadow"
           >
             Se connecter
           </Link>
@@ -163,7 +163,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6">
       {/* Hero Welcome Card */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#1a1a2e] via-[#2a3a4e] to-[#1a1a2e] p-8 md:p-12 text-white shadow-lg">
+      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#4A6670] via-[#3E5760] to-[#4A6670] p-8 md:p-12 text-white shadow-lg">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-48 -mt-48 blur-3xl" />
 
@@ -186,7 +186,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <div className="w-32 h-2 bg-white/20 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-[#E07A5F] to-[#81B29A] transition-all"
+                className="h-full bg-gradient-to-r from-[#F0917B] to-[#8FBFAD] transition-all"
                 style={{
                   width: profile?.avatar_url ? "75%" : "50%",
                 }}
@@ -202,25 +202,25 @@ export default function DashboardPage() {
       {/* Quick Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="rounded-2xl bg-white border border-gray-100 p-4 text-center hover:border-gray-200 transition-colors">
-          <div className="text-2xl font-bold text-[#1a1a2e] mb-1">
+          <div className="text-2xl font-bold text-[#4A6670] mb-1">
             {stats.servicesCount}
           </div>
           <div className="text-xs text-gray-600">Services</div>
         </div>
         <div className="rounded-2xl bg-white border border-gray-100 p-4 text-center hover:border-gray-200 transition-colors">
-          <div className="text-2xl font-bold text-[#1a1a2e] mb-1">
+          <div className="text-2xl font-bold text-[#4A6670] mb-1">
             {stats.bookingsCount}
           </div>
           <div className="text-xs text-gray-600">Réservations</div>
         </div>
         <div className="rounded-2xl bg-white border border-gray-100 p-4 text-center hover:border-gray-200 transition-colors">
-          <div className="text-2xl font-bold text-[#1a1a2e] mb-1">
+          <div className="text-2xl font-bold text-[#4A6670] mb-1">
             {stats.messagesCount}
           </div>
           <div className="text-xs text-gray-600">Messages</div>
         </div>
         <div className="rounded-2xl bg-white border border-gray-100 p-4 text-center hover:border-gray-200 transition-colors">
-          <div className="text-2xl font-bold text-[#1a1a2e] mb-1">
+          <div className="text-2xl font-bold text-[#4A6670] mb-1">
             {stats.notificationsCount}
           </div>
           <div className="text-xs text-gray-600">Notifs</div>
@@ -254,7 +254,7 @@ function RetireeDashboard({ stats }: DashboardComponentProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Create Listing - Hero */}
         <Link href="/dashboard/listings/create">
-          <div className="group rounded-3xl bg-gradient-to-br from-[#E07A5F] to-[#D96850] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
+          <div className="group rounded-3xl bg-gradient-to-br from-[#F0917B] to-[#D96850] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
             <div className="mb-4 p-4 rounded-2xl bg-white/20 w-fit">
               <Plus className="w-8 h-8" />
             </div>
@@ -272,7 +272,7 @@ function RetireeDashboard({ stats }: DashboardComponentProps) {
 
         {/* Explore Services */}
         <Link href="/dashboard/bookings">
-          <div className="group rounded-3xl bg-gradient-to-br from-[#81B29A] to-[#6fa086] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
+          <div className="group rounded-3xl bg-gradient-to-br from-[#8FBFAD] to-[#6fa086] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
             <div className="mb-4 p-4 rounded-2xl bg-white/20 w-fit">
               <Clock className="w-8 h-8" />
             </div>
@@ -299,7 +299,7 @@ function RetireeDashboard({ stats }: DashboardComponentProps) {
             {completionSteps.map((step, idx) => (
               <div key={idx} className="flex items-center gap-3">
                 {step.done ? (
-                  <CheckCircle2 className="w-5 h-5 text-[#81B29A]" />
+                  <CheckCircle2 className="w-5 h-5 text-[#8FBFAD]" />
                 ) : (
                   <Circle className="w-5 h-5 text-gray-300" />
                 )}
@@ -316,7 +316,7 @@ function RetireeDashboard({ stats }: DashboardComponentProps) {
           <div className="mt-6 pt-6 border-t border-gray-100">
             <Link
               href="/dashboard/settings/profile"
-              className="inline-block px-6 py-2 rounded-2xl bg-gradient-to-r from-[#E07A5F] to-[#D96850] text-white font-semibold text-sm hover:shadow-md transition-shadow"
+              className="inline-block px-6 py-2 rounded-2xl bg-gradient-to-r from-[#F0917B] to-[#D96850] text-white font-semibold text-sm hover:shadow-md transition-shadow"
             >
               Continuer mon profil
             </Link>
@@ -329,8 +329,8 @@ function RetireeDashboard({ stats }: DashboardComponentProps) {
         <Link href="/dashboard/listings">
           <div className="rounded-2xl border border-gray-100 p-5 hover:border-gray-200 transition-colors cursor-pointer h-full">
             <div className="flex items-start justify-between mb-3">
-              <FileText className="w-6 h-6 text-[#1a1a2e]" />
-              <span className="text-2xl font-bold text-[#1a1a2e]">
+              <FileText className="w-6 h-6 text-[#4A6670]" />
+              <span className="text-2xl font-bold text-[#4A6670]">
                 {stats.servicesCount}
               </span>
             </div>
@@ -344,8 +344,8 @@ function RetireeDashboard({ stats }: DashboardComponentProps) {
         <Link href="/dashboard/messages">
           <div className="rounded-2xl border border-gray-100 p-5 hover:border-gray-200 transition-colors cursor-pointer h-full">
             <div className="flex items-start justify-between mb-3">
-              <MessageSquare className="w-6 h-6 text-[#E07A5F]" />
-              <span className="text-2xl font-bold text-[#E07A5F]">
+              <MessageSquare className="w-6 h-6 text-[#F0917B]" />
+              <span className="text-2xl font-bold text-[#F0917B]">
                 {stats.messagesCount}
               </span>
             </div>
@@ -367,7 +367,7 @@ function ClientDashboard({ stats }: DashboardComponentProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Browse Services - Hero */}
         <Link href="/services">
-          <div className="group rounded-3xl bg-gradient-to-br from-[#E07A5F] to-[#D96850] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
+          <div className="group rounded-3xl bg-gradient-to-br from-[#F0917B] to-[#D96850] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
             <div className="mb-4 p-4 rounded-2xl bg-white/20 w-fit">
               <TrendingUp className="w-8 h-8" />
             </div>
@@ -385,7 +385,7 @@ function ClientDashboard({ stats }: DashboardComponentProps) {
 
         {/* My Bookings */}
         <Link href="/dashboard/bookings">
-          <div className="group rounded-3xl bg-gradient-to-br from-[#81B29A] to-[#6fa086] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
+          <div className="group rounded-3xl bg-gradient-to-br from-[#8FBFAD] to-[#6fa086] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
             <div className="mb-4 p-4 rounded-2xl bg-white/20 w-fit">
               <Clock className="w-8 h-8" />
             </div>
@@ -407,8 +407,8 @@ function ClientDashboard({ stats }: DashboardComponentProps) {
         <Link href="/dashboard/bookings">
           <div className="rounded-2xl border border-gray-100 p-5 hover:border-gray-200 transition-colors cursor-pointer h-full">
             <div className="flex items-start justify-between mb-3">
-              <Clock className="w-6 h-6 text-[#1a1a2e]" />
-              <span className="text-2xl font-bold text-[#1a1a2e]">
+              <Clock className="w-6 h-6 text-[#4A6670]" />
+              <span className="text-2xl font-bold text-[#4A6670]">
                 {stats.bookingsCount}
               </span>
             </div>
@@ -422,8 +422,8 @@ function ClientDashboard({ stats }: DashboardComponentProps) {
         <Link href="/dashboard/favorites">
           <div className="rounded-2xl border border-gray-100 p-5 hover:border-gray-200 transition-colors cursor-pointer h-full">
             <div className="flex items-start justify-between mb-3">
-              <TrendingUp className="w-6 h-6 text-[#E07A5F]" />
-              <span className="text-2xl font-bold text-[#E07A5F]">
+              <TrendingUp className="w-6 h-6 text-[#F0917B]" />
+              <span className="text-2xl font-bold text-[#F0917B]">
                 {stats.favoritesCount}
               </span>
             </div>
@@ -445,7 +445,7 @@ function CompanyDashboard({ stats }: DashboardComponentProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Create Offer - Hero */}
         <Link href="/dashboard/offers/create">
-          <div className="group rounded-3xl bg-gradient-to-br from-[#E07A5F] to-[#D96850] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
+          <div className="group rounded-3xl bg-gradient-to-br from-[#F0917B] to-[#D96850] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
             <div className="mb-4 p-4 rounded-2xl bg-white/20 w-fit">
               <Plus className="w-8 h-8" />
             </div>
@@ -463,7 +463,7 @@ function CompanyDashboard({ stats }: DashboardComponentProps) {
 
         {/* Applications */}
         <Link href="/dashboard/applications">
-          <div className="group rounded-3xl bg-gradient-to-br from-[#81B29A] to-[#6fa086] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
+          <div className="group rounded-3xl bg-gradient-to-br from-[#8FBFAD] to-[#6fa086] p-8 text-white hover:shadow-xl transition-all duration-300 cursor-pointer h-full">
             <div className="mb-4 p-4 rounded-2xl bg-white/20 w-fit">
               <Users className="w-8 h-8" />
             </div>
@@ -485,8 +485,8 @@ function CompanyDashboard({ stats }: DashboardComponentProps) {
         <Link href="/dashboard/offers">
           <div className="rounded-2xl border border-gray-100 p-5 hover:border-gray-200 transition-colors cursor-pointer h-full">
             <div className="flex items-start justify-between mb-3">
-              <FileText className="w-6 h-6 text-[#1a1a2e]" />
-              <span className="text-2xl font-bold text-[#1a1a2e]">
+              <FileText className="w-6 h-6 text-[#4A6670]" />
+              <span className="text-2xl font-bold text-[#4A6670]">
                 {stats.offersCount}
               </span>
             </div>
@@ -500,8 +500,8 @@ function CompanyDashboard({ stats }: DashboardComponentProps) {
         <Link href="/dashboard/applications">
           <div className="rounded-2xl border border-gray-100 p-5 hover:border-gray-200 transition-colors cursor-pointer h-full">
             <div className="flex items-start justify-between mb-3">
-              <Users className="w-6 h-6 text-[#E07A5F]" />
-              <span className="text-2xl font-bold text-[#E07A5F]">
+              <Users className="w-6 h-6 text-[#F0917B]" />
+              <span className="text-2xl font-bold text-[#F0917B]">
                 {stats.applicationsCount}
               </span>
             </div>
@@ -515,8 +515,8 @@ function CompanyDashboard({ stats }: DashboardComponentProps) {
         <Link href="/dashboard/stats">
           <div className="rounded-2xl border border-gray-100 p-5 hover:border-gray-200 transition-colors cursor-pointer h-full">
             <div className="flex items-start justify-between mb-3">
-              <BarChart3 className="w-6 h-6 text-[#81B29A]" />
-              <span className="text-sm font-semibold text-[#81B29A]">Voir</span>
+              <BarChart3 className="w-6 h-6 text-[#8FBFAD]" />
+              <span className="text-sm font-semibold text-[#8FBFAD]">Voir</span>
             </div>
             <h3 className="font-semibold text-gray-900">Statistiques</h3>
             <p className="text-sm text-gray-600 mt-1">

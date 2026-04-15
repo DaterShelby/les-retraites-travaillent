@@ -108,7 +108,7 @@ export default function FavoritesPage() {
       )}
 
       {services.length === 0 ? (
-        <div className="rounded-3xl bg-gradient-to-b from-[#FAF9F6] to-white border border-gray-100 p-12 md:p-16 text-center">
+        <div className="rounded-3xl bg-gradient-to-b from-[#FAF7F5] to-white border border-gray-100 p-12 md:p-16 text-center">
           <div className="text-5xl mb-4">💚</div>
           <h3 className="text-2xl font-serif font-bold text-gray-900 mb-2">
             Vous n'avez pas encore de favoris
@@ -118,7 +118,7 @@ export default function FavoritesPage() {
           </p>
           <Link
             href="/services"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-[#E07A5F] to-[#D96850] text-white rounded-2xl font-semibold hover:shadow-md transition-all"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-[#F0917B] to-[#D96850] text-white rounded-2xl font-semibold hover:shadow-md transition-all"
           >
             Découvrir les services
           </Link>

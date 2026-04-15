@@ -41,22 +41,22 @@ export default function OnboardingLayout({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F4F1DE] to-[#F4F1DE]">
+    <div className="min-h-screen bg-gradient-to-br from-[#FAF7F5] to-[#FAF7F5]">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-[#E07A5F]/20 bg-white/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-40 border-b border-[#F0917B]/20 bg-white/80 backdrop-blur-sm">
         <div className="mx-auto max-w-2xl px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="font-serif text-2xl font-bold text-[#1B4965]">
+              <h1 className="font-serif text-2xl font-bold text-[#4A6670]">
                 Bienvenue
               </h1>
-              <p className="mt-1 text-sm text-[#3D405B]/70">
+              <p className="mt-1 text-sm text-[#2F3D42]/70">
                 Créons votre profil en quelques minutes
               </p>
             </div>
             <button
               onClick={handleReset}
-              className="text-xs text-[#3D405B]/60 hover:text-[#3D405B] transition-colors"
+              className="text-xs text-[#2F3D42]/60 hover:text-[#2F3D42] transition-colors"
             >
               Recommencer
             </button>
@@ -65,7 +65,7 @@ export default function OnboardingLayout({
       </header>
 
       {/* Progress Bar */}
-      <div className="border-b border-[#E07A5F]/20 bg-white">
+      <div className="border-b border-[#F0917B]/20 bg-white">
         <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6 lg:px-8">
           <StepIndicator currentStep={pathStep} totalSteps={4} />
         </div>
@@ -77,7 +77,7 @@ export default function OnboardingLayout({
           {children}
 
           {/* Navigation Bottom */}
-          <div className="flex items-center justify-between pt-8 border-t border-[#E07A5F]/20">
+          <div className="flex items-center justify-between pt-8 border-t border-[#F0917B]/20">
             {pathStep > 1 && (
               <Button
                 onClick={handleBack}

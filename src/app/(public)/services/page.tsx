@@ -164,7 +164,7 @@ export default function ServicesPage() {
             </div>
 
             {/* Subtle AI suggestion pill */}
-            <div className="flex items-center gap-2 bg-[#81B29A]/10 text-[#81B29A] rounded-2xl px-4 py-2 text-sm font-medium">
+            <div className="flex items-center gap-2 bg-[#8FBFAD]/10 text-[#8FBFAD] rounded-2xl px-4 py-2 text-sm font-medium">
               <Sparkles className="w-4 h-4" />
               <span>Suggestions personnalisées</span>
             </div>
@@ -179,7 +179,7 @@ export default function ServicesPage() {
                 placeholder="Rechercher un service, un métier..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1a1a2e]/20 focus:border-[#1a1a2e]/30 text-base transition-all"
+                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#4A6670]/20 focus:border-[#4A6670]/30 text-base transition-all"
               />
             </div>
             <div className="relative sm:w-56">
@@ -187,10 +187,10 @@ export default function ServicesPage() {
               <input
                 type="text"
                 placeholder="Ville ou code postal"
-                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1a1a2e]/20 focus:border-[#1a1a2e]/30 text-base transition-all"
+                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#4A6670]/20 focus:border-[#4A6670]/30 text-base transition-all"
               />
             </div>
-            <button className="h-14 px-6 rounded-2xl bg-[#1a1a2e] text-white font-semibold hover:bg-[#2a2a3e] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md">
+            <button className="h-14 px-6 rounded-2xl bg-[#4A6670] text-white font-semibold hover:bg-[#3E5760] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md">
               <Search className="w-4 h-4" />
               <span className="sm:hidden lg:inline">Rechercher</span>
             </button>
@@ -209,7 +209,7 @@ export default function ServicesPage() {
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                     selectedCategory === cat
-                      ? "bg-[#1a1a2e] text-white shadow-sm"
+                      ? "bg-[#4A6670] text-white shadow-sm"
                       : "bg-gray-100/80 text-gray-600 hover:bg-gray-200/80 hover:text-gray-900"
                   }`}
                 >
@@ -225,7 +225,7 @@ export default function ServicesPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1a1a2e] mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A6670] mb-4"></div>
             <p className="text-gray-500">Chargement des services...</p>
           </div>
         ) : error ? (
@@ -241,7 +241,7 @@ export default function ServicesPage() {
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 rounded-2xl bg-[#1a1a2e] text-white font-semibold hover:bg-[#2a2a3e] transition-all shadow-sm"
+              className="px-6 py-3 rounded-2xl bg-[#4A6670] text-white font-semibold hover:bg-[#3E5760] transition-all shadow-sm"
             >
               Réessayer
             </button>
@@ -270,7 +270,7 @@ export default function ServicesPage() {
                 setSelectedCategory("Tous");
                 setSearchQuery("");
               }}
-              className="px-6 py-3 rounded-2xl bg-[#1a1a2e] text-white font-semibold hover:bg-[#2a2a3e] transition-all shadow-sm"
+              className="px-6 py-3 rounded-2xl bg-[#4A6670] text-white font-semibold hover:bg-[#3E5760] transition-all shadow-sm"
             >
               Réinitialiser les filtres
             </button>

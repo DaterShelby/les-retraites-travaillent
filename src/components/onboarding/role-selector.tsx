@@ -46,13 +46,13 @@ export function RoleSelector({ selected, onSelect }: RoleSelectorProps) {
         <button
           key={role.id}
           onClick={() => onSelect(role.id)}
-          className="group relative focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E07A5F]"
+          className="group relative focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F0917B]"
         >
           <Card
             className={`relative overflow-hidden transition-all duration-300 h-full cursor-pointer ${
               selected === role.id
-                ? 'border-[#E07A5F] border-2 shadow-lg shadow-[#E07A5F]/20 bg-[#E07A5F]/5'
-                : 'border-[#E07A5F]/20 hover:border-[#E07A5F]/50 hover:shadow-md'
+                ? 'border-[#F0917B] border-2 shadow-lg shadow-[#F0917B]/20 bg-[#F0917B]/5'
+                : 'border-[#F0917B]/20 hover:border-[#F0917B]/50 hover:shadow-md'
             }`}
           >
             {/* Background gradient */}
@@ -61,7 +61,7 @@ export function RoleSelector({ selected, onSelect }: RoleSelectorProps) {
                 selected === role.id ? 'opacity-100' : 'group-hover:opacity-50'
               }`}
               style={{
-                background: 'linear-gradient(135deg, #E07A5F/10 0%, #81B29A/10 100%)',
+                background: 'linear-gradient(135deg, #F0917B/10 0%, #8FBFAD/10 100%)',
               }}
             />
 
@@ -69,7 +69,7 @@ export function RoleSelector({ selected, onSelect }: RoleSelectorProps) {
               {/* Selection Indicator */}
               <div className="absolute top-4 right-4">
                 {selected === role.id && (
-                  <CheckCircle2 className="h-6 w-6 text-[#81B29A]" />
+                  <CheckCircle2 className="h-6 w-6 text-[#8FBFAD]" />
                 )}
               </div>
 
@@ -78,17 +78,17 @@ export function RoleSelector({ selected, onSelect }: RoleSelectorProps) {
 
               {/* Content */}
               <div className="space-y-2 text-left">
-                <h3 className="font-serif text-xl font-bold text-[#1B4965]">
+                <h3 className="font-serif text-xl font-bold text-[#4A6670]">
                   {role.title}
                 </h3>
-                <p className="text-sm text-[#3D405B]/80">
+                <p className="text-sm text-[#2F3D42]/80">
                   {role.description}
                 </p>
               </div>
 
               {/* Highlight Badge */}
               <div className="pt-2 inline-block">
-                <span className="inline-block rounded-full bg-[#81B29A]/20 px-3 py-1 text-xs font-medium text-[#81B29A]">
+                <span className="inline-block rounded-full bg-[#8FBFAD]/20 px-3 py-1 text-xs font-medium text-[#8FBFAD]">
                   {role.highlight}
                 </span>
               </div>

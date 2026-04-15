@@ -119,7 +119,7 @@ export function Sidebar() {
   const roleLabel = roleLabels[role];
 
   return (
-    <aside className="hidden lg:flex w-64 flex-col bg-gradient-to-b from-white via-[#FAF9F6]/50 to-white border-r border-gray-100">
+    <aside className="hidden lg:flex w-64 flex-col bg-gradient-to-b from-white via-[#FAF7F5]/50 to-white border-r border-gray-100">
       <div className="flex flex-col flex-1 overflow-y-auto px-6 py-8">
         {/* User Profile Section */}
         <div className="mb-8 pb-8 border-b border-gray-100">
@@ -133,7 +133,7 @@ export function Sidebar() {
                 className="w-12 h-12 rounded-2xl object-cover"
               />
             ) : (
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#E07A5F] to-[#81B29A] flex items-center justify-center">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#F0917B] to-[#8FBFAD] flex items-center justify-center">
                 <span className="text-white font-semibold text-sm">
                   {firstName.charAt(0).toUpperCase()}
                 </span>
@@ -143,7 +143,7 @@ export function Sidebar() {
               <p className="font-semibold text-gray-900 text-sm truncate">
                 {firstName}
               </p>
-              <span className="inline-block mt-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-[#E07A5F]/10 to-[#81B29A]/10 text-xs font-medium text-[#1a1a2e]">
+              <span className="inline-block mt-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-[#F0917B]/10 to-[#8FBFAD]/10 text-xs font-medium text-primary">
                 {roleLabel}
               </span>
             </div>
@@ -163,7 +163,7 @@ export function Sidebar() {
                 className={cn(
                   "group flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-white text-[#E07A5F] shadow-sm border-l-2 border-[#E07A5F]"
+                    ? "bg-white text-[#F0917B] shadow-sm border-l-2 border-[#F0917B]"
                     : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 )}
               >
@@ -184,7 +184,7 @@ export function Sidebar() {
                   ? "/dashboard/offers/create"
                   : "/services"
             }
-            className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-[#E07A5F] to-[#D96850] text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
+            className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-[#F0917B] to-[#D96850] text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
           >
             <Plus className="h-5 w-5" />
             <span>
@@ -202,7 +202,7 @@ export function Sidebar() {
             className={cn(
               "group flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200",
               pathname === "/dashboard/settings/profile"
-                ? "bg-white text-[#E07A5F] shadow-sm border-l-2 border-[#E07A5F]"
+                ? "bg-white text-[#F0917B] shadow-sm border-l-2 border-[#F0917B]"
                 : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             )}
           >
@@ -215,7 +215,7 @@ export function Sidebar() {
             className={cn(
               "group flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200",
               pathname === "/dashboard/help"
-                ? "bg-white text-[#E07A5F] shadow-sm border-l-2 border-[#E07A5F]"
+                ? "bg-white text-[#F0917B] shadow-sm border-l-2 border-[#F0917B]"
                 : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             )}
           >

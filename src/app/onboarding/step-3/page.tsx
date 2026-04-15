@@ -69,10 +69,10 @@ export default function Step3Page() {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h2 className="font-serif text-3xl font-bold text-[#1B4965]">
+        <h2 className="font-serif text-3xl font-bold text-[#4A6670]">
           {isRetired ? 'Vos compétences' : 'Vos besoins'}
         </h2>
-        <p className="text-lg text-[#3D405B]/80">
+        <p className="text-lg text-[#2F3D42]/80">
           {isRetired
             ? 'Sélectionnez les domaines dans lesquels vous pouvez apporter votre aide'
             : 'Sélectionnez les services dont vous avez besoin'}
@@ -95,7 +95,7 @@ export default function Step3Page() {
       <SkillsPicker selected={selected} onSelect={setSelected} />
 
       <div className="space-y-4">
-        <label htmlFor="description" className="block text-sm font-medium text-[#1B4965]">
+        <label htmlFor="description" className="block text-sm font-medium text-[#4A6670]">
           {isRetired ? 'Vos autres compétences (optionnel)' : 'Précisions supplémentaires (optionnel)'}
         </label>
         <textarea
@@ -105,10 +105,10 @@ export default function Step3Page() {
           placeholder={isRetired
             ? "Décrivez d'autres compétences ou expériences pertinentes..."
             : 'Décrivez vos besoins spécifiques...'}
-          className="h-32 w-full rounded-lg border border-[#E07A5F]/30 bg-white p-4 text-[#3D405B] placeholder:text-[#3D405B]/50 focus:border-[#E07A5F] focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/20"
+          className="h-32 w-full rounded-lg border border-[#F0917B]/30 bg-white p-4 text-[#2F3D42] placeholder:text-[#2F3D42]/50 focus:border-[#F0917B] focus:outline-none focus:ring-2 focus:ring-[#F0917B]/20"
           maxLength={500}
         />
-        <p className="text-xs text-[#3D405B]/60">
+        <p className="text-xs text-[#2F3D42]/60">
           {description.length}/500 caractères
         </p>
       </div>
@@ -118,7 +118,7 @@ export default function Step3Page() {
           onClick={handleContinue}
           disabled={isLoading || savedSuccessfully}
           size="lg"
-          className="gap-2 bg-[#1B4965] hover:bg-[#1B4965]/90 text-white disabled:opacity-50"
+          className="gap-2 bg-[#4A6670] hover:bg-[#4A6670]/90 text-white disabled:opacity-50"
         >
           {isLoading ? 'Sauvegarde en cours...' : (savedSuccessfully ? 'Continuer...' : 'Continuer')}
           {!isLoading && !savedSuccessfully && <ChevronRight className="h-5 w-5" />}
