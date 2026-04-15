@@ -14,7 +14,7 @@ async function ConversationsContent({ userId }: { userId: string }) {
       id,
       participant_ids,
       last_message_at,
-      messages(content, created_at)
+      messages(id, content, created_at, sender_id, read_at)
     `
     )
     .contains("participant_ids", [userId])
@@ -27,29 +27,39 @@ async function ConversationsContent({ userId }: { userId: string }) {
 
       let participantName = "Utilisateur";
       let participantAvatar = null;
+      let participantId = "";
 
       if (otherUserId) {
         const { data: profile } = await supabase
           .from("user_profiles")
-          .select("first_name, avatar_url")
+          .select("id, first_name, avatar_url")
           .eq("id", otherUserId)
           .single();
 
         if (profile) {
           participantName = profile.first_name;
           participantAvatar = profile.avatar_url;
+          participantId = profile.id;
         }
       }
 
-      const lastMessage = conv.messages?.[conv.messages.length - 1]?.content;
+      const messages = conv.messages || [];
+      const lastMessage = messages.length > 0 ? messages[messages.length - 1]?.content : null;
+
+      // Count unread messages (where read_at is null and sender is not current user)
+      const unreadCount = messages.filter(
+        (msg: any) => msg.read_at === null && msg.sender_id !== userId
+      ).length;
 
       return {
         id: conv.id,
         participantIds: conv.participant_ids,
+        participantId,
         lastMessageAt: conv.last_message_at,
         lastMessage,
         participantName,
         participantAvatar,
+        unreadCount,
       };
     })
   );
