@@ -110,7 +110,7 @@ const mockServices = [
     price_amount: 15,
     city: "Nantes",
     department: "44",
-    photos: ["https://images.unsplash.com/photo-1587654780291-39c9404d7dd0?w=600&q=80"],
+    photos: ["https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=600&q=80"],
     provider: {
       first_name: "Isabelle",
       avatar_url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
@@ -148,7 +148,7 @@ const mockServices = [
     price_amount: 20,
     city: "Strasbourg",
     department: "67",
-    photos: ["https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80"],
+    photos: ["https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600&q=80"],
     provider: {
       first_name: "Véronique",
       avatar_url: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=100&h=100&fit=crop&crop=face",

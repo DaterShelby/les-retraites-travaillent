@@ -48,7 +48,7 @@ const categoryImages: Record<string, string> = {
   'bricolage': 'https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=600&q=80',
   'jardinage': 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80',
   'cuisine': 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&q=80',
-  'garde': 'https://images.unsplash.com/photo-1587654780291-39c9404d7dd0?w=600&q=80',
+  'garde': 'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=600&q=80',
   'informatique': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80',
   'conseil': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80',
 };
@@ -423,7 +423,7 @@ export default function HomePage() {
                 price: '55€/h',
                 rating: 4.9,
                 reviews: 28,
-                image: 'https://images.unsplash.com/photo-1503454537688-e6c6f8374af3?w=500&q=80',
+                image: 'https://images.unsplash.com/photo-1587616211892-f743fcca64f9?w=500&q=80',
               },
             ].map((service, idx) => (
               <div
