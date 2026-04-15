@@ -49,127 +49,120 @@ export function ServiceCard({ service }: ServiceCardProps) {
 
   return (
     <Link href={`/services/${service.id}`}>
-      <div className="h-full flex flex-col rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-lg hover:scale-[1.01] transition-all duration-300">
-        {/* Photo Area */}
-        <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden flex items-center justify-center">
+      <div className="h-full flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+        {/* Photo Area — fully rounded */}
+        <div className="relative w-full aspect-[4/3] overflow-hidden">
           {service.photos && service.photos.length > 0 ? (
             <img
               src={service.photos[0]}
               alt={service.title}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-full bg-gray-300 mx-auto mb-2 flex items-center justify-center text-white font-semibold text-sm">
-                  {getInitials(service.title || "Service")}
-                </div>
-                <span className="text-xs text-gray-500">Service</span>
+            <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <span className="text-primary font-bold text-lg">
+                  {getInitials(service.title || "S")}
+                </span>
               </div>
             </div>
           )}
 
-          {/* Verified Badge */}
-          {provider.is_verified && (
-            <div className="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md flex items-center gap-1">
-              <Shield className="w-4 h-4 text-green-600" />
-              <span className="text-xs font-semibold text-green-600">
-                Vérifié
+          {/* Top badges row */}
+          <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
+            {/* Category pill */}
+            {service.category && (
+              <span className="inline-block rounded-full bg-white/90 backdrop-blur-sm text-gray-800 px-3 py-1 text-xs font-semibold shadow-sm">
+                {service.category}
               </span>
-            </div>
-          )}
+            )}
 
-          {/* Super Pro Badge */}
-          {provider.is_super_pro && (
-            <div className="absolute top-3 right-3 bg-amber-400 text-white rounded-full p-2 shadow-md flex items-center gap-1">
-              <Award className="w-4 h-4" />
-              <span className="text-xs font-semibold">Super Pro</span>
+            {/* Status badge */}
+            {provider.is_super_pro ? (
+              <div className="bg-amber-400/90 backdrop-blur-sm text-white rounded-full px-2.5 py-1 shadow-sm flex items-center gap-1">
+                <Award className="w-3.5 h-3.5" />
+                <span className="text-xs font-semibold">Super Pro</span>
+              </div>
+            ) : provider.is_verified ? (
+              <div className="bg-white/90 backdrop-blur-sm rounded-full px-2.5 py-1 shadow-sm flex items-center gap-1">
+                <Shield className="w-3.5 h-3.5 text-accent" />
+                <span className="text-xs font-semibold text-accent">Vérifié</span>
+              </div>
+            ) : null}
+          </div>
+
+          {/* Price badge — bottom right of image */}
+          {service.price_amount !== null && service.price_amount !== undefined && (
+            <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm rounded-2xl px-3 py-1.5 shadow-md">
+              <span className="text-base font-bold text-gray-900">
+                {service.price_amount}€
+              </span>
+              {service.price_type === "hourly" && (
+                <span className="text-xs text-gray-500">/h</span>
+              )}
             </div>
           )}
         </div>
 
         {/* Body Section */}
-        <div className="flex-1 flex flex-col p-5 justify-between">
-          {/* Category Tag */}
-          {service.category && (
-            <div className="mb-3">
-              <span className="inline-block rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-medium">
-                {service.category}
-              </span>
-            </div>
-          )}
-
+        <div className="flex-1 flex flex-col p-4 sm:p-5">
           {/* Title */}
-          <h3 className="font-serif text-lg font-bold text-gray-900 line-clamp-2 mb-2">
+          <h3 className="font-serif text-base sm:text-lg font-bold text-gray-900 line-clamp-2 mb-2 group-hover:text-primary transition-colors">
             {service.title}
           </h3>
 
           {/* Location */}
           {service.city && (
-            <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-4">
-              <MapPin className="w-4 h-4 flex-shrink-0" />
+            <div className="flex items-center gap-1.5 text-sm text-gray-400 mb-3">
+              <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
               <span>{service.city}</span>
             </div>
           )}
 
-          {/* Bottom Row - Price and Rating */}
-          <div className="flex items-center justify-between mb-4 pt-3 border-t border-gray-100">
-            {/* Price */}
-            {service.price_amount !== null && service.price_amount !== undefined ? (
-              <div>
-                <span className="text-lg font-bold text-gray-900">
-                  {service.price_amount}€
-                </span>
-                {service.price_type === "hourly" && (
-                  <span className="text-xs text-gray-500 ml-1">/h</span>
-                )}
-              </div>
-            ) : (
-              <span className="text-sm text-gray-500">À négocier</span>
-            )}
+          {/* Spacer */}
+          <div className="flex-1" />
 
-            {/* Rating */}
-            {rating > 0 ? (
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <span className="text-sm font-semibold text-gray-900">
-                  {rating.toFixed(1)}
-                </span>
-                {reviews > 0 && (
-                  <span className="text-xs text-gray-500">({reviews})</span>
-                )}
-              </div>
-            ) : (
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 text-gray-300" />
-                <span className="text-sm text-gray-500">Nouveau</span>
-              </div>
-            )}
-          </div>
-
-          {/* Provider Mini Row */}
-          {provider && (
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
+          {/* Provider row with rating */}
+          <div className="flex items-center justify-between pt-3 border-t border-gray-50">
+            {/* Provider avatar + name */}
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
                 {provider.avatar_url ? (
                   <img
                     src={provider.avatar_url}
                     alt={provider.first_name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-xl"
                     loading="lazy"
                   />
                 ) : (
-                  <span className="text-xs font-semibold text-gray-600">
+                  <span className="text-xs font-semibold text-gray-500">
                     {getInitials(provider.first_name)}
                   </span>
                 )}
               </div>
-              <span className="text-sm text-gray-700 truncate">
+              <span className="text-sm text-gray-600 font-medium truncate">
                 {provider.first_name}
               </span>
             </div>
-          )}
+
+            {/* Rating */}
+            {rating > 0 ? (
+              <div className="flex items-center gap-1 bg-gray-50 rounded-xl px-2.5 py-1">
+                <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                <span className="text-sm font-semibold text-gray-800">
+                  {rating.toFixed(1)}
+                </span>
+                {reviews > 0 && (
+                  <span className="text-xs text-gray-400">({reviews})</span>
+                )}
+              </div>
+            ) : (
+              <span className="text-xs text-gray-400 bg-gray-50 rounded-xl px-2.5 py-1">
+                Nouveau
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </Link>

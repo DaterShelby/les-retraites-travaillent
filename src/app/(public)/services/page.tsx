@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ServiceCard } from "@/components/services/service-card";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { Search, SlidersHorizontal, MapPin, ChevronDown, Sparkles } from "lucide-react";
 
 const mockServices = [
   {
@@ -236,73 +236,112 @@ const mockServices = [
   },
 ];
 
-const filterCategories = ["Catégorie", "Prix", "Distance", "Note", "Disponibilité"];
+const categories = [
+  "Tous",
+  "Informatique",
+  "Jardinage",
+  "Bricolage",
+  "Cuisine",
+  "Formation",
+  "Conseil",
+  "Ménage",
+  "Couture",
+  "Langues",
+  "Musique",
+  "Plomberie",
+];
 
 export default function ServicesPage() {
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("Tous");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const toggleFilter = (filter: string) => {
-    setSelectedFilters((prev) =>
-      prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
-    );
-  };
+  const filteredServices = mockServices.filter((s) => {
+    const matchesCategory =
+      selectedCategory === "Tous" || s.category === selectedCategory;
+    const matchesSearch =
+      !searchQuery ||
+      s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.category?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.city?.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Breadcrumb - hidden on mobile */}
-      <div className="hidden sm:block mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
-        <nav className="flex items-center gap-2 text-sm text-gray-600">
-          <Link href="/" className="hover:text-gray-900">
-            Accueil
-          </Link>
-          <span className="text-gray-400">/</span>
-          <span className="text-gray-900 font-medium">Services</span>
-        </nav>
-      </div>
+    <div className="min-h-screen bg-gray-50/50">
+      {/* Clean minimal hero — no banner, just content */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-6 sm:pb-8">
+          {/* Breadcrumb */}
+          <nav className="hidden sm:flex items-center gap-2 text-sm text-gray-400 mb-6">
+            <Link href="/" className="hover:text-gray-600 transition-colors">
+              Accueil
+            </Link>
+            <span>/</span>
+            <span className="text-gray-700 font-medium">Services</span>
+          </nav>
 
-      {/* Hero Banner Section - compact on mobile */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white">
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
-          <h1 className="text-2xl sm:text-5xl font-serif font-bold mb-2 sm:mb-3">
-            Trouvez le service idéal
-          </h1>
-          <p className="text-white/80 text-sm sm:text-lg">
-            Découvrez nos prestataires vérifiés et réservez le service qui vous convient
-          </p>
+          {/* Title row */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6 sm:mb-8">
+            <div>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-2">
+                Explorer les services
+              </h1>
+              <p className="text-gray-500 text-base sm:text-lg">
+                {filteredServices.length} expert{filteredServices.length > 1 ? "s" : ""} disponible{filteredServices.length > 1 ? "s" : ""} près de chez vous
+              </p>
+            </div>
+
+            {/* Subtle AI suggestion pill */}
+            <div className="flex items-center gap-2 bg-accent/10 text-accent rounded-2xl px-4 py-2 text-sm font-medium">
+              <Sparkles className="w-4 h-4" />
+              <span>Suggestions personnalisées</span>
+            </div>
+          </div>
+
+          {/* Search bar — Apple-like with rounded corners */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex-1 relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Rechercher un service, un métier..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 text-base transition-all"
+              />
+            </div>
+            <div className="relative sm:w-56">
+              <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Ville ou code postal"
+                className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-gray-50/80 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/30 text-base transition-all"
+              />
+            </div>
+            <button className="h-14 px-6 rounded-2xl bg-primary text-white font-semibold hover:bg-primary-600 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md">
+              <Search className="w-4 h-4" />
+              <span className="sm:hidden lg:inline">Rechercher</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Search & Filter Section - sticky on mobile */}
-      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-gray-100 md:relative md:top-auto md:border-b-0 md:backdrop-blur-none">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-          {/* Search Bar */}
-          <div className="relative mb-4 sm:mb-6">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Rechercher un service..."
-              className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent shadow-sm text-base"
-            />
-          </div>
-
-          {/* Filter Pills - horizontal scroll on mobile */}
-          <div className="overflow-x-auto scrollbar-hide pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
-            <div className="flex gap-2 sm:gap-3 min-w-min sm:min-w-full">
-              {filterCategories.map((filter) => (
+      {/* Category pills — horizontal scroll */}
+      <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-xl border-b border-gray-100/50">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+          <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex gap-2 min-w-min">
+              {categories.map((cat) => (
                 <button
-                  key={filter}
-                  onClick={() => toggleFilter(filter)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full border whitespace-nowrap transition-all duration-200 text-sm ${
-                    selectedFilters.includes(filter)
-                      ? "border-primary bg-primary text-white"
-                      : "border-gray-200 text-gray-700 hover:border-gray-400 active:bg-gray-50"
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2 rounded-2xl text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                    selectedCategory === cat
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-gray-100/80 text-gray-600 hover:bg-gray-200/80 hover:text-gray-900"
                   }`}
                 >
-                  {filter === "Distance" || filter === "Prix" ? (
-                    <SlidersHorizontal className="w-4 h-4" />
-                  ) : null}
-                  {filter}
+                  {cat}
                 </button>
               ))}
             </div>
@@ -310,34 +349,34 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      {/* Results Header */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:pb-6 sm:pt-0">
-        <p className="text-gray-600 font-medium text-sm sm:text-base">
-          {mockServices.length} services disponibles
-        </p>
-      </div>
-
-      {/* Services Grid - 1 col mobile, 2 col tablet, 3-4 col desktop */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12">
-        {mockServices.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {mockServices.map((service) => (
+      {/* Services Grid */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        {filteredServices.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+            {filteredServices.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-24">
-            <div className="text-center">
-              <h3 className="text-2xl font-serif font-bold text-gray-900 mb-2">
-                Aucun service trouvé
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Essayez de modifier vos filtres ou votre recherche
-              </p>
-              <button className="px-6 py-2 rounded-full bg-secondary text-white font-medium hover:bg-secondary/90 transition-colors">
-                Réinitialiser les filtres
-              </button>
+            <div className="w-20 h-20 rounded-3xl bg-gray-100 flex items-center justify-center mb-6">
+              <Search className="w-8 h-8 text-gray-300" />
             </div>
+            <h3 className="text-xl font-serif font-bold text-gray-900 mb-2">
+              Aucun service trouvé
+            </h3>
+            <p className="text-gray-500 mb-6 text-center max-w-sm">
+              Essayez de modifier vos filtres ou votre recherche pour trouver ce que vous cherchez.
+            </p>
+            <button
+              onClick={() => {
+                setSelectedCategory("Tous");
+                setSearchQuery("");
+              }}
+              className="px-6 py-3 rounded-2xl bg-primary text-white font-semibold hover:bg-primary-600 transition-all shadow-sm"
+            >
+              Réinitialiser les filtres
+            </button>
           </div>
         )}
       </div>

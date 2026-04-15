@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { MobileNav } from '@/components/layout/mobile-nav';
+import { Logo } from '@/components/ui/logo';
 import { SERVICE_CATEGORIES } from '@/lib/constants';
 import {
   Hammer,
@@ -26,89 +27,53 @@ import {
   Search,
   ChevronRight,
   CheckCircle2,
+  Play,
 } from 'lucide-react';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  Hammer,
-  TreePine,
-  ChefHat,
-  Baby,
-  Monitor,
-  Lightbulb,
-  GraduationCap,
-  FileText,
-  Scissors,
-  Sparkles,
-  Heart,
-  MoreHorizontal,
+  Hammer, TreePine, ChefHat, Baby, Monitor, Lightbulb,
+  GraduationCap, FileText, Scissors, Sparkles, Heart, MoreHorizontal,
 };
 
 const categoryImages: Record<string, string> = {
   'bricolage': 'https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=600&q=80',
   'jardinage': 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80',
   'cuisine': 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&q=80',
-  'garde': 'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=600&q=80',
+  'garde-enfants': 'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=600&q=80',
   'informatique': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80',
   'conseil': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80',
 };
 
-const categoryImageMap: Record<string, string> = {
-  'bricolage': categoryImages['bricolage'],
-  'jardinage': categoryImages['jardinage'],
-  'cuisine': categoryImages['cuisine'],
-  'garde-enfants': categoryImages['garde'],
-  'informatique': categoryImages['informatique'],
-  'conseil': categoryImages['conseil'],
-};
-
 export default function HomePage() {
   return (
-    <main id="main-content" className="min-h-screen bg-white">
-      {/* HEADER - Sticky, transparent to solid */}
-      <header className="fixed top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-gray-100/20 transition-all duration-300">
+    <main id="main-content" className="min-h-screen bg-neutral-cream">
+      {/* HEADER */}
+      <header className="fixed top-0 z-50 w-full bg-white/70 backdrop-blur-2xl border-b border-gray-200/30 transition-all duration-300">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <span className="font-serif text-xl font-bold text-primary tracking-tight">
-                Les Retraités Travaillent
-              </span>
-            </Link>
+            <Logo size="sm" />
 
-            {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-8">
-              <Link
-                href="/services"
-                className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
-              >
+            {/* Pill nav */}
+            <nav className="hidden md:flex items-center gap-1 bg-gray-100/60 rounded-2xl px-1.5 py-1">
+              <Link href="/services" className="text-sm font-medium text-gray-600 hover:text-primary hover:bg-white px-4 py-2 rounded-xl transition-all">
                 Services
               </Link>
-              <Link
-                href="/#how-it-works"
-                className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
-              >
+              <Link href="/#how-it-works" className="text-sm font-medium text-gray-600 hover:text-primary hover:bg-white px-4 py-2 rounded-xl transition-all">
                 Comment ça marche
               </Link>
-              <Link
-                href="/register?role=company"
-                className="text-sm font-medium text-gray-700 hover:text-primary transition-colors"
-              >
+              <Link href="/register?role=company" className="text-sm font-medium text-gray-600 hover:text-primary hover:bg-white px-4 py-2 rounded-xl transition-all">
                 Entreprises
               </Link>
             </nav>
 
-            {/* CTA Buttons */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <Link href="/login" className="hidden sm:block">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="rounded-2xl text-gray-600">
                   Se connecter
                 </Button>
               </Link>
               <Link href="/register?role=retiree">
-                <Button
-                  size="sm"
-                  className="rounded-full bg-secondary hover:bg-secondary/90 text-white"
-                >
+                <Button size="sm" className="rounded-2xl bg-secondary hover:bg-secondary-500 text-white shadow-sm">
                   Commencer
                 </Button>
               </Link>
@@ -117,139 +82,124 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* HERO SECTION */}
-      <section className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center pt-16 overflow-hidden bg-black">
-        {/* Background Image */}
-        <img
-          src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&q=80"
-          alt="Équipe de retraités travaillant ensemble"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-
-        {/* Dark Overlay for Text Readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+      {/* HERO */}
+      <section className="relative min-h-[90vh] flex items-center pt-16 overflow-hidden">
+        {/* Warm gradient background instead of stock photo */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-800 via-primary to-primary-900" />
+        {/* Subtle pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)", backgroundSize: "32px 32px" }} />
+        {/* Warm glow */}
+        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-secondary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-accent/15 rounded-full blur-3xl" />
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left: Content */}
-            <div className="space-y-8 animate-fade-in">
-              <div className="space-y-6">
-                <h1 className="font-serif text-4xl sm:text-6xl lg:text-8xl font-bold text-white leading-tight tracking-tight">
-                  L&apos;expérience n&apos;a pas de prix.
-                </h1>
-                <p className="text-base sm:text-xl text-white/95 leading-relaxed max-w-2xl font-light">
-                  Trouvez des experts retraités pour vos projets, ou proposez vos services et complétez vos revenus à votre rythme.
-                </p>
+            <div className="space-y-8">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-2 border border-white/10">
+                <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+                <span className="text-white/80 text-sm font-medium">2 400+ experts disponibles</span>
               </div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight">
+                L&apos;expérience{' '}
+                <span className="text-gradient bg-gradient-to-r from-secondary to-secondary-300 bg-clip-text text-transparent">
+                  n&apos;a pas
+                </span>{' '}
+                de prix.
+              </h1>
+
+              <p className="text-lg sm:text-xl text-white/70 leading-relaxed max-w-xl">
+                Trouvez des experts pour vos projets, ou proposez vos services et complétez vos revenus à votre rythme.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Link href="/services">
-                  <Button
-                    size="lg"
-                    className="rounded-full bg-secondary hover:bg-secondary/90 text-white gap-2 group shadow-lg hover:shadow-xl transition-all"
-                  >
+                  <Button size="lg" className="rounded-2xl bg-secondary hover:bg-secondary-500 text-white gap-2 group shadow-lg hover:shadow-xl">
                     Trouver un expert
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
                 <Link href="/register?role=retiree">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="rounded-full border-2 border-white text-white hover:bg-white/10 transition-colors shadow-lg"
-                  >
+                  <Button size="lg" variant="outline" className="rounded-2xl border-2 border-white/20 text-white hover:bg-white/10 backdrop-blur-sm">
                     Proposer mes services
                   </Button>
                 </Link>
               </div>
 
-              {/* Trust Bar */}
-              <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 pt-8 border-t border-white/20">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-white/80" />
-                  <span className="text-white/90 text-sm font-medium">2 400+ retraités actifs</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-white/80" />
-                  <span className="text-white/90 text-sm font-medium">15 000+ missions réalisées</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-white/80" />
-                  <span className="text-white/90 text-sm font-medium">4.8/5 satisfaction</span>
-                </div>
+              {/* Stats row */}
+              <div className="flex flex-wrap gap-6 sm:gap-10 pt-8 border-t border-white/10">
+                {[
+                  { value: "2 400+", label: "Experts actifs" },
+                  { value: "15 000+", label: "Missions réalisées" },
+                  { value: "4.8/5", label: "Satisfaction" },
+                ].map((stat) => (
+                  <div key={stat.label}>
+                    <p className="text-2xl font-bold text-white">{stat.value}</p>
+                    <p className="text-sm text-white/50">{stat.label}</p>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Right: Floating Cards with Images (Desktop Only) */}
+            {/* Right: Cards stack (Desktop) */}
             <div className="hidden lg:flex items-center justify-center relative h-full min-h-[500px]">
-              {/* Card 1 - Michel */}
-              <div className="absolute top-0 right-0 bg-white rounded-2xl shadow-2xl p-6 w-80 transform -rotate-6 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
-                <div className="flex items-center gap-4">
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-secondary/30 flex-shrink-0">
-                    <img
-                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-                      alt="Michel R."
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
+              {/* Card 1 */}
+              <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-72 transform -rotate-3 hover:rotate-0 transition-all duration-500 hover:shadow-xl border border-white/50">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Michel" className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Michel R.</p>
-                    <p className="text-xs text-gray-500">Bricolage & Menuiserie</p>
+                    <p className="font-semibold text-gray-900 text-sm">Michel R.</p>
+                    <p className="text-xs text-gray-400">Bricolage & Menuiserie</p>
                   </div>
                 </div>
-                <div className="mt-4 flex items-center gap-1">
+                <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                   ))}
-                  <span className="text-xs text-gray-500 ml-2">(47 avis)</span>
+                  <span className="text-xs text-gray-400 ml-2">(47 avis)</span>
                 </div>
               </div>
 
-              {/* Card 2 - Catherine */}
-              <div className="absolute top-32 left-0 bg-white rounded-2xl shadow-2xl p-6 w-80 transform rotate-6 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
-                <div className="flex items-center gap-4">
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-accent/30 flex-shrink-0">
-                    <img
-                      src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face"
-                      alt="Catherine B."
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
+              {/* Card 2 */}
+              <div className="absolute top-40 left-0 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-72 transform rotate-3 hover:rotate-0 transition-all duration-500 hover:shadow-xl border border-white/50">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0">
+                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face" alt="Catherine" className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Catherine B.</p>
-                    <p className="text-xs text-gray-500">Cours d&apos;Informatique</p>
+                    <p className="font-semibold text-gray-900 text-sm">Catherine B.</p>
+                    <p className="text-xs text-gray-400">Cours d&apos;Informatique</p>
                   </div>
                 </div>
-                <div className="mt-4 flex items-center gap-1">
+                <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                   ))}
-                  <span className="text-xs text-gray-500 ml-2">(92 avis)</span>
+                  <span className="text-xs text-gray-400 ml-2">(92 avis)</span>
                 </div>
               </div>
 
-              {/* Card 3 - Pierre */}
-              <div className="absolute bottom-0 right-12 bg-white rounded-2xl shadow-2xl p-6 w-80 transform -rotate-3 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
-                <div className="flex items-center gap-4">
-                  <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-orange-300/50 flex-shrink-0">
-                    <img
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
-                      alt="Pierre D."
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
+              {/* Card 3 */}
+              <div className="absolute bottom-4 right-12 bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-72 transform -rotate-1 hover:rotate-0 transition-all duration-500 hover:shadow-xl border border-white/50">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="Pierre" className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">Pierre D.</p>
-                    <p className="text-xs text-gray-500">Jardinage & Paysagisme</p>
+                    <p className="font-semibold text-gray-900 text-sm">Pierre D.</p>
+                    <p className="text-xs text-gray-400">Jardinage & Paysagisme</p>
                   </div>
                 </div>
-                <div className="mt-4 flex items-center gap-1">
+                <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                   ))}
-                  <span className="text-xs text-gray-500 ml-2">(63 avis)</span>
+                  <span className="text-xs text-gray-400 ml-2">(63 avis)</span>
                 </div>
               </div>
             </div>
@@ -257,33 +207,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SEARCH BAR SECTION */}
-      <section className="relative -mt-8 pb-20">
+      {/* SEARCH BAR */}
+      <section className="relative -mt-8 pb-16 sm:pb-24">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 animate-fade-in">
-            <div className="flex flex-col lg:flex-row gap-4">
-              {/* Search Input */}
-              <div className="flex-1 flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+          <div className="bg-white rounded-3xl shadow-xl border border-gray-100/80 p-5 sm:p-6">
+            <div className="flex flex-col lg:flex-row gap-3">
+              <div className="flex-1 flex items-center gap-3 bg-gray-50 rounded-2xl px-4 py-3">
                 <Search className="w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Que recherchez-vous ? (ex: plomberie, jardinage...)"
-                  className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-500 text-sm"
-                />
+                <input type="text" placeholder="Que recherchez-vous ?" className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-400 text-sm" />
               </div>
-
-              {/* Location Input */}
-              <div className="flex-1 flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+              <div className="flex-1 flex items-center gap-3 bg-gray-50 rounded-2xl px-4 py-3">
                 <MapPin className="w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Ville ou code postal"
-                  className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-500 text-sm"
-                />
+                <input type="text" placeholder="Ville ou code postal" className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-400 text-sm" />
               </div>
-
-              {/* Search Button */}
-              <Button className="rounded-xl bg-secondary hover:bg-secondary/90 text-white px-8 whitespace-nowrap shadow-lg hover:shadow-xl transition-all">
+              <Button className="rounded-2xl bg-secondary hover:bg-secondary-500 text-white px-8 shadow-sm hover:shadow-md">
                 Rechercher
               </Button>
             </div>
@@ -291,58 +228,50 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CATEGORIES SECTION */}
-      <section className="py-20 sm:py-28 bg-white">
+      {/* CATEGORIES */}
+      <section className="py-16 sm:py-24 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 space-y-4 animate-fade-in">
-            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
-              Explorez nos catégories
-            </h2>
-            <p className="text-lg text-gray-500 max-w-2xl">
-              Trouvez le savoir-faire dont vous avez besoin parmi nos experts retraités.
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10 gap-4">
+            <div>
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-2">
+                Explorez les catégories
+              </h2>
+              <p className="text-gray-400 text-base sm:text-lg">
+                Trouvez le savoir-faire dont vous avez besoin.
+              </p>
+            </div>
+            <Link href="/services" className="inline-flex items-center gap-2 text-sm font-semibold text-secondary hover:text-secondary-500 transition-colors">
+              Voir tout
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
-          {/* Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {SERVICE_CATEGORIES.slice(0, 6).map((category) => {
               const IconComponent = iconMap[category.icon as keyof typeof iconMap];
-              const bgImage = categoryImageMap[category.id];
+              const bgImage = categoryImages[category.id];
 
               return (
                 <Link
                   key={category.id}
                   href={`/services?category=${category.id}`}
-                  className="group relative overflow-hidden rounded-2xl h-64 hover:shadow-xl transition-all duration-300"
+                  className="group relative overflow-hidden rounded-3xl h-56 sm:h-64 hover:shadow-xl transition-all duration-300"
                 >
-                  {/* Background Image */}
                   {bgImage && (
-                    <img
-                      src={bgImage}
-                      alt={category.label}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      loading="lazy"
-                    />
+                    <img src={bgImage} alt={category.label} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
                   )}
-
-                  {/* Dark Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20 group-hover:from-black/80 transition-all duration-300" />
-
-                  {/* Content */}
-                  <div className="absolute inset-0 p-8 flex flex-col justify-between">
-                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-white/20 backdrop-blur-sm group-hover:bg-secondary/90 transition-all duration-300">
-                      {IconComponent && (
-                        <IconComponent className="w-7 h-7 text-white" />
-                      )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-all duration-300" />
+                  <div className="absolute inset-0 p-6 sm:p-8 flex flex-col justify-between">
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/15 backdrop-blur-md group-hover:bg-secondary/80 transition-all duration-300">
+                      {IconComponent && <IconComponent className="w-6 h-6 text-white" />}
                     </div>
-
                     <div>
-                      <h3 className="font-semibold text-xl text-white mb-2 tracking-tight">
+                      <h3 className="font-semibold text-lg sm:text-xl text-white mb-1 tracking-tight">
                         {category.label}
                       </h3>
-                      <p className="text-sm text-white/90 flex items-center gap-2">
-                        +120 experts disponibles
-                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      <p className="text-sm text-white/70 flex items-center gap-1.5">
+                        +120 experts
+                        <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </p>
                     </div>
                   </div>
@@ -350,114 +279,54 @@ export default function HomePage() {
               );
             })}
           </div>
-
-          {/* View All */}
-          <div className="mt-12 text-center">
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 text-lg font-semibold text-primary hover:text-primary/80 transition-colors"
-            >
-              Voir toutes les catégories
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* FEATURED SERVICES SECTION */}
-      <section className="py-20 sm:py-28 bg-gradient-to-b from-gray-50 to-white">
+      {/* FEATURED SERVICES */}
+      <section className="py-16 sm:py-24 bg-neutral-cream">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 space-y-4 animate-fade-in">
-            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
-              Services en vedette
-            </h2>
-            <p className="text-lg text-gray-500 max-w-2xl">
-              Découvrez les derniers projets disponibles de nos experts.
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10 gap-4">
+            <div>
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-2">
+                Services en vedette
+              </h2>
+              <p className="text-gray-400 text-base sm:text-lg">
+                Les derniers projets de nos experts.
+              </p>
+            </div>
+            <Link href="/services" className="inline-flex items-center gap-2 text-sm font-semibold text-secondary hover:text-secondary-500 transition-colors">
+              Explorer
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
-          {/* Featured Services Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {[
-              {
-                title: 'Rénovation cuisine',
-                expert: 'Michel R.',
-                price: '75€/h',
-                rating: 4.9,
-                reviews: 47,
-                image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&q=80',
-              },
-              {
-                title: 'Conseil en jardinage',
-                expert: 'Pierre D.',
-                price: '50€/h',
-                rating: 4.8,
-                reviews: 63,
-                image: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=500&q=80',
-              },
-              {
-                title: 'Cours d\'informatique',
-                expert: 'Catherine B.',
-                price: '45€/h',
-                rating: 5.0,
-                reviews: 92,
-                image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&q=80',
-              },
-              {
-                title: 'Garde d\'enfants',
-                expert: 'Anne M.',
-                price: '55€/h',
-                rating: 4.9,
-                reviews: 28,
-                image: 'https://images.unsplash.com/photo-1587616211892-f743fcca64f9?w=500&q=80',
-              },
+              { title: 'Rénovation cuisine', expert: 'Michel R.', price: '75€/h', rating: 4.9, reviews: 47, image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&q=80' },
+              { title: 'Conseil en jardinage', expert: 'Pierre D.', price: '50€/h', rating: 4.8, reviews: 63, image: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=500&q=80' },
+              { title: "Cours d'informatique", expert: 'Catherine B.', price: '45€/h', rating: 5.0, reviews: 92, image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&q=80' },
+              { title: "Garde d'enfants", expert: 'Anne M.', price: '55€/h', rating: 4.9, reviews: 28, image: 'https://images.unsplash.com/photo-1587616211892-f743fcca64f9?w=500&q=80' },
             ].map((service, idx) => (
-              <div
-                key={idx}
-                className="group rounded-2xl overflow-hidden bg-white border border-gray-100 hover:shadow-xl transition-all duration-300"
-              >
-                {/* Image */}
-                <div className="relative h-48 overflow-hidden bg-gray-200">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    loading="lazy"
-                  />
+              <div key={idx} className="group rounded-3xl overflow-hidden bg-white border border-gray-100/80 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="relative h-44 sm:h-48 overflow-hidden">
+                  <img src={service.image} alt={service.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                 </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                <div className="p-5">
+                  <h3 className="font-semibold text-base text-gray-900 mb-1.5 group-hover:text-primary transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-4">{service.expert}</p>
-
-                  {/* Rating */}
+                  <p className="text-sm text-gray-400 mb-3">{service.expert}</p>
                   <div className="flex items-center gap-2 mb-4">
                     <div className="flex items-center gap-0.5">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-3.5 h-3.5 ${
-                            i < Math.floor(service.rating)
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-gray-200'
-                          }`}
-                        />
+                        <Star key={i} className={`w-3 h-3 ${i < Math.floor(service.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`} />
                       ))}
                     </div>
-                    <span className="text-xs text-gray-600">
-                      {service.rating} ({service.reviews})
-                    </span>
+                    <span className="text-xs text-gray-400">{service.rating} ({service.reviews})</span>
                   </div>
-
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-secondary">{service.price}</span>
-                    <Button
-                      size="sm"
-                      className="rounded-full bg-primary hover:bg-primary/90 text-white"
-                    >
+                    <Button size="sm" className="rounded-2xl bg-primary hover:bg-primary-700 text-white text-xs h-9 px-4">
                       Réserver
                     </Button>
                   </div>
@@ -468,119 +337,67 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* HOW IT WORKS SECTION */}
-      <section id="how-it-works" className="py-20 sm:py-28 bg-gray-50">
+      {/* HOW IT WORKS */}
+      <section id="how-it-works" className="py-16 sm:py-24 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-16 space-y-4 animate-fade-in">
-            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+          <div className="text-center mb-16">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-3">
               Comment ça marche
             </h2>
-            <p className="text-lg text-gray-500 max-w-2xl">
-              Trois étapes simples pour commencer votre aventure.
+            <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto">
+              Trois étapes simples pour commencer.
             </p>
           </div>
 
-          {/* Steps */}
-          <div className="grid sm:grid-cols-3 gap-12">
+          <div className="grid sm:grid-cols-3 gap-8 sm:gap-12">
             {[
-              {
-                number: '01',
-                title: 'Créez votre profil',
-                description:
-                  'En quelques minutes, décrivez vos compétences, votre expérience et vos disponibilités.',
-              },
-              {
-                number: '02',
-                title: 'Trouvez la bonne mission',
-                description:
-                  'Parcourez les demandes de services ou recevez des propositions adaptées à votre profil.',
-              },
-              {
-                number: '03',
-                title: 'Partagez votre savoir-faire',
-                description:
-                  'Réalisez vos missions, recevez des avis, et complétez vos revenus à votre rythme.',
-              },
-            ].map((step, idx) => (
-              <div key={step.number} className="relative">
-                {/* Connecting Line (Desktop) */}
-                {idx < 2 && (
-                  <div className="hidden sm:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-to-r from-secondary/50 to-secondary/0 -translate-x-1/2" />
-                )}
-
-                {/* Step Content */}
-                <div className="relative">
-                  <p className="font-serif text-7xl font-bold text-secondary/20 mb-4 tracking-tight">
-                    {step.number}
-                  </p>
-                  <h3 className="font-serif text-2xl font-bold text-gray-900 mb-4 tracking-tight -mt-6">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed max-w-sm">
-                    {step.description}
-                  </p>
+              { number: '01', title: 'Créez votre profil', desc: 'Décrivez vos compétences, votre expérience et vos disponibilités en quelques minutes.' },
+              { number: '02', title: 'Trouvez la bonne mission', desc: 'Parcourez les demandes ou recevez des propositions adaptées à votre profil.' },
+              { number: '03', title: 'Partagez votre savoir-faire', desc: 'Réalisez vos missions, recevez des avis et complétez vos revenus.' },
+            ].map((step) => (
+              <div key={step.number} className="text-center sm:text-left">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-secondary/10 mb-6">
+                  <span className="text-xl font-bold text-secondary">{step.number}</span>
                 </div>
+                <h3 className="font-serif text-xl font-bold text-gray-900 mb-3 tracking-tight">
+                  {step.title}
+                </h3>
+                <p className="text-gray-400 leading-relaxed">
+                  {step.desc}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* TRUST SECTION */}
-      <section className="py-20 sm:py-28 bg-white">
+      {/* TRUST */}
+      <section className="py-16 sm:py-24 bg-neutral-cream">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-16 space-y-4 animate-fade-in">
-            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+          <div className="text-center mb-14">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-3">
               Pourquoi nous choisir
             </h2>
-            <p className="text-lg text-gray-500 max-w-2xl">
-              Une plateforme construite sur la confiance et la qualité.
+            <p className="text-gray-400 text-base sm:text-lg">
+              Une plateforme construite sur la confiance.
             </p>
           </div>
 
-          {/* Trust Cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              {
-                icon: Shield,
-                title: 'Profils vérifiés',
-                description:
-                  'Tous les experts sont vérifiés et authentifiés pour votre sécurité.',
-              },
-              {
-                icon: Clock,
-                title: 'Flexibilité totale',
-                description:
-                  'Travaillez selon votre emploi du temps et vos préférences.',
-              },
-              {
-                icon: Star,
-                title: 'Avis authentiques',
-                description:
-                  'Des évaluations vérifiées pour vous aider à choisir.',
-              },
-              {
-                icon: Users,
-                title: 'Communauté active',
-                description:
-                  'Rejoignez 2 400+ retraités qui gagnent déjà avec nous.',
-              },
+              { icon: Shield, title: 'Profils vérifiés', desc: 'Experts authentifiés pour votre sécurité.' },
+              { icon: Clock, title: 'Flexibilité totale', desc: 'Travaillez à votre rythme et vos horaires.' },
+              { icon: Star, title: 'Avis authentiques', desc: 'Évaluations vérifiées par la communauté.' },
+              { icon: Users, title: 'Communauté active', desc: '2 400+ experts qui partagent leur savoir.' },
             ].map((item, idx) => {
               const Icon = item.icon;
               return (
-                <div
-                  key={idx}
-                  className="rounded-2xl border border-gray-100 bg-white p-8 hover:shadow-lg transition-shadow duration-300"
-                >
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-primary/10 mb-6">
-                    <Icon className="w-7 h-7 text-primary" />
+                <div key={idx} className="rounded-3xl bg-white p-7 sm:p-8 border border-gray-100/80 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/5 mb-5">
+                    <Icon className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-lg text-gray-900 mb-3 tracking-tight">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-500 leading-relaxed">
-                    {item.description}
-                  </p>
+                  <h3 className="font-semibold text-base text-gray-900 mb-2">{item.title}</h3>
+                  <p className="text-sm text-gray-400 leading-relaxed">{item.desc}</p>
                 </div>
               );
             })}
@@ -588,75 +405,38 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* TESTIMONIALS SECTION */}
-      <section className="py-20 sm:py-28 bg-primary/5">
+      {/* TESTIMONIALS */}
+      <section className="py-16 sm:py-24 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-16 space-y-4 animate-fade-in">
-            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+          <div className="text-center mb-14">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-3">
               Ils nous font confiance
             </h2>
-            <p className="text-lg text-gray-500 max-w-2xl">
-              Les histoires de réussite de notre communauté.
-            </p>
           </div>
 
-          {/* Testimonials */}
-          <div className="grid sm:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-3 gap-5">
             {[
-              {
-                quote:
-                  '"J\'ai retrouvé de la confiance en moi. Les missions me permettent de rester actif et utile."',
-                name: 'Jacques M.',
-                role: 'Retraité - Bricolage',
-                rating: 5,
-                image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&h=100&fit=crop&crop=face',
-              },
-              {
-                quote:
-                  '"Incroyable ! Les experts sont professionnels et fiables. Parfait pour mes projets."',
-                name: 'Sophie L.',
-                role: 'Particulière - Client',
-                rating: 5,
-                image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
-              },
-              {
-                quote:
-                  '"Une belle opportunité de compléter ma retraite tout en aidant la communauté locale."',
-                name: 'Marie R.',
-                role: 'Retraitée - Conseil',
-                rating: 5,
-                image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face',
-              },
-            ].map((testimonial, idx) => (
-              <div
-                key={idx}
-                className="rounded-2xl bg-white shadow-sm p-8 border border-gray-100 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-accent/30 flex-shrink-0">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      loading="lazy"
-                    />
+              { quote: "J'ai retrouvé de la confiance en moi. Les missions me permettent de rester actif et utile.", name: 'Jacques M.', role: 'Retraité - Bricolage', image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&h=100&fit=crop&crop=face' },
+              { quote: "Les experts sont professionnels et fiables. Parfait pour mes projets de rénovation.", name: 'Sophie L.', role: 'Particulière', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face' },
+              { quote: "Une belle opportunité de compléter ma retraite tout en aidant la communauté.", name: 'Marie R.', role: 'Retraitée - Conseil', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face' },
+            ].map((t, idx) => (
+              <div key={idx} className="rounded-3xl bg-neutral-cream p-7 sm:p-8 border border-gray-100/50 hover:shadow-md transition-all duration-300">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-11 h-11 rounded-2xl overflow-hidden flex-shrink-0">
+                    <img src={t.image} alt={t.name} className="w-full h-full object-cover" loading="lazy" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                    <p className="text-xs text-gray-500">{testimonial.role}</p>
+                    <p className="font-semibold text-sm text-gray-900">{t.name}</p>
+                    <p className="text-xs text-gray-400">{t.role}</p>
                   </div>
                 </div>
-
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: testimonial.rating }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 fill-yellow-400 text-yellow-400"
-                    />
+                <div className="flex gap-0.5 mb-3">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <p className="text-gray-700 leading-relaxed italic">
-                  {testimonial.quote}
+                <p className="text-gray-600 text-sm leading-relaxed italic">
+                  &ldquo;{t.quote}&rdquo;
                 </p>
               </div>
             ))}
@@ -665,30 +445,22 @@ export default function HomePage() {
       </section>
 
       {/* ENTERPRISE CTA */}
-      <section className="relative py-20 sm:py-28 bg-black overflow-hidden">
-        {/* Background Image */}
-        <img
-          src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&q=80"
-          alt="Bureau professionnel"
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
-          loading="lazy"
-        />
-
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/80 pointer-events-none" />
+      <section className="relative py-16 sm:py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-800 via-primary to-primary-900" />
+        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-secondary/15 rounded-full blur-3xl" />
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-6 tracking-tight">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-2 mb-8 border border-white/10">
+            <span className="text-white/70 text-sm font-medium">Conforme loi 2026</span>
+          </div>
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white mb-5 tracking-tight">
             Entreprises : la loi des 5%
           </h2>
-          <p className="text-lg text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
-            La loi 2026 impose aux entreprises de 1 000+ salariés de maintenir 5% de seniors 60+ dans leurs effectifs. Trouvez les meilleurs profils expérimentés.
+          <p className="text-lg text-white/60 mb-10 max-w-2xl mx-auto leading-relaxed">
+            La loi impose aux grandes entreprises de maintenir 5% de seniors 60+ dans leurs effectifs. Trouvez les meilleurs profils.
           </p>
           <Link href="/register?role=company">
-            <Button
-              size="lg"
-              className="rounded-full bg-secondary hover:bg-secondary/90 text-white gap-2 group shadow-lg hover:shadow-xl transition-all"
-            >
+            <Button size="lg" className="rounded-2xl bg-secondary hover:bg-secondary-500 text-white gap-2 group shadow-lg">
               Découvrir l&apos;offre entreprise
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -697,31 +469,24 @@ export default function HomePage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-20 sm:py-28 bg-secondary/10">
+      <section className="py-16 sm:py-24 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl bg-white border border-gray-100 p-12 sm:p-16 text-center shadow-xl animate-fade-in">
-            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
+          <div className="rounded-3xl bg-neutral-cream border border-gray-100/80 p-10 sm:p-16 text-center">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
               Prêt à commencer ?
             </h2>
-            <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-400 mb-10 max-w-xl mx-auto">
               Rejoignez notre communauté et démarrez vos missions dès aujourd&apos;hui.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/register?role=retiree">
-                <Button
-                  size="lg"
-                  className="rounded-full bg-secondary hover:bg-secondary/90 text-white gap-2 group shadow-lg hover:shadow-xl transition-all"
-                >
+                <Button size="lg" className="rounded-2xl bg-secondary hover:bg-secondary-500 text-white gap-2 group shadow-sm">
                   Je suis retraité
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="/register?role=client">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="rounded-full border-2 border-gray-300 hover:border-primary hover:text-primary transition-colors"
-                >
+                <Button size="lg" variant="outline" className="rounded-2xl border-2 border-gray-200 hover:border-primary hover:text-primary">
                   Je cherche un service
                 </Button>
               </Link>
@@ -731,97 +496,45 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-primary-800 text-white py-14 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-            {/* Brand */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
             <div className="space-y-4">
-              <h4 className="font-serif text-lg font-bold">
-                Les Retraités Travaillent
-              </h4>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                La plateforme de référence pour valoriser l&apos;expérience des retraités français et connecter expertise avec demande.
+              <Logo size="sm" variant="light" />
+              <p className="text-sm text-white/40 leading-relaxed mt-4">
+                La plateforme de référence pour valoriser l&apos;expérience et connecter expertise avec demande.
               </p>
             </div>
-
-            {/* Services */}
-            <div className="space-y-4">
-              <h4 className="font-semibold text-sm uppercase tracking-wide text-gray-300">
-                Services
-              </h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link href="/services" className="text-sm text-gray-400 hover:text-white transition-colors">
-                    Trouver un expert
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/register?role=retiree"
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
-                  >
-                    Proposer ses services
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/register?role=company"
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
-                  >
-                    Espace entreprise
-                  </Link>
-                </li>
+            <div className="space-y-3">
+              <h4 className="font-semibold text-xs uppercase tracking-wider text-white/50">Services</h4>
+              <ul className="space-y-2.5">
+                <li><Link href="/services" className="text-sm text-white/40 hover:text-white transition-colors">Trouver un expert</Link></li>
+                <li><Link href="/register?role=retiree" className="text-sm text-white/40 hover:text-white transition-colors">Proposer ses services</Link></li>
+                <li><Link href="/register?role=company" className="text-sm text-white/40 hover:text-white transition-colors">Espace entreprise</Link></li>
               </ul>
             </div>
-
-            {/* Legal */}
-            <div className="space-y-4">
-              <h4 className="font-semibold text-sm uppercase tracking-wide text-gray-300">
-                Informations
-              </h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link href="/blog" className="text-sm text-gray-400 hover:text-white transition-colors">
-                    Blog & Conseils
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/legal/cgu" className="text-sm text-gray-400 hover:text-white transition-colors">
-                    Conditions d&apos;utilisation
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/legal/confidentialite" className="text-sm text-gray-400 hover:text-white transition-colors">
-                    Politique de confidentialité
-                  </Link>
-                </li>
+            <div className="space-y-3">
+              <h4 className="font-semibold text-xs uppercase tracking-wider text-white/50">Informations</h4>
+              <ul className="space-y-2.5">
+                <li><Link href="/blog" className="text-sm text-white/40 hover:text-white transition-colors">Blog & Conseils</Link></li>
+                <li><Link href="/legal/cgu" className="text-sm text-white/40 hover:text-white transition-colors">Conditions d&apos;utilisation</Link></li>
+                <li><Link href="/legal/confidentialite" className="text-sm text-white/40 hover:text-white transition-colors">Confidentialité</Link></li>
               </ul>
             </div>
-
-            {/* Contact */}
-            <div className="space-y-4">
-              <h4 className="font-semibold text-sm uppercase tracking-wide text-gray-300">
-                Contact
-              </h4>
-              <p className="text-sm text-gray-400">
-                contact@les-retraites-travaillent.fr
-              </p>
-              <p className="text-sm text-gray-400">
-                +33 (0) 1 23 45 67 89
-              </p>
+            <div className="space-y-3">
+              <h4 className="font-semibold text-xs uppercase tracking-wider text-white/50">Contact</h4>
+              <p className="text-sm text-white/40">contact@les-retraites-travaillent.fr</p>
+              <p className="text-sm text-white/40">+33 (0) 1 23 45 67 89</p>
             </div>
           </div>
-
-          {/* Bottom */}
-          <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="text-sm text-gray-400">
+          <div className="border-t border-white/10 pt-8 text-center">
+            <p className="text-sm text-white/30">
               © {new Date().getFullYear()} Les Retraités Travaillent. Tous droits réservés.
             </p>
           </div>
         </div>
       </footer>
 
-      {/* Mobile Bottom Navigation */}
       <MobileNav />
     </main>
   );

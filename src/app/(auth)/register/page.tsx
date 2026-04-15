@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Logo } from "@/components/ui/logo";
 import { createClient } from "@/lib/supabase/client";
 import {
   Users,
@@ -191,24 +192,17 @@ function RegisterForm() {
   };
 
   return (
-    <main id="main-content" className="min-h-screen flex">
+    <main id="main-content" className="min-h-screen flex bg-neutral-cream">
       {/* Left side - Form */}
-      <div className="w-full lg:w-[45%] flex flex-col px-6 sm:px-12 lg:px-16 py-8">
+      <div className="w-full lg:w-[48%] flex flex-col px-6 sm:px-12 lg:px-16 py-8">
         {/* Top nav */}
         <div className="flex items-center justify-between mb-8 lg:mb-12">
-          <Link href="/" className="group flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-              <span className="text-white font-serif font-bold text-lg">LR</span>
-            </div>
-            <span className="font-serif text-lg font-bold text-primary hidden sm:inline">
-              Les Retraités Travaillent
-            </span>
-          </Link>
+          <Logo size="sm" />
           <Link
             href="/login"
-            className="text-sm font-medium text-gray-500 hover:text-primary transition-colors"
+            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
           >
-            Déjà membre ? <span className="text-primary font-semibold">Se connecter</span>
+            Déjà membre ? <span className="text-secondary font-semibold">Se connecter</span>
           </Link>
         </div>
 
@@ -497,32 +491,30 @@ function RegisterForm() {
         </div>
       </div>
 
-      {/* Right side - Visual (desktop only) */}
-      <div className="hidden lg:flex lg:w-[55%] relative overflow-hidden">
-        <img
-          src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=80"
-          alt="Retraité partageant son savoir-faire"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 via-secondary/30 to-transparent"></div>
-        <div className="relative z-10 flex flex-col justify-end p-12 pb-16">
-          <div className="max-w-lg">
-            <blockquote className="mb-6">
-              <p className="text-white text-xl font-serif italic leading-relaxed">
-                "À 67 ans, j'ai retrouvé le plaisir de transmettre mon savoir. Cette plateforme m'a redonné un but."
+      {/* Right side — gradient visual */}
+      <div className="hidden lg:flex lg:w-[52%] relative overflow-hidden rounded-l-[48px]">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-800 via-primary to-primary-900" />
+        <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-accent/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-secondary/15 rounded-full blur-3xl" />
+
+        <div className="relative z-10 flex flex-col justify-center p-16">
+          <div className="max-w-md">
+            <blockquote className="mb-8">
+              <p className="text-white/90 text-xl font-serif italic leading-relaxed">
+                &ldquo;À 67 ans, j&apos;ai retrouvé le plaisir de transmettre mon savoir. Cette plateforme m&apos;a redonné un but.&rdquo;
               </p>
             </blockquote>
             <div className="flex items-center gap-3">
-              <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-                alt="Michel R."
-                className="w-12 h-12 rounded-full border-2 border-white/30 object-cover"
-              />
+              <div className="w-12 h-12 rounded-2xl overflow-hidden flex-shrink-0">
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+                  alt="Michel R."
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <div>
-                <p className="text-white font-semibold">Michel R.</p>
-                <p className="text-white/70 text-sm">
-                  Consultant en gestion, Paris
-                </p>
+                <p className="text-white font-semibold text-sm">Michel R.</p>
+                <p className="text-white/50 text-sm">Consultant en gestion, Paris</p>
               </div>
             </div>
           </div>
