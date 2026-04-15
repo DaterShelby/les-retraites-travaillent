@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, Phone, Mail, BadgeCheck } from "lucide-react";
-import { redirect } from "next/navigation";
+import { Star, MapPin, Award, Shield } from "lucide-react";
+import { notFound } from "next/navigation";
 
 interface ServiceDetailPageProps {
   params: {
@@ -31,10 +31,10 @@ export async function generateMetadata({
 
   return {
     title: `${service.title} | Les Retraités Travaillent`,
-    description: service.description,
+    description: service.description || "Découvrez ce service sur Les Retraités Travaillent",
     openGraph: {
       title: service.title,
-      description: service.description,
+      description: service.description || "Découvrez ce service",
     },
   };
 }
@@ -56,10 +56,9 @@ export default async function ServiceDetailPage({
       price_type,
       price_amount,
       city,
-      department,
       photos,
       tags,
-      created_at,
+      views_count,
       provider:provider_id(
         id,
         first_name,
@@ -70,7 +69,6 @@ export default async function ServiceDetailPage({
         total_reviews,
         is_verified,
         is_super_pro,
-        phone,
         city
       )
     `
@@ -80,240 +78,261 @@ export default async function ServiceDetailPage({
     .single();
 
   if (error || !service) {
-    redirect("/services");
+    notFound();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // Increment views count (fire and forget)
+  supabase
+    .from("services")
+    .update({ views_count: (service.views_count || 0) + 1 })
+    .eq("id", service.id)
+    .then();
+
+  // Type the provider properly
   const provider = (Array.isArray(service.provider) ? service.provider[0] : service.provider) as any;
 
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
   return (
-    <main className="min-h-screen bg-neutral-cream">
+    <main className="min-h-screen bg-[#FAF9F6]">
       {/* Breadcrumb */}
-      <div className="bg-white shadow-subtle">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-2 text-sm">
-            <Link href="/services" className="text-primary hover:underline">
+      <div className="bg-white border-b border-gray-100">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Link href="/" className="text-primary hover:text-primary/80 font-medium">
+              Accueil
+            </Link>
+            <span className="text-gray-300">/</span>
+            <Link href="/services" className="text-primary hover:text-primary/80 font-medium">
               Services
             </Link>
-            <span className="text-gray-400">/</span>
-            <span className="text-neutral-text font-medium">{service.category}</span>
+            <span className="text-gray-300">/</span>
+            <span className="text-gray-500">{service.category}</span>
+            <span className="text-gray-300">/</span>
+            <span className="text-gray-500 font-medium truncate">{service.title}</span>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Colonne principale */}
-          <div className="lg:col-span-2">
-            {/* Images */}
-            <div className="bg-white rounded-sm border border-gray-200 p-6 mb-8">
-              <div className="aspect-video bg-gradient-to-br from-primary-100 to-accent-100 rounded-sm flex items-center justify-center mb-4">
-                <span className="text-white text-sm font-medium">
-                  {service.photos?.[0] || "Photo du service"}
-                </span>
-              </div>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Main Column */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Photo Gallery */}
+            <div className="rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm">
+              {service.photos && service.photos.length > 0 ? (
+                <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                  <img
+                    src={service.photos[0]}
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                      <span className="text-primary font-bold text-lg">
+                        {getInitials(service.title || "S")}
+                      </span>
+                    </div>
+                    <p className="text-gray-500 text-sm">Pas de photo</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Photo Thumbnails */}
               {service.photos && service.photos.length > 1 && (
-                <div className="grid grid-cols-4 gap-2">
+                <div className="p-3 sm:p-4 border-t border-gray-100 grid grid-cols-4 gap-2">
                   {service.photos.map((photo: string, idx: number) => (
                     <div
                       key={idx}
-                      className="aspect-square bg-gray-200 rounded-sm flex items-center justify-center"
+                      className="aspect-square rounded-2xl overflow-hidden bg-gray-100"
                     >
-                      <span className="text-xs text-gray-600">Photo {idx + 1}</span>
+                      <img
+                        src={photo}
+                        alt={`${service.title} ${idx + 1}`}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Service info */}
-            <div className="bg-white rounded-sm border border-gray-200 p-6">
-              <div className="mb-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <h1 className="font-serif text-3xl font-bold text-neutral-text mb-2">
+            {/* Service Details */}
+            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-8">
+              {/* Title & Category */}
+              <div>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
+                  <div className="flex-1">
+                    <h1 className="font-serif text-3xl sm:text-4xl font-bold text-primary mb-3">
                       {service.title}
                     </h1>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <MapPin className="w-4 h-4" />
-                      <span>{service.city}</span>
-                      {service.department && (
-                        <>
-                          <span className="text-gray-400">•</span>
-                          <span>{service.department}</span>
-                        </>
-                      )}
-                    </div>
+                    {service.city && (
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <MapPin className="w-4 h-4 flex-shrink-0" />
+                        <span className="text-sm">{service.city}</span>
+                      </div>
+                    )}
                   </div>
-                  <span className="px-3 py-1 bg-accent-50 text-accent text-sm font-semibold rounded-sm">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-semibold whitespace-nowrap">
+                    <span className="w-2 h-2 bg-accent rounded-full" />
                     {service.category}
-                  </span>
+                  </div>
                 </div>
               </div>
 
+              {/* Pricing Section */}
+              {service.price_amount !== null && service.price_amount !== undefined && (
+                <div className="border-t border-gray-100 pt-6">
+                  <h2 className="font-serif text-lg font-bold text-primary mb-4">Tarification</h2>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-bold text-primary">
+                      {service.price_amount}€
+                    </span>
+                    {service.price_type === "hourly" && (
+                      <span className="text-gray-600">/heure</span>
+                    )}
+                    {service.price_type === "fixed" && (
+                      <span className="text-gray-600">tarif fixe</span>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* Description */}
-              <div className="mb-8 border-b border-gray-200 pb-8">
-                <h2 className="font-serif text-lg font-bold text-neutral-text mb-4">
-                  À propos
-                </h2>
-                <p className="text-body text-gray-700 leading-relaxed whitespace-pre-wrap">
+              <div className="border-t border-gray-100 pt-6">
+                <h2 className="font-serif text-lg font-bold text-primary mb-4">À propos</h2>
+                <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-base">
                   {service.description}
                 </p>
               </div>
 
-              {/* Tags */}
+              {/* Tags/Skills */}
               {service.tags && service.tags.length > 0 && (
-                <div className="mb-8 border-b border-gray-200 pb-8">
-                  <h2 className="font-serif text-lg font-bold text-neutral-text mb-4">
+                <div className="border-t border-gray-100 pt-6">
+                  <h2 className="font-serif text-lg font-bold text-primary mb-4">
                     Compétences
                   </h2>
                   <div className="flex flex-wrap gap-2">
                     {service.tags.map((tag: string) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 bg-accent-50 text-accent text-sm rounded-sm"
+                        className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
                       >
-                        {tag}
+                        #{tag}
                       </span>
                     ))}
                   </div>
                 </div>
               )}
-
-              {/* Pricing */}
-              <div className="bg-gray-50 rounded-sm p-6">
-                <h2 className="font-serif text-lg font-bold text-neutral-text mb-4">
-                  Tarification
-                </h2>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-body text-gray-600">Type:</span>
-                    <span className="font-semibold text-neutral-text">
-                      {service.price_type === "hourly"
-                        ? "Tarif horaire"
-                        : service.price_type === "fixed"
-                          ? "Tarif fixe"
-                          : "À négocier"}
-                    </span>
-                  </div>
-                  {service.price_amount && (
-                    <div className="flex justify-between">
-                      <span className="text-body text-gray-600">Montant:</span>
-                      <span className="text-2xl font-bold text-primary">
-                        {service.price_amount}€
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Sidebar - Provider */}
-          <aside>
-            <div className="bg-white rounded-sm border border-gray-200 p-6 sticky top-4">
-              {/* Provider header */}
-              <div className="mb-6 pb-6 border-b border-gray-200">
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-16 h-16 rounded-full bg-gray-300 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                    {provider?.avatar_url ? (
-                      <img
-                        src={provider.avatar_url}
-                        alt={provider.first_name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-sm font-bold text-gray-600">
-                        {provider?.first_name.charAt(0)}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <h2 className="font-serif text-xl font-bold text-neutral-text">
-                      {provider?.first_name}
-                      {provider?.last_name && ` ${provider.last_name}`}
-                    </h2>
-                    {provider?.is_verified && (
-                      <div className="flex items-center gap-1 mt-1">
-                        <BadgeCheck className="w-4 h-4 text-accent" />
-                        <span className="text-xs font-semibold text-accent">Vérifié</span>
+          {/* Sidebar - Provider Card */}
+          <aside className="lg:col-span-1">
+            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 sticky top-4 space-y-6">
+              {/* Provider Header */}
+              <div className="flex gap-4">
+                <div className="w-16 h-16 rounded-2xl bg-gray-100 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                  {provider?.avatar_url ? (
+                    <img
+                      src={provider.avatar_url}
+                      alt={provider.first_name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-sm font-bold text-gray-600">
+                      {getInitials(provider?.first_name || "P")}
+                    </span>
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="font-serif text-lg font-bold text-primary">
+                    {provider?.first_name}
+                    {provider?.last_name && ` ${provider.last_name}`}
+                  </h2>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {provider?.is_super_pro && (
+                      <div className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-semibold">
+                        <Award className="w-3 h-3" />
+                        Super Pro
                       </div>
                     )}
-                    {provider?.is_super_pro && (
-                      <span className="inline-block mt-1 px-2 py-0.5 bg-secondary text-white text-xs font-semibold rounded">
-                        Super Pro
-                      </span>
+                    {provider?.is_verified && (
+                      <div className="inline-flex items-center gap-1 px-2.5 py-1 bg-accent/10 text-accent rounded-full text-xs font-semibold">
+                        <Shield className="w-3 h-3" />
+                        Vérifié
+                      </div>
                     )}
                   </div>
                 </div>
+              </div>
 
-                {/* Rating */}
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center">
+              {/* Rating */}
+              <div className="border-t border-gray-100 pt-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
                         className={`w-4 h-4 ${
-                          i < Math.floor(provider?.average_rating || 0)
-                            ? "fill-secondary text-secondary"
+                          i < Math.round(provider?.average_rating || 0)
+                            ? "fill-accent text-accent"
                             : "text-gray-300"
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm font-semibold text-neutral-text">
-                    {provider?.average_rating.toFixed(1)}
-                  </span>
-                  {provider?.total_reviews && (
-                    <span className="text-sm text-gray-600">
-                      ({provider.total_reviews} avis)
-                    </span>
-                  )}
+                  <div>
+                    <p className="font-semibold text-primary">
+                      {provider?.average_rating ? provider.average_rating.toFixed(1) : "N/A"}
+                    </p>
+                    {provider?.total_reviews ? (
+                      <p className="text-xs text-gray-500">
+                        {provider.total_reviews} {provider.total_reviews > 1 ? "avis" : "avis"}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-gray-500">Nouveau</p>
+                    )}
+                  </div>
                 </div>
               </div>
 
               {/* Bio */}
               {provider?.bio && (
-                <div className="mb-6 pb-6 border-b border-gray-200">
-                  <p className="text-body text-gray-700 leading-relaxed">
-                    {provider.bio}
-                  </p>
+                <div className="border-t border-gray-100 pt-6">
+                  <p className="text-gray-700 text-sm leading-relaxed">{provider.bio}</p>
                 </div>
               )}
 
-              {/* Contact info */}
-              <div className="mb-6 pb-6 border-b border-gray-200">
-                <h3 className="font-semibold text-neutral-text text-sm mb-3">
-                  Contact
-                </h3>
-                {provider?.phone && (
-                  <a
-                    href={`tel:${provider.phone}`}
-                    className="flex items-center gap-2 text-sm text-primary hover:underline mb-2"
-                  >
-                    <Phone className="w-4 h-4" />
-                    {provider.phone}
-                  </a>
-                )}
-                {provider?.city && (
-                  <p className="flex items-center gap-2 text-sm text-gray-600">
-                    <MapPin className="w-4 h-4" />
-                    {provider.city}
-                  </p>
-                )}
-              </div>
+              {/* Location */}
+              {provider?.city && (
+                <div className="border-t border-gray-100 pt-6 flex items-center gap-2 text-gray-600 text-sm">
+                  <MapPin className="w-4 h-4 flex-shrink-0" />
+                  {provider.city}
+                </div>
+              )}
 
-              {/* Actions */}
-              <div className="space-y-2">
-                <Link href={`/dashboard/messages?provider=${provider?.id}`}>
-                  <Button variant="default" className="w-full">
-                    Contacter
+              {/* Action Buttons */}
+              <div className="border-t border-gray-100 pt-6 space-y-3">
+                <Link href={`/profile/${provider?.id}`} className="block">
+                  <Button variant="outline" className="w-full">
+                    Voir le profil
                   </Button>
                 </Link>
-                <Link href={`/services/${service.id}/booking`}>
-                  <Button variant="secondary" className="w-full">
-                    Réserver maintenant
+                <Link href={`/dashboard/messages?provider=${provider?.id}`} className="block">
+                  <Button className="w-full">
+                    Contacter
                   </Button>
                 </Link>
               </div>
