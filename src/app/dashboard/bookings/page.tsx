@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Calendar, Clock, Star, Trash2 } from "lucide-react";
 
 interface BookingService {
   id: string;
@@ -47,13 +48,13 @@ const STATUS_LABELS: Record<string, string> = {
   disputed: "Litigieuse",
 };
 
-const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
-  pending: { bg: "bg-yellow-50", text: "text-yellow-700" },
-  confirmed: { bg: "bg-blue-50", text: "text-blue-700" },
-  in_progress: { bg: "bg-purple-50", text: "text-purple-700" },
-  completed: { bg: "bg-green-50", text: "text-green-700" },
-  cancelled: { bg: "bg-gray-50", text: "text-gray-700" },
-  disputed: { bg: "bg-red-50", text: "text-red-700" },
+const STATUS_COLORS: Record<string, { bg: string; text: string; accent: string }> = {
+  pending: { bg: "bg-yellow-50", text: "text-yellow-700", accent: "from-yellow-100 to-yellow-50" },
+  confirmed: { bg: "bg-blue-50", text: "text-blue-700", accent: "from-blue-100 to-blue-50" },
+  in_progress: { bg: "bg-purple-50", text: "text-purple-700", accent: "from-purple-100 to-purple-50" },
+  completed: { bg: "bg-green-50", text: "text-green-700", accent: "from-green-100 to-green-50" },
+  cancelled: { bg: "bg-gray-50", text: "text-gray-700", accent: "from-gray-100 to-gray-50" },
+  disputed: { bg: "bg-red-50", text: "text-red-700", accent: "from-red-100 to-red-50" },
 };
 
 const TABS: { id: TabType; label: string; filter: string[] }[] = [
@@ -149,7 +150,6 @@ export default function BookingsPage() {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("fr-FR", {
-      weekday: "short",
       day: "numeric",
       month: "short",
       year: "numeric",
@@ -173,19 +173,26 @@ export default function BookingsPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#E07A5F]"></div>
-          <p className="mt-4 text-gray-600">Chargement des réservations...</p>
+      <div className="space-y-4">
+        <div className="h-12 rounded-2xl bg-gray-200 animate-pulse" />
+        <div className="grid grid-cols-4 gap-2">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-10 rounded-2xl bg-gray-100 animate-pulse" />
+          ))}
+        </div>
+        <div className="space-y-4">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="h-40 rounded-3xl bg-gray-100 animate-pulse" />
+          ))}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="mb-8">
+      <div>
         <h1 className="text-3xl font-serif font-bold text-gray-900">
           Mes réservations
         </h1>
@@ -196,13 +203,13 @@ export default function BookingsPage() {
 
       {/* Error Alert */}
       {error && (
-        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-2xl">
-          <p className="text-red-700">{error}</p>
+        <div className="p-4 rounded-2xl bg-red-50 border border-red-200">
+          <p className="text-red-700 font-medium">{error}</p>
         </div>
       )}
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-8 border-b border-gray-200">
+      {/* Pill Tabs */}
+      <div className="flex gap-3 overflow-x-auto pb-2">
         {TABS.map((tab) => {
           const count = bookings.filter((b) =>
             tab.filter.includes(b.status)
@@ -212,135 +219,108 @@ export default function BookingsPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${
+              className={`px-4 py-2 rounded-2xl font-medium text-sm transition-all whitespace-nowrap ${
                 activeTab === tab.id
-                  ? "border-[#E07A5F] text-[#E07A5F]"
-                  : "border-transparent text-gray-600 hover:text-gray-900"
+                  ? "bg-gradient-to-r from-[#E07A5F] to-[#D96850] text-white shadow-md"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
-              {tab.label} {count > 0 && <span className="ml-1">({count})</span>}
+              {tab.label} {count > 0 && <span className="ml-1 font-bold">({count})</span>}
             </button>
           );
         })}
       </div>
 
       {/* Bookings List */}
-      <div>
-        {filteredBookings.length === 0 ? (
-          <div className="py-12 text-center">
-            <div className="mb-4">
-              <svg
-                className="mx-auto h-12 w-12 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-            </div>
-            <p className="text-gray-600 text-lg">
-              {activeTab === "pending" && "Aucune réservation en attente"}
-              {activeTab === "confirmed" && "Aucune réservation confirmée"}
-              {activeTab === "completed" && "Aucune réservation terminée"}
-              {activeTab === "cancelled" && "Aucune réservation annulée"}
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {filteredBookings.map((booking) => {
-              const otherParty = getOtherParty(booking);
-              const statusColor = STATUS_COLORS[booking.status];
+      {filteredBookings.length === 0 ? (
+        <EmptyState activeTab={activeTab} />
+      ) : (
+        <div className="space-y-4">
+          {filteredBookings.map((booking) => {
+            const otherParty = getOtherParty(booking);
+            const statusColor = STATUS_COLORS[booking.status] || { bg: "bg-gray-50", text: "text-gray-700", accent: "from-gray-100 to-gray-50" };
 
-              return (
-                <div
-                  key={booking.id}
-                  className="rounded-3xl border border-gray-200 p-6 hover:border-gray-300 transition-colors"
-                >
-                  {/* Header with service and status */}
-                  <div className="flex items-start justify-between mb-4">
+            return (
+              <div
+                key={booking.id}
+                className="rounded-3xl bg-white border border-gray-100 hover:border-gray-200 transition-all hover:shadow-md overflow-hidden"
+              >
+                {/* Status Bar */}
+                <div className={`h-1 bg-gradient-to-r ${statusColor.accent}`} />
+
+                <div className="p-6">
+                  {/* Header Row */}
+                  <div className="flex items-start justify-between mb-5">
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1">
                         {booking.services?.title || "Service"}
                       </h3>
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="text-xs text-gray-500 uppercase tracking-wide">
                         {booking.services?.category || "Catégorie"}
                       </p>
                     </div>
-                    <span
-                      className={`px-3 py-1 rounded-full text-sm font-medium ${statusColor.bg} ${statusColor.text}`}
-                    >
+                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor.bg} ${statusColor.text}`}>
                       {STATUS_LABELS[booking.status]}
                     </span>
                   </div>
 
-                  {/* Other party info */}
+                  {/* Other Party Info */}
                   {otherParty && (
-                    <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
+                    <div className="flex items-center gap-4 mb-5 pb-5 border-b border-gray-100">
                       {otherParty.avatar_url ? (
                         <Image
                           src={otherParty.avatar_url}
                           alt={otherParty.first_name}
-                          width={40}
-                          height={40}
-                          className="rounded-full object-cover"
+                          width={44}
+                          height={44}
+                          className="w-11 h-11 rounded-2xl object-cover"
                         />
                       ) : (
-                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                          <span className="text-sm font-medium text-gray-600">
-                            {otherParty.first_name.charAt(0)}
-                          </span>
+                        <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#E07A5F] to-[#81B29A] flex items-center justify-center text-white font-semibold">
+                          {otherParty.first_name.charAt(0)}
                         </div>
                       )}
                       <div>
-                        <p className="font-medium text-gray-900">
+                        <p className="font-semibold text-gray-900 text-sm">
                           {otherParty.first_name}{" "}
                           {otherParty.last_name || ""}
                         </p>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-xs text-gray-500">
                           {isProvider(booking) ? "Client" : "Prestataire"}
                         </p>
                       </div>
                     </div>
                   )}
 
-                  {/* Date and time */}
-                  <div className="mb-4 grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-xs font-medium text-gray-500 uppercase">
-                        Début
-                      </p>
-                      <p className="text-sm text-gray-900 mt-1">
-                        {formatDate(booking.slot_start)}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        {formatTime(booking.slot_start)}
-                      </p>
+                  {/* Date & Time Pills */}
+                  <div className="flex gap-4 mb-5 flex-wrap">
+                    <div className="rounded-xl bg-gray-50 px-4 py-3 flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-gray-500" />
+                      <div>
+                        <p className="text-xs text-gray-500 font-medium">Début</p>
+                        <p className="text-sm font-semibold text-gray-900">
+                          {formatDate(booking.slot_start)}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs font-medium text-gray-500 uppercase">
-                        Fin
-                      </p>
-                      <p className="text-sm text-gray-900 mt-1">
-                        {formatDate(booking.slot_end)}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        {formatTime(booking.slot_end)}
-                      </p>
+                    <div className="rounded-xl bg-gray-50 px-4 py-3 flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-gray-500" />
+                      <div>
+                        <p className="text-xs text-gray-500 font-medium">Heure</p>
+                        <p className="text-sm font-semibold text-gray-900">
+                          {formatTime(booking.slot_start)}
+                        </p>
+                      </div>
                     </div>
                   </div>
 
                   {/* Description */}
                   {booking.description && (
-                    <div className="mb-4 pb-4 border-b border-gray-100">
-                      <p className="text-xs font-medium text-gray-500 uppercase">
+                    <div className="mb-5 pb-5 border-b border-gray-100">
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
                         Notes
                       </p>
-                      <p className="text-sm text-gray-700 mt-2">
+                      <p className="text-sm text-gray-700 leading-relaxed">
                         {booking.description}
                       </p>
                     </div>
@@ -348,18 +328,18 @@ export default function BookingsPage() {
 
                   {/* Cancellation reason */}
                   {booking.status === "cancelled" && booking.cancellation_reason && (
-                    <div className="mb-4 pb-4 border-b border-gray-100">
-                      <p className="text-xs font-medium text-gray-500 uppercase">
+                    <div className="mb-5 pb-5 border-b border-gray-100">
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
                         Raison de l'annulation
                       </p>
-                      <p className="text-sm text-gray-700 mt-2">
+                      <p className="text-sm text-gray-700">
                         {booking.cancellation_reason}
                       </p>
                     </div>
                   )}
 
                   {/* Action buttons */}
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 flex-wrap">
                     {booking.status === "pending" && isProvider(booking) && (
                       <>
                         <button
@@ -367,7 +347,7 @@ export default function BookingsPage() {
                             updateBookingStatus(booking.id, "confirmed")
                           }
                           disabled={actionLoading[booking.id]}
-                          className="flex-1 px-4 py-2 bg-[#81B29A] text-white rounded-2xl font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                          className="flex-1 min-w-32 px-4 py-2.5 bg-gradient-to-r from-[#81B29A] to-[#6fa086] text-white rounded-2xl font-semibold hover:shadow-md transition-all disabled:opacity-50 text-sm"
                         >
                           {actionLoading[booking.id]
                             ? "Chargement..."
@@ -378,7 +358,7 @@ export default function BookingsPage() {
                             updateBookingStatus(booking.id, "cancelled")
                           }
                           disabled={actionLoading[booking.id]}
-                          className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-2xl font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                          className="flex-1 min-w-32 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-2xl font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50 text-sm"
                         >
                           {actionLoading[booking.id]
                             ? "Chargement..."
@@ -393,7 +373,7 @@ export default function BookingsPage() {
                           updateBookingStatus(booking.id, "cancelled")
                         }
                         disabled={actionLoading[booking.id]}
-                        className="flex-1 px-4 py-2 border border-red-300 text-red-700 rounded-2xl font-medium hover:bg-red-50 transition-colors disabled:opacity-50"
+                        className="flex-1 px-4 py-2.5 border border-red-300 text-red-700 rounded-2xl font-semibold hover:bg-red-50 transition-colors disabled:opacity-50 text-sm"
                       >
                         {actionLoading[booking.id]
                           ? "Chargement..."
@@ -409,7 +389,7 @@ export default function BookingsPage() {
                               updateBookingStatus(booking.id, "completed")
                             }
                             disabled={actionLoading[booking.id]}
-                            className="flex-1 px-4 py-2 bg-[#81B29A] text-white rounded-2xl font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+                            className="flex-1 min-w-32 px-4 py-2.5 bg-gradient-to-r from-[#81B29A] to-[#6fa086] text-white rounded-2xl font-semibold hover:shadow-md transition-all disabled:opacity-50 text-sm"
                           >
                             {actionLoading[booking.id]
                               ? "Chargement..."
@@ -421,7 +401,7 @@ export default function BookingsPage() {
                             updateBookingStatus(booking.id, "cancelled")
                           }
                           disabled={actionLoading[booking.id]}
-                          className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-2xl font-medium hover:bg-gray-50 transition-colors disabled:opacity-50"
+                          className="flex-1 min-w-32 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-2xl font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50 text-sm"
                         >
                           {actionLoading[booking.id]
                             ? "Chargement..."
@@ -433,17 +413,77 @@ export default function BookingsPage() {
                     {booking.status === "completed" && (
                       <button
                         onClick={() => router.push(`/dashboard/reviews?booking=${booking.id}`)}
-                        className="flex-1 px-4 py-2 bg-[#E07A5F] text-white rounded-2xl font-medium hover:opacity-90 transition-opacity"
+                        className="flex-1 px-4 py-2.5 bg-gradient-to-r from-[#E07A5F] to-[#D96850] text-white rounded-2xl font-semibold hover:shadow-md transition-all text-sm flex items-center justify-center gap-2"
                       >
+                        <Star className="w-4 h-4" />
                         Laisser un avis
                       </button>
                     )}
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EmptyState({ activeTab }: { activeTab: TabType }) {
+  const emptyMessages: Record<TabType, { title: string; subtitle: string; icon: string }> = {
+    pending: {
+      title: "Aucune réservation en attente",
+      subtitle: "Les réservations que vous attendez s'afficheront ici",
+      icon: "🕐",
+    },
+    confirmed: {
+      title: "Aucune réservation confirmée",
+      subtitle: "Vous n'avez pas encore de réservations en cours",
+      icon: "✓",
+    },
+    completed: {
+      title: "Aucune réservation terminée",
+      subtitle: "Vos réservations complétées apparaîtront ici",
+      icon: "✨",
+    },
+    cancelled: {
+      title: "Aucune réservation annulée",
+      subtitle: "C'est bon signe! Pas d'annulations pour le moment",
+      icon: "🎯",
+    },
+  };
+
+  const message = emptyMessages[activeTab];
+
+  return (
+    <div className="rounded-3xl bg-gradient-to-b from-[#FAF9F6] to-white border border-gray-100 p-12 md:p-16 text-center">
+      <div className="text-5xl mb-4">{message.icon}</div>
+      <h3 className="text-2xl font-serif font-bold text-gray-900 mb-2">
+        {message.title}
+      </h3>
+      <p className="text-gray-600 mb-6">
+        {message.subtitle}
+      </p>
+      <div className="inline-block">
+        <svg
+          viewBox="0 0 200 100"
+          className="w-32 h-16 opacity-10 mx-auto"
+        >
+          <rect
+            x="20"
+            y="20"
+            width="160"
+            height="60"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            rx="8"
+          />
+          <line x1="50" y1="35" x2="150" y2="35" stroke="currentColor" strokeWidth="1" />
+          <line x1="50" y1="50" x2="150" y2="50" stroke="currentColor" strokeWidth="1" />
+          <line x1="50" y1="65" x2="120" y2="65" stroke="currentColor" strokeWidth="1" />
+        </svg>
       </div>
     </div>
   );

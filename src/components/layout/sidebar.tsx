@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
+import { useProfile } from "@/hooks/use-profile";
+import Image from "next/image";
 import {
   Home,
-  FileText,
+  MessageSquare,
   Clock,
   Wallet,
   Star,
@@ -34,7 +36,7 @@ const commonNavItems: NavItem[] = [
   {
     label: "Messages",
     href: "/dashboard/messages",
-    icon: FileText,
+    icon: MessageSquare,
   },
 ];
 
@@ -56,12 +58,6 @@ const roleSpecificNavItems: Record<string, NavItem[]> = {
       label: "Revenus",
       href: "/dashboard/earnings",
       icon: Wallet,
-      roles: ["retiree"],
-    },
-    {
-      label: "Créer une annonce",
-      href: "/dashboard/listings/create",
-      icon: Plus,
       roles: ["retiree"],
     },
   ],
@@ -98,32 +94,64 @@ const roleSpecificNavItems: Record<string, NavItem[]> = {
       icon: BarChart3,
       roles: ["company"],
     },
-    {
-      label: "Créer une offre",
-      href: "/dashboard/offers/create",
-      icon: Plus,
-      roles: ["company"],
-    },
   ],
+};
+
+const roleLabels: Record<string, string> = {
+  retiree: "Retraité",
+  client: "Client",
+  company: "Entreprise",
 };
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
+  const { profile, loading: profileLoading } = useProfile();
 
-  if (loading || !user) {
+  if (authLoading || profileLoading || !user) {
     return null;
   }
 
-  // Le rôle sera chargé depuis le profil Supabase quand connecté
-  const role: "retiree" | "client" | "company" = "retiree";
+  const role = (profile?.role || "retiree") as "retiree" | "client" | "company";
   const roleNavItems = roleSpecificNavItems[role] || [];
   const allNavItems = [...commonNavItems, ...roleNavItems];
+  const firstName = profile?.first_name || user.email?.split("@")[0] || "Utilisateur";
+  const roleLabel = roleLabels[role];
 
   return (
-    <aside className="hidden lg:flex w-64 flex-col border-r border-gray-200 bg-white">
-      <div className="flex flex-col flex-1 overflow-y-auto px-4 py-6">
-        <nav className="flex-1 space-y-2">
+    <aside className="hidden lg:flex w-64 flex-col bg-gradient-to-b from-white via-[#FAF9F6]/50 to-white border-r border-gray-100">
+      <div className="flex flex-col flex-1 overflow-y-auto px-6 py-8">
+        {/* User Profile Section */}
+        <div className="mb-8 pb-8 border-b border-gray-100">
+          <div className="flex items-center gap-3 mb-4">
+            {profile?.avatar_url ? (
+              <Image
+                src={profile.avatar_url}
+                alt={firstName}
+                width={48}
+                height={48}
+                className="w-12 h-12 rounded-2xl object-cover"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#E07A5F] to-[#81B29A] flex items-center justify-center">
+                <span className="text-white font-semibold text-sm">
+                  {firstName.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-gray-900 text-sm truncate">
+                {firstName}
+              </p>
+              <span className="inline-block mt-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-[#E07A5F]/10 to-[#81B29A]/10 text-xs font-medium text-[#1a1a2e]">
+                {roleLabel}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 space-y-1">
           {allNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -133,10 +161,10 @@ export function Sidebar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "group flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors min-h-[44px]",
+                  "group flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-primary/10 text-primary"
-                    : "text-neutral-text hover:bg-gray-100 hover:text-primary"
+                    ? "bg-white text-[#E07A5F] shadow-sm border-l-2 border-[#E07A5F]"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 )}
               >
                 <Icon className="h-5 w-5 flex-shrink-0" />
@@ -146,18 +174,36 @@ export function Sidebar() {
           })}
         </nav>
 
-        {/* Divider */}
-        <div className="my-4 border-t border-gray-200" />
+        {/* Create CTA Button */}
+        <div className="mb-6 pt-6 border-t border-gray-100">
+          <Link
+            href={
+              role === "retiree"
+                ? "/dashboard/listings/create"
+                : role === "company"
+                  ? "/dashboard/offers/create"
+                  : "/services"
+            }
+            className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-[#E07A5F] to-[#D96850] text-white font-semibold shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200"
+          >
+            <Plus className="h-5 w-5" />
+            <span>
+              {role === "retiree" && "Créer une annonce"}
+              {role === "company" && "Créer une offre"}
+              {role === "client" && "Explorer"}
+            </span>
+          </Link>
+        </div>
 
         {/* Settings Section */}
-        <nav className="space-y-2">
+        <nav className="space-y-1 pt-6 border-t border-gray-100">
           <Link
             href="/dashboard/settings/profile"
             className={cn(
-              "group flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors min-h-[44px]",
+              "group flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200",
               pathname === "/dashboard/settings/profile"
-                ? "bg-primary/10 text-primary"
-                : "text-neutral-text hover:bg-gray-100 hover:text-primary"
+                ? "bg-white text-[#E07A5F] shadow-sm border-l-2 border-[#E07A5F]"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             )}
           >
             <Settings className="h-5 w-5 flex-shrink-0" />
@@ -167,10 +213,10 @@ export function Sidebar() {
           <Link
             href="/dashboard/help"
             className={cn(
-              "group flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors min-h-[44px]",
+              "group flex items-center gap-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200",
               pathname === "/dashboard/help"
-                ? "bg-primary/10 text-primary"
-                : "text-neutral-text hover:bg-gray-100 hover:text-primary"
+                ? "bg-white text-[#E07A5F] shadow-sm border-l-2 border-[#E07A5F]"
+                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
             )}
           >
             <HelpCircle className="h-5 w-5 flex-shrink-0" />
