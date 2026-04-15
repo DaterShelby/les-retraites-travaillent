@@ -261,14 +261,14 @@ export default function ServicesPage() {
       </div>
 
       {/* Hero Banner Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-        <div className="absolute inset-0 opacity-10 bg-pattern" />
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white">
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="mb-2">
             <h1 className="text-4xl sm:text-5xl font-serif font-bold mb-3">
               Trouvez le service idéal
             </h1>
-            <p className="text-blue-100 text-lg">
+            <p className="text-white/80 text-lg">
               Découvrez nos prestataires vérifiés et réservez le service qui vous convient
             </p>
           </div>
@@ -283,7 +283,7 @@ export default function ServicesPage() {
           <input
             type="text"
             placeholder="Rechercher un service..."
-            className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+            className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent shadow-sm"
           />
         </div>
 
