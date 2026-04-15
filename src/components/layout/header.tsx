@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
-import { Bell, Menu, X, User, LogOut, LayoutDashboard, MessageSquare } from "lucide-react";
+import { Menu, X, User, LogOut, LayoutDashboard, MessageSquare, Settings } from "lucide-react";
+import { NotificationBell } from "@/components/shared/notification-bell";
 import { useState, useEffect } from "react";
 
 export function Header() {
@@ -70,10 +71,7 @@ export function Header() {
                 >
                   <MessageSquare className="w-5 h-5" />
                 </Link>
-                <button className="text-gray-500 hover:text-primary p-2.5 hover:bg-gray-100 rounded-2xl transition-all duration-200 relative">
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-secondary rounded-full ring-2 ring-white"></span>
-                </button>
+                <NotificationBell />
                 <div className="relative ml-1">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
@@ -90,6 +88,14 @@ export function Header() {
                       >
                         <LayoutDashboard className="w-4 h-4" />
                         Tableau de bord
+                      </Link>
+                      <Link
+                        href="/dashboard/settings/profile"
+                        onClick={() => setShowUserMenu(false)}
+                        className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2.5"
+                      >
+                        <Settings className="w-4 h-4" />
+                        Mon profil
                       </Link>
                       <div className="my-1 mx-3 border-t border-gray-100"></div>
                       <button
