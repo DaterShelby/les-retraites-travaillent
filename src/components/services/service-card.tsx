@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Star, MapPin, Shield, Award } from "lucide-react";
 
 interface ServiceCardProps {
@@ -54,11 +53,11 @@ export function ServiceCard({ service }: ServiceCardProps) {
         {/* Photo Area */}
         <div className="relative w-full aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden flex items-center justify-center">
           {service.photos && service.photos.length > 0 ? (
-            <Image
+            <img
               src={service.photos[0]}
               alt={service.title}
-              fill
-              className="object-cover"
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
@@ -95,7 +94,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
           {/* Category Tag */}
           {service.category && (
             <div className="mb-3">
-              <span className="inline-block rounded-full bg-blue-50 text-blue-700 px-3 py-1 text-xs font-medium">
+              <span className="inline-block rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-medium">
                 {service.category}
               </span>
             </div>
@@ -154,12 +153,11 @@ export function ServiceCard({ service }: ServiceCardProps) {
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
                 {provider.avatar_url ? (
-                  <Image
+                  <img
                     src={provider.avatar_url}
                     alt={provider.first_name}
-                    width={32}
-                    height={32}
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 ) : (
                   <span className="text-xs font-semibold text-gray-600">
