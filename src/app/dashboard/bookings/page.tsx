@@ -294,7 +294,7 @@ export default function BookingsPage() {
 
                   {/* Date & Time Pills */}
                   <div className="flex gap-4 mb-5 flex-wrap">
-                    <div className="rounded-xl bg-gray-50 px-4 py-3 flex items-center gap-2">
+                    <div className="rounded-2xl bg-gray-50 px-4 py-3 flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-gray-500" />
                       <div>
                         <p className="text-xs text-gray-500 font-medium">Début</p>
@@ -303,7 +303,7 @@ export default function BookingsPage() {
                         </p>
                       </div>
                     </div>
-                    <div className="rounded-xl bg-gray-50 px-4 py-3 flex items-center gap-2">
+                    <div className="rounded-2xl bg-gray-50 px-4 py-3 flex items-center gap-2">
                       <Clock className="w-4 h-4 text-gray-500" />
                       <div>
                         <p className="text-xs text-gray-500 font-medium">Heure</p>

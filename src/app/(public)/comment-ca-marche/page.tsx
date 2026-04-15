@@ -86,7 +86,7 @@ export default function CommentCaMarchePage() {
                   </p>
 
                   {/* Icon */}
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-secondary/10 mb-6 -mt-4">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-secondary/10 mb-6 -mt-4">
                     <Icon className="w-7 h-7 text-secondary" />
                   </div>
 
@@ -155,7 +155,7 @@ export default function CommentCaMarchePage() {
                   key={idx}
                   className="rounded-2xl bg-white border border-gray-100 p-8 hover:shadow-lg transition-shadow duration-300"
                 >
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 mb-5">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 mb-5">
                     <Icon className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-semibold text-lg text-gray-900 mb-3">
