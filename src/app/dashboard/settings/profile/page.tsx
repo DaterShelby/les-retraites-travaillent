@@ -70,7 +70,7 @@ export default function SettingsProfilePage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev: Partial<UserProfileRow>) => ({ ...prev, [name]: value }));
   };
 
   const handleAddSkill = (skill: string) => {
@@ -162,19 +162,19 @@ export default function SettingsProfilePage() {
     <div className="max-w-4xl space-y-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="font-serif text-3xl font-bold text-[#1B4965]">
+        <h1 className="font-serif text-3xl font-bold text-[#4A6670]">
           Paramètres du profil
         </h1>
-        <p className="mt-2 text-[#3D405B]/70">
+        <p className="mt-2 text-[#2F3D42]/70">
           Gérez vos informations personnelles
         </p>
       </div>
 
       {isLoading && (
-        <div className="flex items-center justify-center rounded-2xl border border-[#E07A5F]/20 bg-white p-12">
+        <div className="flex items-center justify-center rounded-2xl border border-[#F0917B]/20 bg-white p-12">
           <div className="flex flex-col items-center gap-3">
-            <Loader2 className="h-8 w-8 animate-spin text-[#E07A5F]" />
-            <p className="text-[#3D405B]/60">Chargement du profil...</p>
+            <Loader2 className="h-8 w-8 animate-spin text-[#F0917B]" />
+            <p className="text-[#2F3D42]/60">Chargement du profil...</p>
           </div>
         </div>
       )}
@@ -188,20 +188,20 @@ export default function SettingsProfilePage() {
       {!isLoading && (
         <div className="space-y-6">
           {/* Photo Section */}
-          <section className="overflow-hidden rounded-3xl border border-[#E07A5F]/20 bg-white">
-            <div className="border-b border-[#E07A5F]/20 px-6 py-4">
-              <h2 className="font-semibold text-[#1B4965]">Photo de profil</h2>
+          <section className="overflow-hidden rounded-3xl border border-[#F0917B]/20 bg-white">
+            <div className="border-b border-[#F0917B]/20 px-6 py-4">
+              <h2 className="font-semibold text-[#4A6670]">Photo de profil</h2>
             </div>
             <div className="space-y-4 p-6">
               <div className="flex items-center gap-4">
-                <div className="h-16 w-16 rounded-2xl bg-[#E07A5F]/10 flex items-center justify-center text-2xl">
+                <div className="h-16 w-16 rounded-2xl bg-[#F0917B]/10 flex items-center justify-center text-2xl">
                   👤
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-[#1B4965]">
+                  <p className="text-sm font-medium text-[#4A6670]">
                     Avatar URL
                   </p>
-                  <p className="text-xs text-[#3D405B]/60">
+                  <p className="text-xs text-[#2F3D42]/60">
                     Lien vers votre image de profil
                   </p>
                 </div>
@@ -210,20 +210,20 @@ export default function SettingsProfilePage() {
                 type="url"
                 name="avatar_url"
                 placeholder="https://example.com/avatar.jpg"
-                className="h-12 border-[#E07A5F]/30 rounded-2xl"
+                className="h-12 border-[#F0917B]/30 rounded-2xl"
               />
             </div>
           </section>
 
           {/* Informations Personnelles */}
-          <section className="overflow-hidden rounded-3xl border border-[#E07A5F]/20 bg-white">
-            <div className="border-b border-[#E07A5F]/20 px-6 py-4">
-              <h2 className="font-semibold text-[#1B4965]">Informations personnelles</h2>
+          <section className="overflow-hidden rounded-3xl border border-[#F0917B]/20 bg-white">
+            <div className="border-b border-[#F0917B]/20 px-6 py-4">
+              <h2 className="font-semibold text-[#4A6670]">Informations personnelles</h2>
             </div>
             <div className="space-y-4 p-6">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-[#1B4965] mb-2">
+                  <label className="block text-sm font-medium text-[#4A6670] mb-2">
                     Prénom
                   </label>
                   <Input
@@ -231,11 +231,11 @@ export default function SettingsProfilePage() {
                     value={formData.first_name || ""}
                     onChange={handleInputChange}
                     placeholder="Jean"
-                    className="h-12 border-[#E07A5F]/30 rounded-2xl"
+                    className="h-12 border-[#F0917B]/30 rounded-2xl"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#1B4965] mb-2">
+                  <label className="block text-sm font-medium text-[#4A6670] mb-2">
                     Nom
                   </label>
                   <Input
@@ -243,12 +243,12 @@ export default function SettingsProfilePage() {
                     value={formData.last_name || ""}
                     onChange={handleInputChange}
                     placeholder="Dupont"
-                    className="h-12 border-[#E07A5F]/30 rounded-2xl"
+                    className="h-12 border-[#F0917B]/30 rounded-2xl"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1B4965] mb-2">
+                <label className="block text-sm font-medium text-[#4A6670] mb-2">
                   Téléphone
                 </label>
                 <Input
@@ -257,31 +257,31 @@ export default function SettingsProfilePage() {
                   value={formData.phone || ""}
                   onChange={handleInputChange}
                   placeholder="+33 6 12 34 56 78"
-                  className="h-12 border-[#E07A5F]/30 rounded-2xl"
+                  className="h-12 border-[#F0917B]/30 rounded-2xl"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#1B4965] mb-2">
+                <label className="block text-sm font-medium text-[#4A6670] mb-2">
                   Date de naissance (optionnel)
                 </label>
                 <Input
                   name="date_of_birth"
                   type="date"
-                  className="h-12 border-[#E07A5F]/30 rounded-2xl"
+                  className="h-12 border-[#F0917B]/30 rounded-2xl"
                 />
               </div>
             </div>
           </section>
 
           {/* Localisation */}
-          <section className="overflow-hidden rounded-3xl border border-[#E07A5F]/20 bg-white">
-            <div className="border-b border-[#E07A5F]/20 px-6 py-4">
-              <h2 className="font-semibold text-[#1B4965]">Localisation</h2>
+          <section className="overflow-hidden rounded-3xl border border-[#F0917B]/20 bg-white">
+            <div className="border-b border-[#F0917B]/20 px-6 py-4">
+              <h2 className="font-semibold text-[#4A6670]">Localisation</h2>
             </div>
             <div className="space-y-4 p-6">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="block text-sm font-medium text-[#1B4965] mb-2">
+                  <label className="block text-sm font-medium text-[#4A6670] mb-2">
                     Ville
                   </label>
                   <Input
@@ -289,11 +289,11 @@ export default function SettingsProfilePage() {
                     value={formData.city || ""}
                     onChange={handleInputChange}
                     placeholder="Paris"
-                    className="h-12 border-[#E07A5F]/30 rounded-2xl"
+                    className="h-12 border-[#F0917B]/30 rounded-2xl"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[#1B4965] mb-2">
+                  <label className="block text-sm font-medium text-[#4A6670] mb-2">
                     Département
                   </label>
                   <Input
@@ -301,7 +301,7 @@ export default function SettingsProfilePage() {
                     value={formData.department || ""}
                     onChange={handleInputChange}
                     placeholder="75"
-                    className="h-12 border-[#E07A5F]/30 rounded-2xl"
+                    className="h-12 border-[#F0917B]/30 rounded-2xl"
                   />
                 </div>
               </div>
@@ -309,13 +309,13 @@ export default function SettingsProfilePage() {
           </section>
 
           {/* À Propos */}
-          <section className="overflow-hidden rounded-3xl border border-[#E07A5F]/20 bg-white">
-            <div className="border-b border-[#E07A5F]/20 px-6 py-4">
-              <h2 className="font-semibold text-[#1B4965]">À propos</h2>
+          <section className="overflow-hidden rounded-3xl border border-[#F0917B]/20 bg-white">
+            <div className="border-b border-[#F0917B]/20 px-6 py-4">
+              <h2 className="font-semibold text-[#4A6670]">À propos</h2>
             </div>
             <div className="space-y-4 p-6">
               <div>
-                <label className="block text-sm font-medium text-[#1B4965] mb-2">
+                <label className="block text-sm font-medium text-[#4A6670] mb-2">
                   Biographie
                 </label>
                 <textarea
@@ -323,10 +323,10 @@ export default function SettingsProfilePage() {
                   value={formData.bio || ""}
                   onChange={handleInputChange}
                   placeholder="Parlez-nous un peu de vous..."
-                  className="h-32 w-full rounded-2xl border border-[#E07A5F]/30 bg-white p-4 text-[#3D405B] placeholder:text-[#3D405B]/50 focus:border-[#E07A5F] focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/20"
+                  className="h-32 w-full rounded-2xl border border-[#F0917B]/30 bg-white p-4 text-[#2F3D42] placeholder:text-[#2F3D42]/50 focus:border-[#F0917B] focus:outline-none focus:ring-2 focus:ring-[#F0917B]/20"
                   maxLength={500}
                 />
-                <p className="mt-2 text-xs text-[#3D405B]/60">
+                <p className="mt-2 text-xs text-[#2F3D42]/60">
                   {(formData.bio || "").length}/500 caractères
                 </p>
               </div>
@@ -334,14 +334,14 @@ export default function SettingsProfilePage() {
           </section>
 
           {/* Compétences */}
-          <section className="overflow-hidden rounded-3xl border border-[#E07A5F]/20 bg-white">
-            <div className="border-b border-[#E07A5F]/20 px-6 py-4">
-              <h2 className="font-semibold text-[#1B4965]">Compétences</h2>
+          <section className="overflow-hidden rounded-3xl border border-[#F0917B]/20 bg-white">
+            <div className="border-b border-[#F0917B]/20 px-6 py-4">
+              <h2 className="font-semibold text-[#4A6670]">Compétences</h2>
             </div>
             <div className="space-y-4 p-6">
               {selectedSkills.length > 0 && (
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-[#1B4965]">
+                  <label className="block text-sm font-medium text-[#4A6670]">
                     Vos compétences sélectionnées
                   </label>
                   <div className="flex flex-wrap gap-2">
@@ -349,7 +349,7 @@ export default function SettingsProfilePage() {
                       <button
                         key={skill}
                         onClick={() => handleRemoveSkill(skill)}
-                        className="inline-flex items-center gap-2 rounded-full bg-[#E07A5F] px-4 py-2 text-sm font-medium text-white hover:bg-[#E07A5F]/90 transition-colors"
+                        className="inline-flex items-center gap-2 rounded-full bg-[#F0917B] px-4 py-2 text-sm font-medium text-white hover:bg-[#F0917B]/90 transition-colors"
                       >
                         {skill}
                         <X className="h-4 w-4" />
@@ -359,7 +359,7 @@ export default function SettingsProfilePage() {
                 </div>
               )}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-[#1B4965]">
+                <label className="block text-sm font-medium text-[#4A6670]">
                   Ajouter une compétence
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -367,7 +367,7 @@ export default function SettingsProfilePage() {
                     <button
                       key={skill}
                       onClick={() => handleAddSkill(skill)}
-                      className="inline-flex items-center gap-2 rounded-full border border-[#E07A5F]/30 bg-white px-4 py-2 text-sm font-medium text-[#1B4965] hover:border-[#E07A5F] hover:bg-[#E07A5F]/5 transition-colors"
+                      className="inline-flex items-center gap-2 rounded-full border border-[#F0917B]/30 bg-white px-4 py-2 text-sm font-medium text-[#4A6670] hover:border-[#F0917B] hover:bg-[#F0917B]/5 transition-colors"
                     >
                       <Plus className="h-4 w-4" />
                       {skill}
@@ -379,14 +379,14 @@ export default function SettingsProfilePage() {
           </section>
 
           {/* Préférences */}
-          <section className="overflow-hidden rounded-3xl border border-[#E07A5F]/20 bg-white">
-            <div className="border-b border-[#E07A5F]/20 px-6 py-4">
-              <h2 className="font-semibold text-[#1B4965]">Préférences</h2>
+          <section className="overflow-hidden rounded-3xl border border-[#F0917B]/20 bg-white">
+            <div className="border-b border-[#F0917B]/20 px-6 py-4">
+              <h2 className="font-semibold text-[#4A6670]">Préférences</h2>
             </div>
             <div className="space-y-6 p-6">
               {/* Travel Radius */}
               <div className="space-y-3">
-                <label className="block text-sm font-medium text-[#1B4965]">
+                <label className="block text-sm font-medium text-[#4A6670]">
                   Rayon géographique: <strong>{formData.travel_radius_km} km</strong>
                 </label>
                 <input
@@ -396,9 +396,9 @@ export default function SettingsProfilePage() {
                   step="1"
                   value={formData.travel_radius_km || 20}
                   onChange={(e) => handleTravelRadiusChange(parseInt(e.target.value))}
-                  className="h-2 w-full cursor-pointer rounded-lg bg-[#E07A5F]/20 accent-[#E07A5F]"
+                  className="h-2 w-full cursor-pointer rounded-lg bg-[#F0917B]/20 accent-[#F0917B]"
                 />
-                <div className="flex justify-between text-xs text-[#3D405B]/60">
+                <div className="flex justify-between text-xs text-[#2F3D42]/60">
                   <span>1 km</span>
                   <span>50 km</span>
                   <span>100 km</span>
@@ -407,7 +407,7 @@ export default function SettingsProfilePage() {
 
               {/* Availability */}
               <div className="space-y-3">
-                <label className="block text-sm font-medium text-[#1B4965]">
+                <label className="block text-sm font-medium text-[#4A6670]">
                   Disponibilités
                 </label>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
@@ -425,8 +425,8 @@ export default function SettingsProfilePage() {
                       onClick={() => handleAvailabilityChange(day.id)}
                       className={`rounded-2xl border-2 py-3 px-4 text-sm font-medium transition-all ${
                         (formData.availability?.[day.id] as boolean)
-                          ? "border-[#81B29A] bg-[#81B29A]/10 text-[#81B29A]"
-                          : "border-[#E07A5F]/30 bg-white text-[#3D405B] hover:border-[#E07A5F]/60"
+                          ? "border-[#8FBFAD] bg-[#8FBFAD]/10 text-[#8FBFAD]"
+                          : "border-[#F0917B]/30 bg-white text-[#2F3D42] hover:border-[#F0917B]/60"
                       }`}
                     >
                       {day.label}
@@ -456,7 +456,7 @@ export default function SettingsProfilePage() {
               onClick={handleSave}
               disabled={isSaving}
               size="lg"
-              className="gap-2 bg-[#1B4965] hover:bg-[#1B4965]/90 text-white rounded-2xl h-12"
+              className="gap-2 bg-[#4A6670] hover:bg-[#4A6670]/90 text-white rounded-2xl h-12"
             >
               {isSaving ? (
                 <>

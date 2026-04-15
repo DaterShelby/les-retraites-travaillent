@@ -91,18 +91,15 @@ export function formatTimeAgo(date: string | Date): string {
 /**
  * Group notifications by date
  */
-export function groupNotificationsByDate(
-  notifications: Array<{ created_at: string }>
-) {
+export function groupNotificationsByDate<T extends { created_at: string }>(
+  notifications: T[]
+): Record<string, T[]> {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yesterday = new Date(today.getTime() - 86400000);
   const weekAgo = new Date(today.getTime() - 604800000);
 
-  const groups: Record<
-    string,
-    Array<{ created_at: string; [key: string]: unknown }>
-  > = {
+  const groups: Record<string, T[]> = {
     "Aujourd'hui": [],
     Hier: [],
     "Cette semaine": [],
@@ -118,13 +115,13 @@ export function groupNotificationsByDate(
     );
 
     if (notifDay.getTime() === today.getTime()) {
-      groups["Aujourd'hui"].push(notification);
+      groups["Aujourd'hui"]!.push(notification);
     } else if (notifDay.getTime() === yesterday.getTime()) {
-      groups["Hier"].push(notification);
+      groups["Hier"]!.push(notification);
     } else if (notifDate.getTime() > weekAgo.getTime()) {
-      groups["Cette semaine"].push(notification);
+      groups["Cette semaine"]!.push(notification);
     } else {
-      groups["Plus ancien"].push(notification);
+      groups["Plus ancien"]!.push(notification);
     }
   }
 

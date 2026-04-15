@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Check2 } from "lucide-react";
+import { Check, CheckCheck } from "lucide-react";
 
 interface MessageBubbleProps {
   message: string;
@@ -29,8 +29,8 @@ export function MessageBubble({
       <div
         className={`max-w-xs lg:max-w-md px-4 py-2 rounded-3xl transition-all duration-200 ${
           isOwn
-            ? "bg-[#E07A5F] text-white rounded-br-none shadow-sm"
-            : "bg-gray-100 text-[#1a1a2e] rounded-bl-none shadow-sm"
+            ? "bg-[#F0917B] text-white rounded-br-none shadow-sm"
+            : "bg-gray-100 text-[#4A6670] rounded-bl-none shadow-sm"
         }`}
       >
         {!isOwn && senderName && (
@@ -48,7 +48,7 @@ export function MessageBubble({
           {isOwn && (
             <div className="flex items-center">
               {isRead ? (
-                <Check2 className="w-3.5 h-3.5 text-white/80" strokeWidth={3} />
+                <CheckCheck className="w-3.5 h-3.5 text-white/80" strokeWidth={3} />
               ) : (
                 <Check className="w-3.5 h-3.5 text-white/60" strokeWidth={3} />
               )}

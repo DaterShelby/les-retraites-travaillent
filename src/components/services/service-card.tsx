@@ -7,13 +7,13 @@ interface ServiceCardProps {
   service: {
     id: string;
     title: string;
-    description?: string;
-    category?: string;
-    price_type?: string;
+    description?: string | null;
+    category?: string | null;
+    price_type?: string | null;
     price_amount?: number | null;
-    city?: string;
-    department?: string;
-    photos?: string[];
+    city?: string | null;
+    department?: string | null;
+    photos?: string[] | null;
     provider?: {
       first_name: string;
       avatar_url?: string | null;

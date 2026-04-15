@@ -61,11 +61,14 @@ export default function ReviewsPage() {
     try {
       setLoading(true);
 
+      let fetchedReviews: ReviewData[] = [];
+
       // Fetch reviews
       const reviewResponse = await fetch("/api/reviews");
       if (reviewResponse.ok) {
         const reviewsData = await reviewResponse.json();
-        setReviews(Array.isArray(reviewsData) ? reviewsData : []);
+        fetchedReviews = Array.isArray(reviewsData) ? reviewsData : [];
+        setReviews(fetchedReviews);
       }
 
       // Fetch bookings to find completed ones without reviews
@@ -73,12 +76,12 @@ export default function ReviewsPage() {
       if (bookingResponse.ok) {
         const bookingsData = await bookingResponse.json();
         const completedBookings = (Array.isArray(bookingsData) ? bookingsData : []).filter(
-          (b: any) => b.status === "completed"
+          (b: BookingForReview) => b.status === "completed"
         );
 
         // Filter out bookings that already have a review from this user
-        const bookingsWithoutReviewFromUser = completedBookings.filter((booking: any) => {
-          return !reviewsData.some(
+        const bookingsWithoutReviewFromUser = completedBookings.filter((booking: BookingForReview) => {
+          return !fetchedReviews.some(
             (r: ReviewData) =>
               r.booking_id === booking.id && r.reviewer_id === user?.id
           );
@@ -266,6 +269,8 @@ export default function ReviewsPage() {
               key={review.id}
               review={{
                 ...review,
+                response: review.response ?? null,
+                response_at: review.response_at ?? null,
                 reviewer: review.reviewer,
               }}
               canRespond={activeTab === "received" && !review.response}

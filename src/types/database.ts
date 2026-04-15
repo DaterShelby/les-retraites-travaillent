@@ -14,7 +14,7 @@ export type PaymentStatus = "pending" | "processing" | "succeeded" | "failed" | 
 
 // --- Row types (ce qu'on lit) ---
 
-interface UserProfileRow {
+export interface UserProfileRow {
   id: string;
   role: UserRole;
   first_name: string;
@@ -47,7 +47,7 @@ interface UserProfileRow {
   updated_at: string;
 }
 
-interface ServiceRow {
+export interface ServiceRow {
   id: string;
   provider_id: string;
   title: string;
@@ -67,7 +67,7 @@ interface ServiceRow {
   updated_at: string;
 }
 
-interface BookingRow {
+export interface BookingRow {
   id: string;
   service_id: string;
   client_id: string;
@@ -82,14 +82,14 @@ interface BookingRow {
   updated_at: string;
 }
 
-interface ConversationRow {
+export interface ConversationRow {
   id: string;
   participant_ids: string[];
   last_message_at: string | null;
   created_at: string;
 }
 
-interface MessageRow {
+export interface MessageRow {
   id: string;
   conversation_id: string;
   sender_id: string;
@@ -99,7 +99,7 @@ interface MessageRow {
   created_at: string;
 }
 
-interface ReviewRow {
+export interface ReviewRow {
   id: string;
   booking_id: string;
   reviewer_id: string;
@@ -109,9 +109,10 @@ interface ReviewRow {
   response: string | null;
   response_at: string | null;
   created_at: string;
+  updated_at?: string;
 }
 
-interface NotificationRow {
+export interface NotificationRow {
   id: string;
   user_id: string;
   type: string;
@@ -124,7 +125,7 @@ interface NotificationRow {
 
 // --- Insert types (ce qu'on écrit) ---
 
-interface UserProfileInsert {
+export interface UserProfileInsert {
   id: string;
   role: UserRole;
   first_name: string;
@@ -157,7 +158,7 @@ interface UserProfileInsert {
   updated_at?: string;
 }
 
-interface ServiceInsert {
+export interface ServiceInsert {
   provider_id: string;
   title: string;
   description: string;
@@ -177,7 +178,7 @@ interface ServiceInsert {
   updated_at?: string;
 }
 
-interface BookingInsert {
+export interface BookingInsert {
   service_id: string;
   client_id: string;
   provider_id: string;
@@ -192,14 +193,14 @@ interface BookingInsert {
   updated_at?: string;
 }
 
-interface ConversationInsert {
+export interface ConversationInsert {
   participant_ids: string[];
   last_message_at?: string | null;
   id?: string;
   created_at?: string;
 }
 
-interface MessageInsert {
+export interface MessageInsert {
   conversation_id: string;
   sender_id: string;
   content: string;
@@ -209,7 +210,7 @@ interface MessageInsert {
   created_at?: string;
 }
 
-interface ReviewInsert {
+export interface ReviewInsert {
   booking_id: string;
   reviewer_id: string;
   reviewee_id: string;
@@ -221,7 +222,7 @@ interface ReviewInsert {
   created_at?: string;
 }
 
-interface NotificationInsert {
+export interface NotificationInsert {
   user_id: string;
   type: string;
   title: string;
