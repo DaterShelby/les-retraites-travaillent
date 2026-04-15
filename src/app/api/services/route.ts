@@ -2,6 +2,81 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type { ServiceInsert } from "@/types/database";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(request: NextRequest) {
+  try {
+    const supabase = createServerSupabaseClient();
+    const { searchParams } = new URL(request.url);
+    const idsParam = searchParams.get("ids");
+
+    if (!idsParam) {
+      return NextResponse.json(
+        { error: "Le paramètre ids est requis." },
+        { status: 400 }
+      );
+    }
+
+    let ids: string[] = [];
+    try {
+      ids = JSON.parse(idsParam);
+      if (!Array.isArray(ids)) {
+        throw new Error("Invalid ids format");
+      }
+    } catch {
+      return NextResponse.json(
+        { error: "Format d'IDs invalide." },
+        { status: 400 }
+      );
+    }
+
+    if (ids.length === 0) {
+      return NextResponse.json([]);
+    }
+
+    // Fetch services by IDs
+    const { data: services, error: servicesError } = await supabase
+      .from("services")
+      .select(
+        `
+        id,
+        title,
+        description,
+        category,
+        price_amount,
+        price_type,
+        city,
+        photos,
+        average_rating,
+        total_reviews,
+        provider_id,
+        provider:provider_id (
+          id,
+          first_name,
+          last_name,
+          avatar_url
+        )
+      `
+      )
+      .in("id", ids)
+      .eq("status", "published");
+
+    if (servicesError) {
+      console.error("Supabase error:", servicesError);
+      return NextResponse.json(
+        { error: "Erreur lors de la récupération des services." },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(services || []);
+  } catch (error) {
+    console.error("API error:", error);
+    return NextResponse.json(
+      { error: "Une erreur interne est survenue." },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

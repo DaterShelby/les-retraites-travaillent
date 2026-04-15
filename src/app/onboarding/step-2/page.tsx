@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useOnboardingStore } from '@/stores/onboarding';
+import { useAuth } from '@/hooks/use-auth';
+import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Check } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -18,11 +20,14 @@ import { onboardingStep2Schema, onboardingStep2CompanySchema } from '@/lib/valid
 
 export default function Step2Page() {
   const router = useRouter();
+  const { user } = useAuth();
+  const supabase = createClient();
   const { role, setPersonalInfo, setCompanyInfo, setStep } = useOnboardingStore();
   const store = useOnboardingStore();
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [savedSuccessfully, setSavedSuccessfully] = useState(false);
 
   const isCompany = role === 'company';
   const isRetiredOrClient = role === 'retiree' || role === 'client';
@@ -31,6 +36,8 @@ export default function Step2Page() {
     firstName: store.firstName,
     lastName: store.lastName,
     city: store.city,
+    phone: '',
+    bio: '',
     avatarUrl: store.avatarUrl,
     companyName: store.companyName,
     siret: store.siret,
@@ -39,7 +46,7 @@ export default function Step2Page() {
   });
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -58,8 +65,13 @@ export default function Step2Page() {
   const handleContinue = async () => {
     setIsLoading(true);
     setErrors({});
+    setSavedSuccessfully(false);
 
     try {
+      if (!user) {
+        throw new Error('Utilisateur non authentifié');
+      }
+
       if (isRetiredOrClient) {
         const validated = onboardingStep2Schema.parse({
           firstName: formData.firstName,
@@ -68,6 +80,24 @@ export default function Step2Page() {
           avatarUrl: formData.avatarUrl,
         });
         setPersonalInfo(validated);
+
+        // Save to Supabase
+        const { error } = await supabase
+          .from('user_profiles')
+          .update({
+            first_name: validated.firstName,
+            last_name: validated.lastName || null,
+            city: validated.city || null,
+            phone: formData.phone || null,
+            bio: formData.bio || null,
+            avatar_url: validated.avatarUrl || null,
+          })
+          .eq('id', user.id);
+
+        if (error) {
+          throw error;
+        }
+
       } else if (isCompany) {
         const validated = onboardingStep2CompanySchema.parse({
           companyName: formData.companyName,
@@ -76,10 +106,29 @@ export default function Step2Page() {
           companySize: formData.companySize,
         });
         setCompanyInfo(validated);
+
+        // Save to Supabase
+        const { error } = await supabase
+          .from('user_profiles')
+          .update({
+            company_name: validated.companyName || null,
+            siret: validated.siret || null,
+            sector: validated.sector || null,
+            company_size: validated.companySize || null,
+          })
+          .eq('id', user.id);
+
+        if (error) {
+          throw error;
+        }
       }
 
-      setStep(3);
-      router.push('/onboarding/step-3');
+      setSavedSuccessfully(true);
+      setTimeout(() => {
+        setStep(3);
+        router.push('/onboarding/step-3');
+      }, 500);
+
     } catch (error: any) {
       if (error.errors) {
         const newErrors: Record<string, string> = {};
@@ -88,6 +137,8 @@ export default function Step2Page() {
           newErrors[field] = err.message;
         });
         setErrors(newErrors);
+      } else {
+        setErrors({ submit: error.message || 'Erreur lors de la sauvegarde' });
       }
     } finally {
       setIsLoading(false);
@@ -106,6 +157,19 @@ export default function Step2Page() {
             : 'Nous aurions besoin de quelques informations pour mieux vous connaître'}
         </p>
       </div>
+
+      {errors.submit && (
+        <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-700">
+          {errors.submit}
+        </div>
+      )}
+
+      {savedSuccessfully && (
+        <div className="flex items-center gap-2 rounded-lg border border-green-300 bg-green-50 p-4 text-sm text-green-700">
+          <Check className="h-5 w-5" />
+          Informations sauvegardées avec succès !
+        </div>
+      )}
 
       <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); handleContinue(); }}>
         {isRetiredOrClient ? (
@@ -160,6 +224,39 @@ export default function Step2Page() {
               {errors.city && (
                 <p className="text-sm text-red-600">{errors.city}</p>
               )}
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="phone" className="block text-sm font-medium text-[#1B4965]">
+                Téléphone (optionnel)
+              </label>
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="+33 6 12 34 56 78"
+                className="h-12 border-[#E07A5F]/30"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="bio" className="block text-sm font-medium text-[#1B4965]">
+                À propos (optionnel)
+              </label>
+              <textarea
+                id="bio"
+                name="bio"
+                value={formData.bio}
+                onChange={handleInputChange}
+                placeholder="Parlez-nous un peu de vous..."
+                className="h-24 w-full rounded-lg border border-[#E07A5F]/30 bg-white p-3 text-[#3D405B] placeholder:text-[#3D405B]/50 focus:border-[#E07A5F] focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/20"
+                maxLength={500}
+              />
+              <p className="text-xs text-[#3D405B]/60">
+                {formData.bio.length}/500 caractères
+              </p>
             </div>
           </>
         ) : (
@@ -254,12 +351,13 @@ export default function Step2Page() {
       <div className="flex justify-end">
         <Button
           onClick={handleContinue}
-          disabled={isLoading}
+          disabled={isLoading || savedSuccessfully}
           size="lg"
-          className="gap-2 bg-[#1B4965] hover:bg-[#1B4965]/90 text-white"
+          className="gap-2 bg-[#1B4965] hover:bg-[#1B4965]/90 text-white disabled:opacity-50"
         >
-          {isLoading ? 'Chargement...' : 'Continuer'}
-          <ChevronRight className="h-5 w-5" />
+          {isLoading ? 'Sauvegarde en cours...' : (savedSuccessfully ? 'Continuer...' : 'Continuer')}
+          {!isLoading && !savedSuccessfully && <ChevronRight className="h-5 w-5" />}
+          {savedSuccessfully && <Check className="h-5 w-5" />}
         </Button>
       </div>
     </div>

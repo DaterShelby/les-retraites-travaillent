@@ -4,6 +4,11 @@ import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
 import { Star, MapPin, Award, Shield } from "lucide-react";
 import { notFound } from "next/navigation";
+import { ServiceDetailClient } from "@/components/services/service-detail-client";
+
+function ServiceDetailClientWrapper(props: any) {
+  return <ServiceDetailClient {...props} />;
+}
 
 interface ServiceDetailPageProps {
   params: {
@@ -336,6 +341,14 @@ export default async function ServiceDetailPage({
                   </Button>
                 </Link>
               </div>
+
+              {/* Client Wrapper for interactive elements */}
+              <ServiceDetailClientWrapper
+                serviceId={service.id}
+                serviceName={service.title}
+                price={service.price_amount}
+                priceType={service.price_type}
+              />
             </div>
           </aside>
         </div>

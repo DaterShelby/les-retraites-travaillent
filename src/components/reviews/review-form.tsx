@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { RatingStars } from "./rating-stars";
-import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 
 interface ReviewFormProps {
   bookingId: string;
@@ -31,27 +30,20 @@ export function ReviewForm({ bookingId, revieweeId, onSuccess }: ReviewFormProps
     setError(null);
 
     try {
-      const supabase = createBrowserSupabaseClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        setError("Vous devez être connecté");
-        return;
-      }
-
-      const { error: insertError } = await supabase
-        .from("reviews")
-        .insert({
-          booking_id: bookingId,
-          reviewer_id: user.id,
-          reviewee_id: revieweeId,
+      const response = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookingId,
           rating,
           comment,
-        });
+        }),
+      });
 
-      if (insertError) throw insertError;
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Erreur lors de la création de l'avis");
+      }
 
       setRating(5);
       setComment("");

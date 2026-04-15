@@ -78,6 +78,9 @@ export default function Step4Page() {
         throw new Error(result.error || 'Erreur lors de la sauvegarde');
       }
 
+      // Wait a moment to show success state
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       // Redirect to dashboard
       router.push('/dashboard');
     } catch (err) {
