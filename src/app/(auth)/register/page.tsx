@@ -146,41 +146,35 @@ function RegisterForm() {
     setLoading(true);
 
     try {
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      // Use server-side API route — bypasses email verification & rate limits
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          firstName: firstName.trim(),
+          role: selectedRole,
+        }),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        setError(result.error || "Une erreur est survenue.");
+        return;
+      }
+
+      // Account created & confirmed — now sign in directly
+      const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (signUpError) {
-        if (signUpError.message.includes("rate")) {
-          setError(
-            "Trop de tentatives d'inscription. Veuillez patienter quelques minutes avant de réessayer."
-          );
-        } else if (signUpError.message.includes("already")) {
-          setError("Un compte existe déjà avec cet email. Essayez de vous connecter.");
-        } else {
-          setError(signUpError.message);
-        }
+      if (signInError) {
+        setError("Compte créé ! Connectez-vous avec vos identifiants.");
+        router.push("/login");
         return;
-      }
-
-      if (data?.user) {
-        const { error: profileError } = await supabase
-          .from("user_profiles")
-          .insert({
-            id: data.user.id,
-            email,
-            first_name: firstName.trim(),
-            role: selectedRole,
-            created_at: new Date().toISOString(),
-          });
-
-        if (profileError) {
-          setError(
-            "Compte créé mais erreur lors de la configuration du profil. Connectez-vous pour terminer."
-          );
-          return;
-        }
       }
 
       router.push("/onboarding");
