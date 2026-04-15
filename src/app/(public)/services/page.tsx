@@ -15,10 +15,10 @@ const mockServices = [
     price_amount: 25,
     city: "Paris",
     department: "75",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80"],
     provider: {
       first_name: "Laurent",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.8,
       total_reviews: 24,
       is_verified: true,
@@ -34,10 +34,10 @@ const mockServices = [
     price_amount: 20,
     city: "Lyon",
     department: "69",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80"],
     provider: {
       first_name: "Marie",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.6,
       total_reviews: 18,
       is_verified: true,
@@ -53,10 +53,10 @@ const mockServices = [
     price_amount: 18,
     city: "Marseille",
     department: "13",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80"],
     provider: {
       first_name: "Sophie",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.9,
       total_reviews: 31,
       is_verified: true,
@@ -72,10 +72,10 @@ const mockServices = [
     price_amount: 22,
     city: "Toulouse",
     department: "31",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=600&q=80"],
     provider: {
       first_name: "Jean",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.7,
       total_reviews: 42,
       is_verified: false,
@@ -91,10 +91,10 @@ const mockServices = [
     price_amount: 30,
     city: "Bordeaux",
     department: "33",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&q=80"],
     provider: {
       first_name: "Pierre",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.9,
       total_reviews: 27,
       is_verified: true,
@@ -110,10 +110,10 @@ const mockServices = [
     price_amount: 15,
     city: "Nantes",
     department: "44",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1587654780291-39c9404d7dd0?w=600&q=80"],
     provider: {
       first_name: "Isabelle",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.8,
       total_reviews: 19,
       is_verified: true,
@@ -129,10 +129,10 @@ const mockServices = [
     price_amount: 45,
     city: "Paris",
     department: "75",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80"],
     provider: {
       first_name: "Olivier",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.9,
       total_reviews: 35,
       is_verified: true,
@@ -148,10 +148,10 @@ const mockServices = [
     price_amount: 20,
     city: "Strasbourg",
     department: "67",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80"],
     provider: {
       first_name: "Véronique",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.7,
       total_reviews: 22,
       is_verified: false,
@@ -167,10 +167,10 @@ const mockServices = [
     price_amount: 28,
     city: "Lyon",
     department: "69",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=600&q=80"],
     provider: {
       first_name: "Emma",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.8,
       total_reviews: 20,
       is_verified: true,
@@ -186,12 +186,50 @@ const mockServices = [
     price_amount: 18,
     city: "Lille",
     department: "59",
-    photos: [],
+    photos: ["https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80"],
     provider: {
       first_name: "Catherine",
-      avatar_url: null,
+      avatar_url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
       average_rating: 4.6,
       total_reviews: 15,
+      is_verified: true,
+      is_super_pro: false,
+    },
+  },
+  {
+    id: "11",
+    title: "Plomberie et dépannage",
+    description: "Interventions rapides et fiables pour tous vos problèmes de plomberie",
+    category: "Plomberie",
+    price_type: "hourly",
+    price_amount: 35,
+    city: "Nice",
+    department: "06",
+    photos: ["https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=600&q=80"],
+    provider: {
+      first_name: "François",
+      avatar_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+      average_rating: 4.7,
+      total_reviews: 29,
+      is_verified: true,
+      is_super_pro: false,
+    },
+  },
+  {
+    id: "12",
+    title: "Cours de piano et musique",
+    description: "Apprentissage du piano et initiation musicale pour tous les âges",
+    category: "Musique",
+    price_type: "hourly",
+    price_amount: 30,
+    city: "Montpellier",
+    department: "34",
+    photos: ["https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=600&q=80"],
+    provider: {
+      first_name: "Martine",
+      avatar_url: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face",
+      average_rating: 4.9,
+      total_reviews: 16,
       is_verified: true,
       is_super_pro: false,
     },
@@ -222,17 +260,23 @@ export default function ServicesPage() {
         </nav>
       </div>
 
-      {/* Header Section */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="mb-8">
-          <h1 className="text-4xl sm:text-5xl font-serif font-bold text-gray-900 mb-2">
-            Trouvez le service idéal
-          </h1>
-          <p className="text-gray-600">
-            Découvrez nos prestataires vérifiés et réservez le service qui vous convient
-          </p>
+      {/* Hero Banner Section */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+        <div className="absolute inset-0 opacity-10 bg-pattern" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <div className="mb-2">
+            <h1 className="text-4xl sm:text-5xl font-serif font-bold mb-3">
+              Trouvez le service idéal
+            </h1>
+            <p className="text-blue-100 text-lg">
+              Découvrez nos prestataires vérifiés et réservez le service qui vous convient
+            </p>
+          </div>
         </div>
+      </div>
 
+      {/* Search & Filter Section */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         {/* Search Bar */}
         <div className="relative mb-6">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -266,8 +310,15 @@ export default function ServicesPage() {
         </div>
       </div>
 
+      {/* Results Header */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-6">
+        <p className="text-gray-600 font-medium">
+          {mockServices.length} services disponibles
+        </p>
+      </div>
+
       {/* Services Grid */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12">
         {mockServices.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {mockServices.map((service) => (

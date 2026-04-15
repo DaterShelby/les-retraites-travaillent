@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { SERVICE_CATEGORIES } from '@/lib/constants';
 import {
@@ -41,6 +42,24 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Sparkles,
   Heart,
   MoreHorizontal,
+};
+
+const categoryImages: Record<string, string> = {
+  'bricolage': 'https://images.unsplash.com/photo-1581783898377-1c85bf937427?w=600&q=80',
+  'jardinage': 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600&q=80',
+  'cuisine': 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&q=80',
+  'garde': 'https://images.unsplash.com/photo-1587654780291-39c9404d7dd0?w=600&q=80',
+  'informatique': 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&q=80',
+  'conseil': 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80',
+};
+
+const categoryImageMap: Record<number, string> = {
+  1: categoryImages['bricolage'],
+  2: categoryImages['jardinage'],
+  3: categoryImages['cuisine'],
+  4: categoryImages['garde'],
+  5: categoryImages['informatique'],
+  6: categoryImages['conseil'],
 };
 
 export default function HomePage() {
@@ -103,19 +122,30 @@ export default function HomePage() {
       </header>
 
       {/* HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center bg-gradient-to-br from-primary to-primary/90 pt-16 overflow-hidden">
-        {/* Decorative gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent pointer-events-none" />
+      <section className="relative min-h-[90vh] flex items-center justify-center pt-16 overflow-hidden bg-black">
+        {/* Background Image */}
+        <Image
+          src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&q=80"
+          alt="Équipe de retraités travaillant ensemble"
+          fill
+          className="object-cover"
+          priority
+          quality={85}
+        />
+
+        {/* Dark Overlay for Text Readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left: Content */}
-            <div className="space-y-8">
+            <div className="space-y-8 animate-fade-in">
               <div className="space-y-6">
-                <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight">
+                <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl font-bold text-white leading-tight tracking-tight">
                   L&apos;expérience n&apos;a pas de prix.
                 </h1>
-                <p className="text-lg sm:text-xl text-white/90 leading-relaxed max-w-2xl font-light">
+                <p className="text-lg sm:text-xl text-white/95 leading-relaxed max-w-2xl font-light">
                   Trouvez des experts retraités pour vos projets, ou proposez vos services et complétez vos revenus à votre rythme.
                 </p>
               </div>
@@ -125,7 +155,7 @@ export default function HomePage() {
                 <Link href="/services">
                   <Button
                     size="lg"
-                    className="rounded-full bg-secondary hover:bg-secondary/90 text-white gap-2 group"
+                    className="rounded-full bg-secondary hover:bg-secondary/90 text-white gap-2 group shadow-lg hover:shadow-xl transition-all"
                   >
                     Trouver un expert
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -135,7 +165,7 @@ export default function HomePage() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="rounded-full border-2 border-white text-white hover:bg-white/10 transition-colors"
+                    className="rounded-full border-2 border-white text-white hover:bg-white/10 transition-colors shadow-lg"
                   >
                     Proposer mes services
                   </Button>
@@ -159,13 +189,19 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right: Floating Cards (Desktop Only) */}
+            {/* Right: Floating Cards with Images (Desktop Only) */}
             <div className="hidden lg:flex items-center justify-center relative h-full min-h-[500px]">
-              {/* Card 1 */}
-              <div className="absolute top-0 right-0 bg-white rounded-2xl shadow-2xl p-6 w-72 transform -rotate-6 hover:rotate-0 transition-transform duration-300">
+              {/* Card 1 - Michel */}
+              <div className="absolute top-0 right-0 bg-white rounded-2xl shadow-2xl p-6 w-80 transform -rotate-6 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-secondary to-orange-400 flex items-center justify-center text-white font-bold">
-                    MR
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-secondary/30 flex-shrink-0">
+                    <Image
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
+                      alt="Michel R."
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">Michel R.</p>
@@ -173,20 +209,24 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="mt-4 flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
                   <span className="text-xs text-gray-500 ml-2">(47 avis)</span>
                 </div>
               </div>
 
-              {/* Card 2 */}
-              <div className="absolute top-32 left-0 bg-white rounded-2xl shadow-2xl p-6 w-72 transform rotate-6 hover:rotate-0 transition-transform duration-300">
+              {/* Card 2 - Catherine */}
+              <div className="absolute top-32 left-0 bg-white rounded-2xl shadow-2xl p-6 w-80 transform rotate-6 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-teal-500 flex items-center justify-center text-white font-bold">
-                    CB
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-accent/30 flex-shrink-0">
+                    <Image
+                      src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face"
+                      alt="Catherine B."
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">Catherine B.</p>
@@ -194,20 +234,24 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="mt-4 flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
                   <span className="text-xs text-gray-500 ml-2">(92 avis)</span>
                 </div>
               </div>
 
-              {/* Card 3 */}
-              <div className="absolute bottom-0 right-12 bg-white rounded-2xl shadow-2xl p-6 w-72 transform -rotate-3 hover:rotate-0 transition-transform duration-300">
+              {/* Card 3 - Pierre */}
+              <div className="absolute bottom-0 right-12 bg-white rounded-2xl shadow-2xl p-6 w-80 transform -rotate-3 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-rose-400 flex items-center justify-center text-white font-bold">
-                    PD
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-orange-300/50 flex-shrink-0">
+                    <Image
+                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
+                      alt="Pierre D."
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">Pierre D.</p>
@@ -215,11 +259,9 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="mt-4 flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
                   <span className="text-xs text-gray-500 ml-2">(63 avis)</span>
                 </div>
               </div>
@@ -231,7 +273,7 @@ export default function HomePage() {
       {/* SEARCH BAR SECTION */}
       <section className="relative -mt-8 pb-20">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
+          <div className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 animate-fade-in">
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search Input */}
               <div className="flex-1 flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
@@ -254,7 +296,7 @@ export default function HomePage() {
               </div>
 
               {/* Search Button */}
-              <Button className="rounded-xl bg-secondary hover:bg-secondary/90 text-white px-8 whitespace-nowrap">
+              <Button className="rounded-xl bg-secondary hover:bg-secondary/90 text-white px-8 whitespace-nowrap shadow-lg hover:shadow-xl transition-all">
                 Rechercher
               </Button>
             </div>
@@ -265,7 +307,7 @@ export default function HomePage() {
       {/* CATEGORIES SECTION */}
       <section className="py-20 sm:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-12 space-y-4">
+          <div className="mb-12 space-y-4 animate-fade-in">
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
               Explorez nos catégories
             </h2>
@@ -278,30 +320,45 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {SERVICE_CATEGORIES.slice(0, 6).map((category) => {
               const IconComponent = iconMap[category.icon as keyof typeof iconMap];
+              const bgImage = categoryImageMap[category.id];
+
               return (
                 <Link
                   key={category.id}
                   href={`/services?category=${category.id}`}
-                  className="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 p-8 hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+                  className="group relative overflow-hidden rounded-2xl h-64 hover:shadow-xl transition-all duration-300"
                 >
-                  {/* Icon */}
-                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-secondary/10 mb-6 group-hover:bg-secondary/20 transition-colors">
-                    {IconComponent && (
-                      <IconComponent className="w-7 h-7 text-secondary" />
-                    )}
-                  </div>
+                  {/* Background Image */}
+                  {bgImage && (
+                    <Image
+                      src={bgImage}
+                      alt={category.label}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  )}
+
+                  {/* Dark Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20 group-hover:from-black/80 transition-all duration-300" />
 
                   {/* Content */}
-                  <h3 className="font-semibold text-lg text-gray-900 mb-2 tracking-tight">
-                    {category.label}
-                  </h3>
-                  <p className="text-sm text-gray-500 mb-6">
-                    +120 experts disponibles
-                  </p>
+                  <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-white/20 backdrop-blur-sm group-hover:bg-secondary/90 transition-all duration-300">
+                      {IconComponent && (
+                        <IconComponent className="w-7 h-7 text-white" />
+                      )}
+                    </div>
 
-                  {/* Arrow */}
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gray-50 group-hover:bg-secondary group-hover:text-white transition-all">
-                    <ChevronRight className="w-5 h-5" />
+                    <div>
+                      <h3 className="font-semibold text-xl text-white mb-2 tracking-tight">
+                        {category.label}
+                      </h3>
+                      <p className="text-sm text-white/90 flex items-center gap-2">
+                        +120 experts disponibles
+                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </p>
+                    </div>
                   </div>
                 </Link>
               );
@@ -321,10 +378,115 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* FEATURED SERVICES SECTION */}
+      <section className="py-20 sm:py-28 bg-gradient-to-b from-gray-50 to-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 space-y-4 animate-fade-in">
+            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
+              Services en vedette
+            </h2>
+            <p className="text-lg text-gray-500 max-w-2xl">
+              Découvrez les derniers projets disponibles de nos experts.
+            </p>
+          </div>
+
+          {/* Featured Services Grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: 'Rénovation cuisine',
+                expert: 'Michel R.',
+                price: '75€/h',
+                rating: 4.9,
+                reviews: 47,
+                image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=500&q=80',
+              },
+              {
+                title: 'Conseil en jardinage',
+                expert: 'Pierre D.',
+                price: '50€/h',
+                rating: 4.8,
+                reviews: 63,
+                image: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=500&q=80',
+              },
+              {
+                title: 'Cours d\'informatique',
+                expert: 'Catherine B.',
+                price: '45€/h',
+                rating: 5.0,
+                reviews: 92,
+                image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&q=80',
+              },
+              {
+                title: 'Garde d\'enfants',
+                expert: 'Anne M.',
+                price: '55€/h',
+                rating: 4.9,
+                reviews: 28,
+                image: 'https://images.unsplash.com/photo-1503454537688-e6c6f8374af3?w=500&q=80',
+              },
+            ].map((service, idx) => (
+              <div
+                key={idx}
+                className="group rounded-2xl overflow-hidden bg-white border border-gray-100 hover:shadow-xl transition-all duration-300"
+              >
+                {/* Image */}
+                <div className="relative h-48 overflow-hidden bg-gray-200">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+                  <h3 className="font-semibold text-lg text-gray-900 mb-2">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm text-gray-500 mb-4">{service.expert}</p>
+
+                  {/* Rating */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="flex items-center gap-0.5">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-3.5 h-3.5 ${
+                            i < Math.floor(service.rating)
+                              ? 'fill-yellow-400 text-yellow-400'
+                              : 'text-gray-200'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs text-gray-600">
+                      {service.rating} ({service.reviews})
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-secondary">{service.price}</span>
+                    <Button
+                      size="sm"
+                      className="rounded-full bg-primary hover:bg-primary/90 text-white"
+                    >
+                      Réserver
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* HOW IT WORKS SECTION */}
       <section id="how-it-works" className="py-20 sm:py-28 bg-gray-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-16 space-y-4">
+          <div className="mb-16 space-y-4 animate-fade-in">
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
               Comment ça marche
             </h2>
@@ -382,7 +544,7 @@ export default function HomePage() {
       {/* TRUST SECTION */}
       <section className="py-20 sm:py-28 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-16 space-y-4">
+          <div className="mb-16 space-y-4 animate-fade-in">
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
               Pourquoi nous choisir
             </h2>
@@ -444,7 +606,7 @@ export default function HomePage() {
       {/* TESTIMONIALS SECTION */}
       <section className="py-20 sm:py-28 bg-primary/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-16 space-y-4">
+          <div className="mb-16 space-y-4 animate-fade-in">
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 tracking-tight">
               Ils nous font confiance
             </h2>
@@ -462,6 +624,7 @@ export default function HomePage() {
                 name: 'Jacques M.',
                 role: 'Retraité - Bricolage',
                 rating: 5,
+                image: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&h=100&fit=crop&crop=face',
               },
               {
                 quote:
@@ -469,6 +632,7 @@ export default function HomePage() {
                 name: 'Sophie L.',
                 role: 'Particulière - Client',
                 rating: 5,
+                image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
               },
               {
                 quote:
@@ -476,12 +640,29 @@ export default function HomePage() {
                 name: 'Marie R.',
                 role: 'Retraitée - Conseil',
                 rating: 5,
+                image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face',
               },
             ].map((testimonial, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl bg-white shadow-sm p-8 border border-gray-100"
+                className="rounded-2xl bg-white shadow-sm p-8 border border-gray-100 hover:shadow-lg transition-all duration-300"
               >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-accent/30 flex-shrink-0">
+                    <Image
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      fill
+                      className="object-cover"
+                      sizes="48px"
+                    />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                    <p className="text-xs text-gray-500">{testimonial.role}</p>
+                  </div>
+                </div>
+
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
                     <Star
@@ -490,15 +671,9 @@ export default function HomePage() {
                     />
                   ))}
                 </div>
-                <p className="text-gray-700 mb-6 leading-relaxed italic">
+                <p className="text-gray-700 leading-relaxed italic">
                   {testimonial.quote}
                 </p>
-                <div>
-                  <p className="font-semibold text-gray-900">
-                    {testimonial.name}
-                  </p>
-                  <p className="text-sm text-gray-500">{testimonial.role}</p>
-                </div>
               </div>
             ))}
           </div>
@@ -506,9 +681,21 @@ export default function HomePage() {
       </section>
 
       {/* ENTERPRISE CTA */}
-      <section className="py-20 sm:py-28 bg-primary text-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold mb-6 tracking-tight">
+      <section className="relative py-20 sm:py-28 bg-black overflow-hidden">
+        {/* Background Image */}
+        <Image
+          src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&q=80"
+          alt="Bureau professionnel"
+          fill
+          className="object-cover opacity-30"
+          quality={80}
+        />
+
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/95 to-primary/80 pointer-events-none" />
+
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white mb-6 tracking-tight">
             Entreprises : la loi des 5%
           </h2>
           <p className="text-lg text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
@@ -517,7 +704,7 @@ export default function HomePage() {
           <Link href="/register?role=company">
             <Button
               size="lg"
-              className="rounded-full bg-secondary hover:bg-secondary/90 text-white gap-2 group"
+              className="rounded-full bg-secondary hover:bg-secondary/90 text-white gap-2 group shadow-lg hover:shadow-xl transition-all"
             >
               Découvrir l&apos;offre entreprise
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -529,7 +716,7 @@ export default function HomePage() {
       {/* FINAL CTA */}
       <section className="py-20 sm:py-28 bg-secondary/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl bg-white border border-gray-100 p-12 sm:p-16 text-center">
+          <div className="rounded-3xl bg-white border border-gray-100 p-12 sm:p-16 text-center shadow-xl animate-fade-in">
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-gray-900 mb-6 tracking-tight">
               Prêt à commencer ?
             </h2>
@@ -540,7 +727,7 @@ export default function HomePage() {
               <Link href="/register?role=retiree">
                 <Button
                   size="lg"
-                  className="rounded-full bg-secondary hover:bg-secondary/90 text-white gap-2 group"
+                  className="rounded-full bg-secondary hover:bg-secondary/90 text-white gap-2 group shadow-lg hover:shadow-xl transition-all"
                 >
                   Je suis retraité
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
