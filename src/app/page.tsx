@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
+// Using plain img tags for Netlify compatibility
 import { Button } from '@/components/ui/button';
 import { SERVICE_CATEGORIES } from '@/lib/constants';
 import {
@@ -124,13 +124,10 @@ export default function HomePage() {
       {/* HERO SECTION */}
       <section className="relative min-h-[90vh] flex items-center justify-center pt-16 overflow-hidden bg-black">
         {/* Background Image */}
-        <Image
+        <img
           src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&q=80"
           alt="Équipe de retraités travaillant ensemble"
-          fill
-          className="object-cover"
-          priority
-          quality={85}
+          className="absolute inset-0 w-full h-full object-cover"
         />
 
         {/* Dark Overlay for Text Readability */}
@@ -195,12 +192,10 @@ export default function HomePage() {
               <div className="absolute top-0 right-0 bg-white rounded-2xl shadow-2xl p-6 w-80 transform -rotate-6 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
                 <div className="flex items-center gap-4">
                   <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-secondary/30 flex-shrink-0">
-                    <Image
+                    <img
                       src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
                       alt="Michel R."
-                      fill
-                      className="object-cover"
-                      sizes="64px"
+                      className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
                   <div>
@@ -220,12 +215,10 @@ export default function HomePage() {
               <div className="absolute top-32 left-0 bg-white rounded-2xl shadow-2xl p-6 w-80 transform rotate-6 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
                 <div className="flex items-center gap-4">
                   <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-accent/30 flex-shrink-0">
-                    <Image
+                    <img
                       src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face"
                       alt="Catherine B."
-                      fill
-                      className="object-cover"
-                      sizes="64px"
+                      className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
                   <div>
@@ -245,12 +238,10 @@ export default function HomePage() {
               <div className="absolute bottom-0 right-12 bg-white rounded-2xl shadow-2xl p-6 w-80 transform -rotate-3 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl">
                 <div className="flex items-center gap-4">
                   <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-orange-300/50 flex-shrink-0">
-                    <Image
+                    <img
                       src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
                       alt="Pierre D."
-                      fill
-                      className="object-cover"
-                      sizes="64px"
+                      className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
                   <div>
@@ -330,12 +321,11 @@ export default function HomePage() {
                 >
                   {/* Background Image */}
                   {bgImage && (
-                    <Image
+                    <img
                       src={bgImage}
                       alt={category.label}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
                     />
                   )}
 
@@ -432,12 +422,11 @@ export default function HomePage() {
               >
                 {/* Image */}
                 <div className="relative h-48 overflow-hidden bg-gray-200">
-                  <Image
+                  <img
                     src={service.image}
                     alt={service.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
 
@@ -649,12 +638,11 @@ export default function HomePage() {
               >
                 <div className="flex items-center gap-4 mb-6">
                   <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-accent/30 flex-shrink-0">
-                    <Image
+                    <img
                       src={testimonial.image}
                       alt={testimonial.name}
-                      fill
-                      className="object-cover"
-                      sizes="48px"
+                      className="absolute inset-0 w-full h-full object-cover"
+                      loading="lazy"
                     />
                   </div>
                   <div>
@@ -683,12 +671,11 @@ export default function HomePage() {
       {/* ENTERPRISE CTA */}
       <section className="relative py-20 sm:py-28 bg-black overflow-hidden">
         {/* Background Image */}
-        <Image
+        <img
           src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&q=80"
           alt="Bureau professionnel"
-          fill
-          className="object-cover opacity-30"
-          quality={80}
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          loading="lazy"
         />
 
         {/* Dark Overlay */}
