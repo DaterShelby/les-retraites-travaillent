@@ -249,8 +249,8 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
+      {/* Breadcrumb - hidden on mobile */}
+      <div className="hidden sm:block mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
         <nav className="flex items-center gap-2 text-sm text-gray-600">
           <Link href="/" className="hover:text-gray-900">
             Accueil
@@ -260,67 +260,67 @@ export default function ServicesPage() {
         </nav>
       </div>
 
-      {/* Hero Banner Section */}
+      {/* Hero Banner Section - compact on mobile */}
       <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-white">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          <div className="mb-2">
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold mb-3">
-              Trouvez le service idéal
-            </h1>
-            <p className="text-white/80 text-lg">
-              Découvrez nos prestataires vérifiés et réservez le service qui vous convient
-            </p>
-          </div>
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+          <h1 className="text-2xl sm:text-5xl font-serif font-bold mb-2 sm:mb-3">
+            Trouvez le service idéal
+          </h1>
+          <p className="text-white/80 text-sm sm:text-lg">
+            Découvrez nos prestataires vérifiés et réservez le service qui vous convient
+          </p>
         </div>
       </div>
 
-      {/* Search & Filter Section */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search Bar */}
-        <div className="relative mb-6">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Rechercher un service..."
-            className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent shadow-sm"
-          />
-        </div>
+      {/* Search & Filter Section - sticky on mobile */}
+      <div className="sticky top-16 z-30 bg-white/95 backdrop-blur-md border-b border-gray-100 md:relative md:top-auto md:border-b-0 md:backdrop-blur-none">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+          {/* Search Bar */}
+          <div className="relative mb-4 sm:mb-6">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Rechercher un service..."
+              className="w-full pl-12 pr-4 py-3 sm:py-4 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent shadow-sm text-base"
+            />
+          </div>
 
-        {/* Filter Pills */}
-        <div className="overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
-          <div className="flex gap-3 min-w-min sm:min-w-full">
-            {filterCategories.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => toggleFilter(filter)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full border whitespace-nowrap transition-all duration-200 ${
-                  selectedFilters.includes(filter)
-                    ? "border-gray-900 bg-gray-900 text-white"
-                    : "border-gray-300 text-gray-700 hover:border-gray-400"
-                }`}
-              >
-                {filter === "Distance" || filter === "Prix" ? (
-                  <SlidersHorizontal className="w-4 h-4" />
-                ) : null}
-                {filter}
-              </button>
-            ))}
+          {/* Filter Pills - horizontal scroll on mobile */}
+          <div className="overflow-x-auto scrollbar-hide pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex gap-2 sm:gap-3 min-w-min sm:min-w-full">
+              {filterCategories.map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => toggleFilter(filter)}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full border whitespace-nowrap transition-all duration-200 text-sm ${
+                    selectedFilters.includes(filter)
+                      ? "border-primary bg-primary text-white"
+                      : "border-gray-200 text-gray-700 hover:border-gray-400 active:bg-gray-50"
+                  }`}
+                >
+                  {filter === "Distance" || filter === "Prix" ? (
+                    <SlidersHorizontal className="w-4 h-4" />
+                  ) : null}
+                  {filter}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Results Header */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-6">
-        <p className="text-gray-600 font-medium">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 sm:pb-6 sm:pt-0">
+        <p className="text-gray-600 font-medium text-sm sm:text-base">
           {mockServices.length} services disponibles
         </p>
       </div>
 
-      {/* Services Grid */}
+      {/* Services Grid - 1 col mobile, 2 col tablet, 3-4 col desktop */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12">
         {mockServices.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {mockServices.map((service) => (
               <ServiceCard key={service.id} service={service} />
             ))}
@@ -334,7 +334,7 @@ export default function ServicesPage() {
               <p className="text-gray-600 mb-6">
                 Essayez de modifier vos filtres ou votre recherche
               </p>
-              <button className="px-6 py-2 rounded-full bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors">
+              <button className="px-6 py-2 rounded-full bg-secondary text-white font-medium hover:bg-secondary/90 transition-colors">
                 Réinitialiser les filtres
               </button>
             </div>

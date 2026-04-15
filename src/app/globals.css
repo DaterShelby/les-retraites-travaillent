@@ -118,4 +118,36 @@
   .text-gradient {
     @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
+
+  /* Safe area for mobile bottom nav (iPhone notch etc.) */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Hide scrollbar for horizontal scroll */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Smooth momentum scrolling for mobile */
+  .scroll-smooth-touch {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Mobile-first responsive adjustments */
+@media (max-width: 767px) {
+  /* Reduce minimum touch target for inline spans/labels */
+  span, label, p, div {
+    min-height: auto;
+  }
+
+  /* Make footer hidden on mobile (bottom nav replaces it) */
+  footer {
+    display: none;
+  }
 }

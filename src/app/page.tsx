@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-// Using plain img tags for Netlify compatibility
 import { Button } from '@/components/ui/button';
+import { MobileNav } from '@/components/layout/mobile-nav';
 import { SERVICE_CATEGORIES } from '@/lib/constants';
 import {
   Hammer,
@@ -26,7 +26,6 @@ import {
   Search,
   ChevronRight,
   CheckCircle2,
-  Menu,
 } from 'lucide-react';
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -113,16 +112,13 @@ export default function HomePage() {
                   Commencer
                 </Button>
               </Link>
-              <button className="md:hidden p-2">
-                <Menu className="w-5 h-5 text-gray-700" />
-              </button>
             </div>
           </div>
         </div>
       </header>
 
       {/* HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-16 overflow-hidden bg-black">
+      <section className="relative min-h-[85vh] sm:min-h-[90vh] flex items-center justify-center pt-16 overflow-hidden bg-black">
         {/* Background Image */}
         <img
           src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1920&q=80"
@@ -139,10 +135,10 @@ export default function HomePage() {
             {/* Left: Content */}
             <div className="space-y-8 animate-fade-in">
               <div className="space-y-6">
-                <h1 className="font-serif text-6xl sm:text-7xl lg:text-8xl font-bold text-white leading-tight tracking-tight">
+                <h1 className="font-serif text-4xl sm:text-6xl lg:text-8xl font-bold text-white leading-tight tracking-tight">
                   L&apos;expérience n&apos;a pas de prix.
                 </h1>
-                <p className="text-lg sm:text-xl text-white/95 leading-relaxed max-w-2xl font-light">
+                <p className="text-base sm:text-xl text-white/95 leading-relaxed max-w-2xl font-light">
                   Trouvez des experts retraités pour vos projets, ou proposez vos services et complétez vos revenus à votre rythme.
                 </p>
               </div>
@@ -824,6 +820,9 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileNav />
     </main>
   );
 }

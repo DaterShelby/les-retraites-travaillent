@@ -17,6 +17,15 @@ const sourceSans = Source_Sans_3({
   display: "swap",
 });
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#1B4965",
+  viewportFit: "cover" as const,
+};
+
 export const metadata: Metadata = {
   title: {
     default: "Les Retraités Travaillent — Votre expérience a de la valeur",
