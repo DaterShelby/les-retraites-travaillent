@@ -36,6 +36,7 @@ describe("loginSchema", () => {
 describe("registerSchema", () => {
   it("accepte une inscription valide", () => {
     const result = registerSchema.safeParse({
+      firstName: "Tony",
       email: "retraite@example.com",
       password: "SecurePass1",
       confirmPassword: "SecurePass1",

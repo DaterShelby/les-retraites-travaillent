@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Calendar, Clock, Star, Trash2 } from "lucide-react";
@@ -67,6 +68,7 @@ const TABS: { id: TabType; label: string; filter: string[] }[] = [
 export default function BookingsPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
 
   const [bookings, setBookings] = useState<BookingData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -136,7 +138,11 @@ export default function BookingsPage() {
     } catch (err) {
       const errorMsg =
         err instanceof Error ? err.message : "Une erreur est survenue";
-      alert(errorMsg);
+      toast({
+        variant: "error",
+        title: "Action impossible",
+        description: errorMsg,
+      });
     } finally {
       setActionLoading((prev) => ({ ...prev, [bookingId]: false }));
     }

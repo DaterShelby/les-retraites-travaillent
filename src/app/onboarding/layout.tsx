@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useOnboardingStore } from '@/stores/onboarding';
 import { StepIndicator } from '@/components/onboarding/step-indicator';
+import { VoiceCoach } from '@/components/onboarding/voice-coach';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 
@@ -93,6 +94,8 @@ export default function OnboardingLayout({
           </div>
         </div>
       </main>
+
+      <VoiceCoach />
     </div>
   );
 }

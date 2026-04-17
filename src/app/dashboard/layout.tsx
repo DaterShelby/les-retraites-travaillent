@@ -1,6 +1,7 @@
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { ChatWindow } from "@/components/ai/chat-window";
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -36,6 +37,7 @@ export default async function DashboardLayout({
         </main>
       </div>
       <Footer />
+      <ChatWindow />
     </>
   );
 }

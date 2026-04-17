@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
+import { createNotification } from "@/lib/notifications";
 
 export async function POST(request: NextRequest) {
   try {
@@ -101,6 +102,33 @@ export async function POST(request: NextRequest) {
     if (updateError) {
       console.error("Update error:", updateError);
       // Don't fail the request if we can't update the timestamp
+    }
+
+    // Notify the other participant(s) of the new message
+    try {
+      const recipients = (conversation.participant_ids as string[]).filter(
+        (id) => id !== user.id
+      );
+      const { data: senderProfile } = await supabase
+        .from("user_profiles")
+        .select("first_name")
+        .eq("id", user.id)
+        .maybeSingle();
+      const senderName = senderProfile?.first_name || "Quelqu'un";
+      const preview = content.trim().slice(0, 120);
+      await Promise.all(
+        recipients.map((recipientId) =>
+          createNotification(
+            recipientId,
+            "new_message",
+            `Nouveau message de ${senderName}`,
+            preview,
+            { conversation_id: conversationId }
+          )
+        )
+      );
+    } catch (notifyError) {
+      console.error("[messages] notification error:", notifyError);
     }
 
     return NextResponse.json(newMessage, { status: 201 });

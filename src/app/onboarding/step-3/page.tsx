@@ -1,130 +1,176 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useOnboardingStore } from '@/stores/onboarding';
-import { useAuth } from '@/hooks/use-auth';
-import { createClient } from '@/lib/supabase/client';
-import { SkillsPicker } from '@/components/onboarding/skills-picker';
-import { Button } from '@/components/ui/button';
-import { ChevronRight, Check } from 'lucide-react';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useOnboardingStore } from "@/stores/onboarding";
+import { useAuth } from "@/hooks/use-auth";
+import { createClient } from "@/lib/supabase/client";
+import { SkillsPicker } from "@/components/onboarding/skills-picker";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+} from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
+import {
+  onboardingStep3Schema,
+  type OnboardingStep3Input,
+} from "@/lib/validation";
+import { ChevronRight, Loader2 } from "lucide-react";
 
 export default function Step3Page() {
   const router = useRouter();
   const { user } = useAuth();
+  const { toast } = useToast();
   const supabase = createClient();
-  const { role, selectedCategories, freeDescription, setSkills, setStep } = useOnboardingStore();
-  const [selected, setSelected] = useState<string[]>(selectedCategories);
-  const [description, setDescription] = useState(freeDescription);
+  const { role, selectedCategories, freeDescription, setSkills, setStep } =
+    useOnboardingStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [savedSuccessfully, setSavedSuccessfully] = useState(false);
 
-  const handleContinue = async () => {
-    if (selected.length === 0) {
-      alert('Veuillez sélectionner au moins une catégorie');
+  const isRetired = role === "retiree";
+
+  const form = useForm<OnboardingStep3Input>({
+    resolver: zodResolver(onboardingStep3Schema),
+    defaultValues: {
+      selectedCategories: selectedCategories ?? [],
+      freeDescription: freeDescription ?? "",
+    },
+    mode: "onChange",
+  });
+
+  const description = form.watch("freeDescription") ?? "";
+
+  const onSubmit = async (values: OnboardingStep3Input) => {
+    if (!user) {
+      toast({
+        variant: "error",
+        title: "Session expirée",
+        description: "Veuillez vous reconnecter pour continuer.",
+      });
+      router.push("/login");
       return;
     }
 
     setIsLoading(true);
-    setError(null);
-    setSavedSuccessfully(false);
+    setSkills(values.selectedCategories, values.freeDescription ?? "");
+    setStep(3);
 
-    try {
-      if (!user) {
-        throw new Error('Utilisateur non authentifié');
-      }
+    const { error: saveError } = await supabase
+      .from("user_profiles")
+      .update({
+        skills: values.selectedCategories,
+        bio: values.freeDescription || null,
+      })
+      .eq("id", user.id);
 
-      setSkills(selected, description);
-      setStep(3);
+    setIsLoading(false);
 
-      // Save to Supabase
-      const { error: saveError } = await supabase
-        .from('user_profiles')
-        .update({
-          skills: selected,
-          bio: description || null,
-        })
-        .eq('id', user.id);
-
-      if (saveError) {
-        throw saveError;
-      }
-
-      setSavedSuccessfully(true);
-      setTimeout(() => {
-        setStep(4);
-        router.push('/onboarding/step-4');
-      }, 500);
-
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur lors de la sauvegarde');
-    } finally {
-      setIsLoading(false);
+    if (saveError) {
+      toast({
+        variant: "error",
+        title: "Échec de la sauvegarde",
+        description: saveError.message,
+      });
+      return;
     }
+
+    toast({
+      variant: "success",
+      title: "Compétences enregistrées",
+      description: "Encore une étape avant de finaliser.",
+    });
+    setStep(4);
+    router.push("/onboarding/step-4");
   };
 
-  const isRetired = role === 'retiree';
-
   return (
-    <div className="space-y-8">
-      <div className="space-y-2">
-        <h2 className="font-serif text-3xl font-bold text-[#2C3E50]">
-          {isRetired ? 'Vos compétences' : 'Vos besoins'}
-        </h2>
-        <p className="text-lg text-[#3B2F2F]/80">
-          {isRetired
-            ? 'Sélectionnez les domaines dans lesquels vous pouvez apporter votre aide'
-            : 'Sélectionnez les services dont vous avez besoin'}
-        </p>
-      </div>
-
-      {error && (
-        <div className="rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-700">
-          {error}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="space-y-2">
+          <h2 className="font-serif text-3xl font-bold text-primary">
+            {isRetired ? "Vos compétences" : "Vos besoins"}
+          </h2>
+          <p className="text-lg text-neutral-text/80">
+            {isRetired
+              ? "Sélectionnez les domaines dans lesquels vous pouvez apporter votre aide."
+              : "Sélectionnez les services dont vous avez besoin."}
+          </p>
         </div>
-      )}
 
-      {savedSuccessfully && (
-        <div className="flex items-center gap-2 rounded-lg border border-green-300 bg-green-50 p-4 text-sm text-green-700">
-          <Check className="h-5 w-5" />
-          Compétences sauvegardées avec succès !
-        </div>
-      )}
-
-      <SkillsPicker selected={selected} onSelect={setSelected} />
-
-      <div className="space-y-4">
-        <label htmlFor="description" className="block text-sm font-medium text-[#2C3E50]">
-          {isRetired ? 'Vos autres compétences (optionnel)' : 'Précisions supplémentaires (optionnel)'}
-        </label>
-        <textarea
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder={isRetired
-            ? "Décrivez d'autres compétences ou expériences pertinentes..."
-            : 'Décrivez vos besoins spécifiques...'}
-          className="h-32 w-full rounded-lg border border-[#CC8800]/30 bg-white p-4 text-[#3B2F2F] placeholder:text-[#3B2F2F]/50 focus:border-[#CC8800] focus:outline-none focus:ring-2 focus:ring-[#CC8800]/20"
-          maxLength={500}
+        <FormField
+          control={form.control}
+          name="selectedCategories"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <SkillsPicker
+                  selected={field.value}
+                  onSelect={(values) => field.onChange(values)}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-        <p className="text-xs text-[#3B2F2F]/60">
-          {description.length}/500 caractères
-        </p>
-      </div>
 
-      <div className="flex justify-end">
-        <Button
-          onClick={handleContinue}
-          disabled={isLoading || savedSuccessfully}
-          size="lg"
-          className="gap-2 bg-[#2C3E50] hover:bg-[#2C3E50]/90 text-white disabled:opacity-50"
-        >
-          {isLoading ? 'Sauvegarde en cours...' : (savedSuccessfully ? 'Continuer...' : 'Continuer')}
-          {!isLoading && !savedSuccessfully && <ChevronRight className="h-5 w-5" />}
-          {savedSuccessfully && <Check className="h-5 w-5" />}
-        </Button>
-      </div>
-    </div>
+        <FormField
+          control={form.control}
+          name="freeDescription"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                {isRetired
+                  ? "Vos autres compétences (optionnel)"
+                  : "Précisions supplémentaires (optionnel)"}
+              </FormLabel>
+              <FormControl>
+                <textarea
+                  {...field}
+                  placeholder={
+                    isRetired
+                      ? "Décrivez d'autres compétences ou expériences pertinentes…"
+                      : "Décrivez vos besoins spécifiques…"
+                  }
+                  maxLength={500}
+                  className="h-32 w-full rounded-2xl border-2 border-gray-200 bg-white p-4 text-base text-neutral-text placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                />
+              </FormControl>
+              <div className="flex items-center justify-between">
+                <FormMessage />
+                <FormDescription>{description.length}/500 caractères</FormDescription>
+              </div>
+            </FormItem>
+          )}
+        />
+
+        <div className="flex justify-end">
+          <Button
+            type="submit"
+            size="lg"
+            disabled={isLoading || !form.formState.isValid}
+            className="gap-2"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin" />
+                Sauvegarde…
+              </>
+            ) : (
+              <>
+                Continuer
+                <ChevronRight className="h-5 w-5" />
+              </>
+            )}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }

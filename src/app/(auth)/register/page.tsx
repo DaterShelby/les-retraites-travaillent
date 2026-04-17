@@ -3,10 +3,24 @@
 import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
 import { createClient } from "@/lib/supabase/client";
+import { registerSchema, type RegisterInput } from "@/lib/validation";
+import { SSOButtons } from "@/components/auth/sso-buttons";
+import { AuthDivider } from "@/components/auth/auth-divider";
 import {
   Users,
   Heart,
@@ -57,131 +71,116 @@ const ROLES: Array<{
   },
 ];
 
+const calculatePasswordStrength = (
+  pwd: string
+): "weak" | "medium" | "strong" | null => {
+  if (!pwd) return null;
+  const hasUpper = /[A-Z]/.test(pwd);
+  const hasLower = /[a-z]/.test(pwd);
+  const hasNumber = /[0-9]/.test(pwd);
+  const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
+  const isLong = pwd.length >= 8;
+
+  if (hasUpper && hasLower && hasNumber && isLong && (hasSpecial || pwd.length >= 12))
+    return "strong";
+  if ((hasUpper || hasLower) && hasNumber && pwd.length >= 6) return "medium";
+  return "weak";
+};
+
+const STRENGTH_LABEL = { weak: "Faible", medium: "Moyen", strong: "Fort" };
+const STRENGTH_COLOR = {
+  weak: "bg-red-400",
+  medium: "bg-yellow-400",
+  strong: "bg-green-500",
+};
+
 function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
+  const { toast } = useToast();
 
   const initialRole = searchParams.get("role") as UserRole | null;
+  const validInitialRole =
+    initialRole && ["retiree", "client", "company"].includes(initialRole)
+      ? initialRole
+      : undefined;
 
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [selectedRole, setSelectedRole] = useState<UserRole | null>(
-    initialRole && ["retiree", "client", "company"].includes(initialRole) ? initialRole : null
-  );
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState<
-    "weak" | "medium" | "strong" | null
-  >(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const calculatePasswordStrength = (
-    pwd: string
-  ): "weak" | "medium" | "strong" | null => {
-    if (!pwd) return null;
-    const hasUpper = /[A-Z]/.test(pwd);
-    const hasLower = /[a-z]/.test(pwd);
-    const hasNumber = /[0-9]/.test(pwd);
-    const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
-    const isLong = pwd.length >= 8;
+  const form = useForm<RegisterInput>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      firstName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: validInitialRole,
+    },
+    mode: "onChange",
+  });
 
-    if (hasUpper && hasLower && hasNumber && isLong && (hasSpecial || pwd.length >= 12))
-      return "strong";
-    if ((hasUpper || hasLower) && hasNumber && pwd.length >= 6)
-      return "medium";
-    return "weak";
-  };
+  const password = form.watch("password");
+  const confirmPassword = form.watch("confirmPassword");
+  const selectedRole = form.watch("role");
+  const passwordStrength = calculatePasswordStrength(password);
 
-  const handlePasswordChange = (pwd: string) => {
-    setPassword(pwd);
-    setPasswordStrength(calculatePasswordStrength(pwd));
-  };
-
-  const strengthLabel = {
-    weak: "Faible",
-    medium: "Moyen",
-    strong: "Fort",
-  };
-
-  const strengthColor = {
-    weak: "bg-red-400",
-    medium: "bg-yellow-400",
-    strong: "bg-green-500",
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-
-    if (!selectedRole) {
-      setError("Veuillez sélectionner votre profil pour continuer.");
-      return;
-    }
-
-    if (!firstName.trim()) {
-      setError("Veuillez saisir votre prénom.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError("Les mots de passe ne correspondent pas.");
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Le mot de passe doit contenir au moins 8 caractères.");
-      return;
-    }
-
-    if (passwordStrength === "weak") {
-      setError(
-        "Mot de passe trop faible. Ajoutez une majuscule, une minuscule et un chiffre."
-      );
-      return;
-    }
-
-    setLoading(true);
+  const onSubmit = async (values: RegisterInput) => {
+    setIsLoading(true);
 
     try {
-      // Use server-side API route — bypasses email verification & rate limits
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email,
-          password,
-          firstName: firstName.trim(),
-          role: selectedRole,
+          email: values.email,
+          password: values.password,
+          firstName: values.firstName.trim(),
+          role: values.role,
         }),
       });
 
       const result = await res.json();
 
       if (!res.ok) {
-        setError(result.error || "Une erreur est survenue.");
+        toast({
+          variant: "error",
+          title: "Création impossible",
+          description: result.error || "Une erreur est survenue.",
+        });
         return;
       }
 
-      // Account created & confirmed — now sign in directly
       const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: values.email,
+        password: values.password,
       });
 
       if (signInError) {
-        setError("Compte créé ! Connectez-vous avec vos identifiants.");
+        toast({
+          variant: "info",
+          title: "Compte créé !",
+          description: "Connectez-vous avec vos identifiants.",
+        });
         router.push("/login");
         return;
       }
 
+      toast({
+        variant: "success",
+        title: "Bienvenue !",
+        description: "Continuons votre inscription.",
+      });
       router.push("/onboarding");
     } catch {
-      setError("Une erreur est survenue. Veuillez réessayer.");
+      toast({
+        variant: "error",
+        title: "Erreur réseau",
+        description: "Veuillez réessayer dans un instant.",
+      });
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -211,272 +210,279 @@ function RegisterForm() {
             </p>
           </div>
 
-          {/* Error alert */}
-          {error && (
-            <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-100 flex items-start gap-3 animate-slideUp">
-              <div className="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-red-600 text-xs font-bold">!</span>
-              </div>
-              <p className="text-red-700 text-sm">{error}</p>
-            </div>
-          )}
+          <SSOButtons next="/onboarding/step-1" className="mb-5" />
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Role Selection */}
-            <div className="space-y-3">
-              <label className="block text-sm font-semibold text-gray-700">
-                Qui êtes-vous ?
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {ROLES.map((role) => {
-                  const Icon = role.icon;
-                  const isSelected = selectedRole === role.value;
-                  return (
-                    <button
-                      key={role.value}
-                      type="button"
-                      onClick={() => setSelectedRole(role.value)}
-                      className={`relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-200 text-center group ${
-                        isSelected
-                          ? "border-primary bg-primary/5 shadow-md scale-[1.02]"
-                          : "border-gray-200 hover:border-gray-300 bg-white hover:shadow-sm"
-                      }`}
-                    >
-                      {isSelected && (
-                        <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-primary flex items-center justify-center shadow-sm">
-                          <Check className="w-3.5 h-3.5 text-white" />
-                        </div>
-                      )}
-                      <div
-                        className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors ${
-                          isSelected ? role.bgColor : "bg-gray-100 group-hover:bg-gray-200"
-                        }`}
-                      >
-                        <Icon
-                          className={`w-5 h-5 ${
-                            isSelected ? role.color : "text-gray-400"
-                          }`}
+          <AuthDivider label="ou avec votre email" className="mb-5" />
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              {/* Role Selection */}
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Qui êtes-vous ?</FormLabel>
+                    <FormControl>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {ROLES.map((role) => {
+                          const Icon = role.icon;
+                          const isSelected = selectedRole === role.value;
+                          return (
+                            <button
+                              key={role.value}
+                              type="button"
+                              onClick={() => field.onChange(role.value)}
+                              className={`relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all duration-200 text-center group ${
+                                isSelected
+                                  ? "border-primary bg-primary/5 shadow-md scale-[1.02]"
+                                  : "border-gray-200 hover:border-gray-300 bg-white hover:shadow-sm"
+                              }`}
+                            >
+                              {isSelected && (
+                                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-primary flex items-center justify-center shadow-sm">
+                                  <Check className="w-3.5 h-3.5 text-white" />
+                                </div>
+                              )}
+                              <div
+                                className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors ${
+                                  isSelected ? role.bgColor : "bg-gray-100 group-hover:bg-gray-200"
+                                }`}
+                              >
+                                <Icon
+                                  className={`w-5 h-5 ${
+                                    isSelected ? role.color : "text-gray-400"
+                                  }`}
+                                />
+                              </div>
+                              <div>
+                                <p
+                                  className={`font-semibold text-sm ${
+                                    isSelected ? "text-gray-900" : "text-gray-700"
+                                  }`}
+                                >
+                                  {role.label}
+                                </p>
+                                <p className="text-xs text-gray-500 mt-0.5 leading-tight">
+                                  {role.desc}
+                                </p>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* First Name */}
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Prénom</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                        <Input
+                          {...field}
+                          type="text"
+                          placeholder="Votre prénom"
+                          disabled={isLoading}
+                          className="pl-12 h-14 rounded-2xl border-gray-200 bg-gray-50/50 focus:bg-white text-base"
                         />
                       </div>
-                      <div>
-                        <p
-                          className={`font-semibold text-sm ${
-                            isSelected ? "text-gray-900" : "text-gray-700"
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Email */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Adresse email</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                        <Input
+                          {...field}
+                          type="email"
+                          placeholder="votre@email.fr"
+                          autoComplete="email"
+                          disabled={isLoading}
+                          className="pl-12 h-14 rounded-2xl border-gray-200 bg-gray-50/50 focus:bg-white text-base"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Password */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mot de passe</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                        <Input
+                          {...field}
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Minimum 8 caractères"
+                          autoComplete="new-password"
+                          disabled={isLoading}
+                          className="pl-12 pr-12 h-14 rounded-2xl border-gray-200 bg-gray-50/50 focus:bg-white text-base"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors min-h-0"
+                          aria-label={
+                            showPassword
+                              ? "Masquer le mot de passe"
+                              : "Afficher le mot de passe"
+                          }
+                        >
+                          {showPassword ? (
+                            <EyeOff className="w-5 h-5" />
+                          ) : (
+                            <Eye className="w-5 h-5" />
+                          )}
+                        </button>
+                      </div>
+                    </FormControl>
+                    {password && passwordStrength && (
+                      <div className="flex items-center gap-3">
+                        <div className="flex gap-1.5 flex-1">
+                          <div
+                            className={`h-1.5 flex-1 rounded-full transition-colors ${STRENGTH_COLOR[passwordStrength]}`}
+                          />
+                          <div
+                            className={`h-1.5 flex-1 rounded-full transition-colors ${
+                              passwordStrength === "weak"
+                                ? "bg-gray-200"
+                                : STRENGTH_COLOR[passwordStrength]
+                            }`}
+                          />
+                          <div
+                            className={`h-1.5 flex-1 rounded-full transition-colors ${
+                              passwordStrength === "strong"
+                                ? STRENGTH_COLOR[passwordStrength]
+                                : "bg-gray-200"
+                            }`}
+                          />
+                        </div>
+                        <span
+                          className={`text-xs font-medium ${
+                            passwordStrength === "weak"
+                              ? "text-red-500"
+                              : passwordStrength === "medium"
+                              ? "text-yellow-600"
+                              : "text-green-600"
                           }`}
                         >
-                          {role.label}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-0.5 leading-tight">
-                          {role.desc}
-                        </p>
+                          {STRENGTH_LABEL[passwordStrength]}
+                        </span>
                       </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* First Name */}
-            <div className="space-y-2">
-              <label
-                htmlFor="firstName"
-                className="block text-sm font-semibold text-gray-700"
-              >
-                Prénom
-              </label>
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                <Input
-                  id="firstName"
-                  type="text"
-                  placeholder="Votre prénom"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  disabled={loading}
-                  required
-                  className="pl-12 h-14 rounded-2xl border-gray-200 bg-gray-50/50 focus:bg-white text-base"
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="space-y-2">
-              <label
-                htmlFor="email"
-                className="block text-sm font-semibold text-gray-700"
-              >
-                Adresse email
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="votre@email.fr"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={loading}
-                  required
-                  className="pl-12 h-14 rounded-2xl border-gray-200 bg-gray-50/50 focus:bg-white text-base"
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div className="space-y-2">
-              <label
-                htmlFor="password"
-                className="block text-sm font-semibold text-gray-700"
-              >
-                Mot de passe
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Minimum 8 caractères"
-                  autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => handlePasswordChange(e.target.value)}
-                  disabled={loading}
-                  required
-                  className="pl-12 pr-12 h-14 rounded-2xl border-gray-200 bg-gray-50/50 focus:bg-white text-base"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors min-h-0"
-                  aria-label={
-                    showPassword
-                      ? "Masquer le mot de passe"
-                      : "Afficher le mot de passe"
-                  }
-                >
-                  {showPassword ? (
-                    <EyeOff className="w-5 h-5" />
-                  ) : (
-                    <Eye className="w-5 h-5" />
-                  )}
-                </button>
-              </div>
-              {password && passwordStrength && (
-                <div className="flex items-center gap-3">
-                  <div className="flex gap-1.5 flex-1">
-                    <div
-                      className={`h-1.5 flex-1 rounded-full transition-colors ${strengthColor[passwordStrength]}`}
-                    ></div>
-                    <div
-                      className={`h-1.5 flex-1 rounded-full transition-colors ${
-                        passwordStrength === "weak"
-                          ? "bg-gray-200"
-                          : strengthColor[passwordStrength]
-                      }`}
-                    ></div>
-                    <div
-                      className={`h-1.5 flex-1 rounded-full transition-colors ${
-                        passwordStrength === "strong"
-                          ? strengthColor[passwordStrength]
-                          : "bg-gray-200"
-                      }`}
-                    ></div>
-                  </div>
-                  <span
-                    className={`text-xs font-medium ${
-                      passwordStrength === "weak"
-                        ? "text-red-500"
-                        : passwordStrength === "medium"
-                        ? "text-yellow-600"
-                        : "text-green-600"
-                    }`}
-                  >
-                    {strengthLabel[passwordStrength]}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div className="space-y-2">
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-semibold text-gray-700"
-              >
-                Confirmer le mot de passe
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="Retapez votre mot de passe"
-                  autoComplete="new-password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  disabled={loading}
-                  required
-                  className="pl-12 h-14 rounded-2xl border-gray-200 bg-gray-50/50 focus:bg-white text-base"
-                />
-                {confirmPassword && password === confirmPassword && (
-                  <Check className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500" />
+                    )}
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-            </div>
+              />
 
-            {/* Submit */}
-            <Button
-              type="submit"
-              className="w-full h-14 text-base font-semibold rounded-2xl bg-secondary hover:bg-secondary-500 text-white shadow-md hover:shadow-lg transition-all"
-              disabled={loading}
-            >
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  Création en cours...
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                  Créer mon compte
-                  <ArrowRight className="w-5 h-5" />
-                </span>
-              )}
-            </Button>
+              {/* Confirm Password */}
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirmer le mot de passe</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                        <Input
+                          {...field}
+                          type="password"
+                          placeholder="Retapez votre mot de passe"
+                          autoComplete="new-password"
+                          disabled={isLoading}
+                          className="pl-12 h-14 rounded-2xl border-gray-200 bg-gray-50/50 focus:bg-white text-base"
+                        />
+                        {confirmPassword && password === confirmPassword && (
+                          <Check className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-green-500" />
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            {/* Trust badges */}
-            <div className="flex items-center justify-center gap-4 pt-2">
-              <div className="flex items-center gap-1.5 text-xs text-gray-400">
-                <Shield className="w-3.5 h-3.5" />
-                <span>Données sécurisées</span>
+              {/* Submit */}
+              <Button
+                type="submit"
+                className="w-full h-14 text-base font-semibold rounded-2xl bg-secondary hover:bg-secondary-500 text-white shadow-md hover:shadow-lg transition-all"
+                disabled={isLoading || !form.formState.isValid}
+              >
+                {isLoading ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        fill="none"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    Création en cours...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    Créer mon compte
+                    <ArrowRight className="w-5 h-5" />
+                  </span>
+                )}
+              </Button>
+
+              {/* Trust badges */}
+              <div className="flex items-center justify-center gap-4 pt-2">
+                <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                  <Shield className="w-3.5 h-3.5" />
+                  <span>Données sécurisées</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Gratuit</span>
+                </div>
               </div>
-              <div className="flex items-center gap-1.5 text-xs text-gray-400">
-                <Check className="w-3.5 h-3.5" />
-                <span>Gratuit</span>
-              </div>
-            </div>
-          </form>
+            </form>
+          </Form>
         </div>
 
         {/* Bottom */}
         <div className="mt-6 text-center text-xs text-gray-400">
           En créant un compte, vous acceptez nos{" "}
           <Link href="/cgu" className="underline hover:text-gray-600">
-            conditions d'utilisation
+            conditions d&apos;utilisation
           </Link>{" "}
           et notre{" "}
           <Link href="/confidentialite" className="underline hover:text-gray-600">
@@ -499,13 +505,7 @@ function RegisterForm() {
               </p>
             </blockquote>
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl overflow-hidden flex-shrink-0">
-                <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-                  alt="Michel R."
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <div className="w-12 h-12 rounded-2xl overflow-hidden flex-shrink-0 bg-white/10" />
               <div>
                 <p className="text-white font-semibold text-sm">Michel R.</p>
                 <p className="text-white/50 text-sm">Consultant en gestion, Paris</p>
@@ -520,7 +520,13 @@ function RegisterForm() {
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
+        </div>
+      }
+    >
       <RegisterForm />
     </Suspense>
   );

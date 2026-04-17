@@ -3,6 +3,7 @@ import { Libre_Baskerville, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/schema-org";
+import { Analytics } from "@/components/layout/analytics";
 
 const libreBaskerville = Libre_Baskerville({
   subsets: ["latin", "latin-ext"],
@@ -91,6 +92,7 @@ export default function RootLayout({
           Aller au contenu principal
         </a>
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

@@ -1,50 +1,85 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
 import { createClient } from "@/lib/supabase/client";
+import { loginSchema, type LoginInput } from "@/lib/validation";
 import { ArrowRight, Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { SSOButtons } from "@/components/auth/sso-buttons";
+import { MagicLinkForm } from "@/components/auth/magic-link-form";
+import { AuthDivider } from "@/components/auth/auth-divider";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-
-    try {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+  useEffect(() => {
+    const errorMessage = searchParams.get("error");
+    if (errorMessage) {
+      toast({
+        variant: "error",
+        title: "Connexion impossible",
+        description: errorMessage,
       });
-
-      if (signInError) {
-        if (signInError.message.includes("Invalid login")) {
-          setError("Email ou mot de passe incorrect.");
-        } else if (signInError.message.includes("rate")) {
-          setError("Trop de tentatives. Veuillez patienter quelques minutes.");
-        } else {
-          setError(signInError.message);
-        }
-        return;
-      }
-
-      router.push("/dashboard");
-    } catch {
-      setError("Une erreur est survenue. Veuillez réessayer.");
-    } finally {
-      setLoading(false);
+      // Clean URL
+      router.replace("/login");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  const form = useForm<LoginInput>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
+    mode: "onChange",
+  });
+
+  const onSubmit = async (values: LoginInput) => {
+    setIsLoading(true);
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    });
+    setIsLoading(false);
+
+    if (signInError) {
+      let message = signInError.message;
+      if (signInError.message.includes("Invalid login")) {
+        message = "Email ou mot de passe incorrect.";
+      } else if (signInError.message.includes("rate")) {
+        message = "Trop de tentatives. Veuillez patienter quelques minutes.";
+      }
+      toast({
+        variant: "error",
+        title: "Connexion impossible",
+        description: message,
+      });
+      return;
+    }
+
+    toast({
+      variant: "success",
+      title: "Bienvenue !",
+      description: "Connexion réussie.",
+    });
+    router.push("/dashboard");
   };
 
   return (
@@ -73,91 +108,103 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Error */}
-          {error && (
-            <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-100/80 flex items-start gap-3">
-              <div className="w-5 h-5 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <span className="text-red-600 text-xs font-bold">!</span>
-              </div>
-              <p className="text-red-700 text-sm">{error}</p>
-            </div>
-          )}
+          <SSOButtons next="/dashboard" disabled={isLoading} className="mb-5" />
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-600">
-                Adresse email
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 pointer-events-none" />
-                <input
-                  id="email"
-                  type="email"
-                  placeholder="votre@email.fr"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  disabled={loading}
-                  required
-                  className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-white focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/30 text-base transition-all outline-none"
-                />
-              </div>
-            </div>
+          <AuthDivider label="ou par email" className="mb-5" />
 
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <label htmlFor="password" className="block text-sm font-semibold text-gray-600">
-                  Mot de passe
-                </label>
-                <Link href="/forgot-password" className="text-xs font-medium text-secondary hover:text-secondary-500 transition-colors">
-                  Mot de passe oublié ?
-                </Link>
-              </div>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 pointer-events-none" />
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Votre mot de passe"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={loading}
-                  required
-                  className="w-full pl-12 pr-12 h-14 rounded-2xl border border-gray-200 bg-white focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/30 text-base transition-all outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors min-h-0"
-                  aria-label={showPassword ? "Masquer" : "Afficher"}
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Adresse email</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 pointer-events-none" />
+                        <input
+                          {...field}
+                          type="email"
+                          placeholder="votre@email.fr"
+                          autoComplete="email"
+                          disabled={isLoading}
+                          className="w-full pl-12 pr-4 h-14 rounded-2xl border border-gray-200 bg-white focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/30 text-base transition-all outline-none"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button
-              type="submit"
-              className="w-full h-14 text-base font-semibold rounded-2xl bg-secondary hover:bg-secondary-500 text-white shadow-sm hover:shadow-md"
-              disabled={loading}
-            >
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Connexion...
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                  Se connecter
-                  <ArrowRight className="w-5 h-5" />
-                </span>
-              )}
-            </Button>
-          </form>
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex justify-between items-center">
+                      <FormLabel>Mot de passe</FormLabel>
+                      <Link
+                        href="/forgot-password"
+                        className="text-xs font-medium text-secondary hover:text-secondary-500 transition-colors"
+                      >
+                        Mot de passe oublié ?
+                      </Link>
+                    </div>
+                    <FormControl>
+                      <div className="relative">
+                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-300 pointer-events-none" />
+                        <input
+                          {...field}
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Votre mot de passe"
+                          autoComplete="current-password"
+                          disabled={isLoading}
+                          className="w-full pl-12 pr-12 h-14 rounded-2xl border border-gray-200 bg-white focus:bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/30 text-base transition-all outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors min-h-0"
+                          aria-label={showPassword ? "Masquer" : "Afficher"}
+                        >
+                          {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                className="w-full h-14 text-base font-semibold rounded-2xl bg-secondary hover:bg-secondary-500 text-white shadow-sm hover:shadow-md"
+                disabled={isLoading || !form.formState.isValid}
+              >
+                {isLoading ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Connexion...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    Se connecter
+                    <ArrowRight className="w-5 h-5" />
+                  </span>
+                )}
+              </Button>
+            </form>
+          </Form>
+
+          <div className="mt-6 space-y-3">
+            <AuthDivider label="ou recevez un lien magique" />
+            <MagicLinkForm next="/dashboard" />
+          </div>
         </div>
 
         <div className="mt-8 text-center text-xs text-gray-300">

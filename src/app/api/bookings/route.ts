@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import type { BookingInsert, BookingRow, ServiceRow } from "@/types/database";
 import { NextRequest, NextResponse } from "next/server";
+import { createNotification } from "@/lib/notifications";
 
 export async function POST(request: NextRequest) {
   try {
@@ -61,10 +62,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get the service to find provider_id
+    // Get the service to find provider_id + pricing
     const { data: service, error: serviceError } = await supabase
       .from("services")
-      .select("provider_id")
+      .select("provider_id, price_amount, price_type")
       .eq("id", serviceId)
       .single();
 
@@ -75,15 +76,39 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const svc = service as ServiceRow & {
+      price_amount?: number | null;
+      price_type?: string | null;
+    };
+
+    // Compute total: hourly × duration hours; fixed prices keep raw amount.
+    let amountTotal: number | null = null;
+    if (typeof svc.price_amount === "number") {
+      const hours =
+        Math.max(0.25, (endDate.getTime() - startDate.getTime()) / 3_600_000);
+      const total =
+        svc.price_type === "fixed"
+          ? svc.price_amount
+          : svc.price_amount * hours;
+      amountTotal = Math.round(total * 100);
+    }
+
     // Create booking
-    const bookingData: BookingInsert = {
+    const bookingData: BookingInsert & {
+      amount_total?: number | null;
+      currency?: string;
+      payment_status?: string;
+    } = {
       service_id: serviceId,
       client_id: user.id,
-      provider_id: (service as ServiceRow).provider_id,
+      provider_id: svc.provider_id,
       slot_start: slotStart,
       slot_end: slotEnd,
       status: "pending",
       description: description || null,
+      amount_total: amountTotal,
+      currency: "eur",
+      payment_status: "unpaid",
     };
 
     const { data: newBooking, error: bookingError } = await supabase
@@ -101,6 +126,28 @@ export async function POST(request: NextRequest) {
         },
         { status: 500 }
       );
+    }
+
+    // Notify provider of new booking request (best-effort, don't fail booking if it errors)
+    try {
+      const { data: clientProfile } = await supabase
+        .from("user_profiles")
+        .select("first_name, last_name")
+        .eq("id", user.id)
+        .maybeSingle();
+      const clientName =
+        [clientProfile?.first_name, clientProfile?.last_name]
+          .filter(Boolean)
+          .join(" ") || "Un client";
+      await createNotification(
+        svc.provider_id,
+        "new_booking",
+        "Nouvelle demande de réservation",
+        `${clientName} souhaite réserver votre service.`,
+        { booking_id: (newBooking as BookingRow).id, service_id: serviceId }
+      );
+    } catch (notifyError) {
+      console.error("[bookings] notification error:", notifyError);
     }
 
     return NextResponse.json(newBooking, { status: 201 });

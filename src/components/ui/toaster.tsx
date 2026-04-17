@@ -1,6 +1,31 @@
 "use client";
 
-// Placeholder toaster — will be replaced with full shadcn/ui Toast when npm is available
+import {
+  Toast,
+  ToastClose,
+  ToastDescription,
+  ToastProvider,
+  ToastTitle,
+  ToastViewport,
+} from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
+
 export function Toaster() {
-  return null;
+  const { toasts } = useToast();
+
+  return (
+    <ToastProvider swipeDirection="right" duration={5000}>
+      {toasts.map(({ id, title, description, action, ...props }) => (
+        <Toast key={id} {...props}>
+          <div className="flex-1 min-w-0">
+            {title && <ToastTitle>{title}</ToastTitle>}
+            {description && <ToastDescription>{description}</ToastDescription>}
+          </div>
+          {action}
+          <ToastClose />
+        </Toast>
+      ))}
+      <ToastViewport />
+    </ToastProvider>
+  );
 }

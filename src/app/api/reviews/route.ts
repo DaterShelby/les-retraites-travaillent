@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
+import { createNotification } from "@/lib/notifications";
 
 export async function POST(request: NextRequest) {
   try {
@@ -114,6 +115,19 @@ export async function POST(request: NextRequest) {
         { error: "Une erreur est survenue lors de la création de l'avis." },
         { status: 500 }
       );
+    }
+
+    // Notify reviewee
+    try {
+      await createNotification(
+        revieweeId,
+        "new_review",
+        `Nouvel avis ${rating}/5`,
+        comment.trim().slice(0, 140),
+        { booking_id: bookingId, rating }
+      );
+    } catch (notifyError) {
+      console.error("[reviews] notification error:", notifyError);
     }
 
     return NextResponse.json(newReview, { status: 201 });

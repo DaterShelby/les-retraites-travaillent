@@ -4,3 +4,26 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# DNS et www → apex .fr — à valider depuis Netlify > Domain settings
+# Configurer :
+#   1. Custom domain : les-retraites-travaillent.fr (apex)
+#   2. Custom domain : www.les-retraites-travaillent.fr → redirect 301 vers apex
+#   3. Provider DNS .fr (Gandi/OVH) : pointer apex vers Netlify (ALIAS/ANAME)
+#   4. Activer Netlify HTTPS (Let's Encrypt auto)
+
+[[redirects]]
+  from = "https://www.les-retraites-travaillent.fr/*"
+  to   = "https://les-retraites-travaillent.fr/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://les-retraites-travaillent.fr/*"
+  to   = "https://les-retraites-travaillent.fr/:splat"
+  status = 301
+  force = true
+
+[functions]
+  # Stripe webhook : node runtime requis pour signature raw
+  node_bundler = "esbuild"
