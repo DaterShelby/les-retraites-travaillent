@@ -12,6 +12,7 @@ interface StatData {
   averageRating: number;
   profileViews: number;
   totalReviews: number;
+  responseRate: number | null;
 }
 
 function StatCard({
@@ -64,6 +65,7 @@ export default function StatsPage() {
     averageRating: 0,
     profileViews: 0,
     totalReviews: 0,
+    responseRate: null,
   });
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
@@ -87,10 +89,10 @@ export default function StatsPage() {
           .eq("provider_id", user.id)
           .eq("status", "completed");
 
-        // Fetch user profile for rating, reviews, and views
+        // Fetch user profile for rating, reviews, views, and response rate
         const { data: profile } = await supabase
           .from("user_profiles")
-          .select("average_rating, total_reviews, views_count")
+          .select("average_rating, total_reviews, views_count, response_rate")
           .eq("id", user.id)
           .single();
 
@@ -100,6 +102,7 @@ export default function StatsPage() {
           averageRating: profile?.average_rating || 0,
           profileViews: profile?.views_count || 0,
           totalReviews: profile?.total_reviews || 0,
+          responseRate: profile?.response_rate ?? null,
         });
       } catch (error) {
         console.error("Error fetching stats:", error);
@@ -169,7 +172,7 @@ export default function StatsPage() {
         />
         <StatCard
           title="Taux de réponse"
-          value={stats.totalBookings > 0 ? "100%" : "N/A"}
+          value={stats.responseRate != null ? `${stats.responseRate}%` : "N/A"}
           icon={TrendingUp}
           color="secondary"
         />

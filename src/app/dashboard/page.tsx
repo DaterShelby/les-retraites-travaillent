@@ -93,6 +93,19 @@ export default function DashboardPage() {
           .is("read_at", null);
         newStats.notificationsCount = notificationsCount || 0;
 
+        // Count offers (missions posted by company)
+        const { data: missions, count: offersCount } = await supabase
+          .from("missions")
+          .select("applications_count", { count: "exact" })
+          .eq("company_id", user.id);
+        newStats.offersCount = offersCount || 0;
+
+        // Sum applications received across all company missions
+        newStats.applicationsCount = (missions || []).reduce(
+          (sum, m) => sum + (m.applications_count || 0),
+          0
+        );
+
         setStats(newStats);
       } catch (error) {
         console.error("Error fetching dashboard stats:", error);
